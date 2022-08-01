@@ -1,1 +1,1 @@
-wiki_parsed.pkl filter=lfs diff=lfs merge=lfs -text
+rhyme_rus/data/wiki_parsed.pkl filter=lfs diff=lfs merge=lfs -text
