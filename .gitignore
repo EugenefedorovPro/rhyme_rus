@@ -1,0 +1,8 @@
+/build/
+/rhyme_rus.egg-info/
+/.pytest_cache/
+/dist/
+.idea/
+rhyme_rus/data/wiki_parsed.pkl
+/tests/.pytest_cache/
+tests/__pycache__/
