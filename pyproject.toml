@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools==63.2.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "rhyme_rus"
+version = "0.0.3"
+authors = [
+  { name="Eugene Proskulikov", email="eugene.proskulikov@gmail.com" },
+]
+description = "The pyhton package to find rhymes to a russian word"
+license = { file="LICENSE" }
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["readme", "dependencies"]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.rst"]}
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools]
+include-package-data = true
+
