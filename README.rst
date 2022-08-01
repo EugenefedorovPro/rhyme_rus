@@ -9,7 +9,7 @@ rhyme_rus
 * Developer: Eugene Proskulikov
 * License: MIT
 * Contact: `LinkedIn <https://www.linkedin.com/in/eugene-proskulikov-168050a4/>`_
-
+* Home: https://github.com/EugenefedorovPro/rhyme_rus
 
 Installation
 _________________
@@ -17,6 +17,12 @@ _________________
 ::
 
     $ pip install rhyme_rus
+
+or from GitHub
+
+::
+
+    pip install git+https://github.com/EugenefedorovPro/rhyme_rus.git
 
 When calling ``from rhyme_rus import rhyme, rhyme_simple_words``, 
 package downloads "wiki_parsed.pkl" file into your system's 
