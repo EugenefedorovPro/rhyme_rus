@@ -14,11 +14,7 @@ rhyme_rus
 Installation
 _________________
 
-::
-
-    $ pip install rhyme_rus
-
-or from GitHub
+only from GitHub
 
 ::
 
