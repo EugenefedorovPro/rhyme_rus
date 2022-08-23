@@ -6,3 +6,4 @@
 .idea/
 /tests/.pytest_cache/
 tests/__pycache__/
+stderr.log
