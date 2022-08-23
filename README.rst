@@ -14,13 +14,12 @@ rhyme_rus
 Installation
 _________________
 
-*rhyme_rus* package incules a large data file, which is managed by `Git Large File Storage (LFS) <https://git-lfs.github.com/>`_. To upload it properly you should have LFS installed on your PC.
+*rhyme_rus* package incules a large data file, which is managed by `Git Large File Storage (LFS) <https://git-lfs.github.com/>`_. To upload it properly to Linux machines you should have LFS installed on your PC.
 
 Linux (checked on Ubuntu 20.04.4)::
 
     $sudo apt install git-lfs
 
-On Windows `download and install LFS <https://git-lfs.github.com/>`_
 
 *rhyme_rus*  is available for installing only from GitHub
 
