@@ -11,7 +11,7 @@ authors = [
 ]
 description = "The pyhton package to find rhymes to a russian word"
 license = { file="LICENSE" }
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
