@@ -46,7 +46,7 @@ _________________________________________
 
 ::
 
-    from rhyme_rus import rhyme, rhyme_only_words
+    from rhyme_rus.rhyme import rhyme, rhyme_only_words
 
 ``rhyme_rus`` processes the whole inbuilt wiki Dictionary with every fresh input word. It does not pick up preselected rhymes from the database. As a consequence ``rhyme_rus`` works faster or slower, depending on the number of syllables after the stressed vowel an input word has. The algorythm provides 
 a set of arguments for you to trade-off between speed and number of rhymes in the output::
