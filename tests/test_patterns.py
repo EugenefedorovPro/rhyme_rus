@@ -77,7 +77,7 @@ def test_condition_all_rhyme_pats():
 
 
 def test_add_sound_to_rhyme_pats():
-    with open("test_patterns/add_sound_to_rhyme_pats.txt", "r") as f:
+    with open("tests/test_patterns/add_sound_to_rhyme_pats.txt", "r") as f:
         pats = f.read()
     all_rhyme_pats_1 = [["same_cons", "same_stressed_v"]]
     assert pats == str([item for item in Patterns.add_sound_to_rhyme_pats(all_rhyme_pats_1)])
