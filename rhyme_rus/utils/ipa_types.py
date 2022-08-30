@@ -1,5 +1,6 @@
-from rhyme_rus.utils.ipa_processing import *
 from functools import lru_cache
+from ipapy import UNICODE_TO_IPA
+from rhyme_rus.utils.ipa_processing import IpaProcessing
 
 
 class IpaTypes:

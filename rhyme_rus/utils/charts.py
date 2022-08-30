@@ -1,4 +1,5 @@
-from rhyme_rus.utils.score import *
+import pandas as pd
+from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.dictionary_processing import DictionaryProcessing
 
 
@@ -6,8 +7,10 @@ class Charts:
     @classmethod
     def make_dict_rhymed_items_pat(cls, dict_all_rhymed_intipa_pat):
         dict_of_int_from_ipa = DictionaryProcessing.make_dict_of_int_from_ipa()
-        dict_rhymed_items_pat = {dict_of_int_from_ipa[_intipa[0]]: _intipa[1] for _intipa
-                                 in dict_all_rhymed_intipa_pat.items()}
+        dict_rhymed_items_pat = {
+            dict_of_int_from_ipa[_intipa[0]]: _intipa[1]
+            for _intipa in dict_all_rhymed_intipa_pat.items()
+        }
         return dict_rhymed_items_pat
 
     @classmethod
@@ -25,12 +28,18 @@ class Charts:
                 col_pats.append(pat)
                 col_score.append(pat_score)
                 col_pos.append(it.pos)
-        table_word_pat_score = pd.DataFrame.from_dict(
-            {"rhymes": col_words, "patterns": col_pats,
-             "part_speech": col_pos, "score": col_score})\
-            .sort_values("score")\
-            .reset_index(drop=True)\
+        table_word_pat_score = (
+            pd.DataFrame.from_dict(
+                {
+                    "rhymes": col_words,
+                    "patterns": col_pats,
+                    "part_speech": col_pos,
+                    "score": col_score,
+                }
+            )
+            .sort_values("score")
+            .reset_index(drop=True)
             .drop_duplicates()
+        )
 
         return table_word_pat_score
-
