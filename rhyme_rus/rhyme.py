@@ -1,9 +1,19 @@
 import pandas as pd
 from wiktionary_rus.wiktionary import find_item_from_wiki
+import os
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+from put_stress_rus.put_stress import put_stress
+from word2ipa_rus.word2ipa import word2ipa
+
+from rhyme_rus.utils.charts import Charts
+from rhyme_rus.utils.ipa_processing import IpaProcessing
 from rhyme_rus.utils.patterns import Patterns
 from rhyme_rus.utils.rhymeflow import RhymeFlow
-from rhyme_rus.utils.charts import Charts
 from rhyme_rus.utils.score import Score
+
+
+from rhyme_rus.utils.nn_usage import NnUsage
 
 
 pd.set_option("display.max_rows", None)
@@ -13,13 +23,22 @@ pd.set_option("display.max_colwidth", None)
 
 
 def rhyme(
-    word_with_stress,
+    word_without_stress,
     max_length_pat_of_ipa=6,
     list_score_numbers=range(0, 45, 5),
     max_number_hard_sounds_in_one_pat=1,
 ):
+    word_with_stress = NnUsage.select(word_without_stress)
+    print("word_with_stress________________", word_with_stress)
+    if word_with_stress == []:
+        word_with_stress = NnUsage.accentuate(word_without_stress)
+        word_as_uni = word2ipa(word_with_stress)
+        word_ipa_shortened = NnUsage.get_ipa_shortened(word_as_uni)
+        ipa_short_int = IpaProcessing.uni_string_to_int(str(word_ipa_shortened))
+    else:
+        ipa_short_int = find_item_from_wiki(word_with_stress)[0].intipa
 
-    ipa_short_int = find_item_from_wiki(word_with_stress)[0].intipa
+    print("ipa_short_int", ipa_short_int)
     pat_of_ipa = Patterns.take_pat_of_ipa(ipa_short_int)
 
     if len(pat_of_ipa) > max_length_pat_of_ipa:
