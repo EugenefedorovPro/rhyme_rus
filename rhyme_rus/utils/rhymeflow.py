@@ -1,4 +1,4 @@
-from rhyme_rus.utils.ipa_types import *
+from rhyme_rus.utils.ipa_types import IpaTypes
 from rhyme_rus.utils.dictionary_processing import DictionaryProcessing
 
 
@@ -55,13 +55,16 @@ class RhymeFlow:
             else:
                 indexes_same.append(i)
 
-        return tuple([indexes_same,
-                      indexes_near_stressed_v,
-                      indexes_palatal_cons,
-                      indexes_voice_cons,
-                      indexes_any_cons,
-                      indexes_any_v,
-                      ])
+        return tuple(
+            [
+                indexes_same,
+                indexes_near_stressed_v,
+                indexes_palatal_cons,
+                indexes_voice_cons,
+                indexes_any_cons,
+                indexes_any_v,
+            ]
+        )
 
     @classmethod
     def find_indexes_same(cls, indexes_same, ipa_short_int_new, _intipa):
@@ -166,7 +169,9 @@ class RhymeFlow:
             indexes_any_cons = tuple_indexes[4]
             indexes_any_v = tuple_indexes[5]
 
-            unique_of_all_int_from_dict = DictionaryProcessing.get_unique_of_all_int_from_dict()
+            unique_of_all_int_from_dict = (
+                DictionaryProcessing.get_unique_of_all_int_from_dict()
+            )
 
             rhymed_ints = []
 
@@ -175,11 +180,17 @@ class RhymeFlow:
 
                     if cls.find_indexes_same(indexes_same, ipa_short_int_new, _intipa):
                         continue
-                    if cls.find_near_stressed_v(indexes_near_stressed_v, ipa_short_int_new, _intipa):
+                    if cls.find_near_stressed_v(
+                        indexes_near_stressed_v, ipa_short_int_new, _intipa
+                    ):
                         continue
-                    if cls.find_palatal_cons(indexes_palatal_cons, ipa_short_int_new, _intipa):
+                    if cls.find_palatal_cons(
+                        indexes_palatal_cons, ipa_short_int_new, _intipa
+                    ):
                         continue
-                    if cls.find_voice_cons(indexes_voice_cons, ipa_short_int_new, _intipa):
+                    if cls.find_voice_cons(
+                        indexes_voice_cons, ipa_short_int_new, _intipa
+                    ):
                         continue
                     if cls.find_any_cons(indexes_any_cons, ipa_short_int_new, _intipa):
                         continue
@@ -190,4 +201,3 @@ class RhymeFlow:
             raise Exception("Pat and ipa_short_int of different lengths")
 
         return rhymed_ints
-

@@ -1,7 +1,7 @@
+from functools import lru_cache
 from ipapy import UNICODE_TO_IPA
 from ipapy.ipastring import IPAString
-from functools import lru_cache
-from rhyme_rus.data.wiki_class import Dictionary
+from wiktionary_rus.wiktionary import wiki_instances
 
 
 class IpaProcessing:
@@ -9,7 +9,7 @@ class IpaProcessing:
     @lru_cache
     def get_list_unique_unicodes(cls):
         all_signs = set()
-        for item in Dictionary.instances:
+        for item in wiki_instances:
             if item.ipa:
                 value = item.ipa
                 for ch in value:
@@ -42,7 +42,7 @@ class IpaProcessing:
     def get_max_length_of_ipa(cls):
         lengths = [
             len(IPAString(unicode_string=item.sounds))
-            for item in Dictionary.instances
+            for item in wiki_instances
             if item.ipa
         ]
         max_length_of_ipa = max(lengths)

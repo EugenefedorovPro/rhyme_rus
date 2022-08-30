@@ -34,7 +34,7 @@ class Score:
     @classmethod
     def count_score_pat(cls, pat):
         dict_score = cls.get_dict_score()
-        max_possible_score = max(dict_score.values())+1
+        max_possible_score = max(dict_score.values()) + 1
         penalties_for_position = cls.sum_numbers(len(pat))
         score_pat = 0
         for i, p in enumerate(pat):
@@ -45,7 +45,9 @@ class Score:
             else:
                 score_pat = score_pat + dict_score[p]
 
-        score_pat = (score_pat / (max_possible_score * len(pat) + penalties_for_position)) * 100
+        score_pat = (
+            score_pat / (max_possible_score * len(pat) + penalties_for_position)
+        ) * 100
         score_pat = round(Score.round_score(score_pat))
 
         return score_pat
@@ -74,17 +76,16 @@ class Score:
             n_pats = len(dict_scores[key])
             list_n_pats.append(n_pats)
             list_keys.append(key)
-        table_score_n_pats = pd.DataFrame.from_dict({"score": list_keys,
-                                                     "n_pats": list_n_pats}
-                                                    ).sort_values(by="score",
-                                                                  ascending=False)
+        table_score_n_pats = pd.DataFrame.from_dict(
+            {"score": list_keys, "n_pats": list_n_pats}
+        ).sort_values(by="score", ascending=False)
         return table_score_n_pats
 
     @classmethod
-    def reduce_all_rhyme_pats_by_score(cls, all_rhyme_pats,
-                                       list_score_numbers=range(0, 50, 5)):
+    def reduce_all_rhyme_pats_by_score(
+        cls, all_rhyme_pats, list_score_numbers=range(0, 50, 5)
+    ):
         for pat in all_rhyme_pats:
             for sn in list_score_numbers:
                 if cls.count_score_pat(pat) == sn:
                     yield pat
-

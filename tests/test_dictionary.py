@@ -1,7 +1,7 @@
-from rhyme_rus.data.wiki_class import Dictionary
+from wiktionary_rus.wiktionary import wiki_instances, find_item_from_wiki
 
 
 def test_unpack_wiki_parsed():
     print("inside_test_unpack_wiki_parsed")
-    assert 422821 == Dictionary.get_number_of_instances()
-    assert "dom" == Dictionary.get_word_from_Dict('дом')[0].sounds
+    assert 422821 == len(wiki_instances)
+    assert "dom" == find_item_from_wiki("до'м")[0].sounds
