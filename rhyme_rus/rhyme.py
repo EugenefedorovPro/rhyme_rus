@@ -1,19 +1,16 @@
-import pandas as pd
-from wiktionary_rus.wiktionary import find_item_from_wiki
 import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-from put_stress_rus.put_stress import put_stress
-from word2ipa_rus.word2ipa import word2ipa
 
+from wiktionary_rus.wiktionary import find_item_from_wiki
 from rhyme_rus.utils.charts import Charts
 from rhyme_rus.utils.ipa_processing import IpaProcessing
 from rhyme_rus.utils.patterns import Patterns
 from rhyme_rus.utils.rhymeflow import RhymeFlow
 from rhyme_rus.utils.score import Score
-
-
 from rhyme_rus.utils.nn_usage import NnUsage
+import pandas as pd
+from word2ipa_rus.word2ipa import word2ipa
 
 
 pd.set_option("display.max_rows", None)
@@ -29,7 +26,6 @@ def rhyme(
     max_number_hard_sounds_in_one_pat=1,
 ):
     word_with_stress = NnUsage.select(word_without_stress)
-    print("word_with_stress________________", word_with_stress)
     if word_with_stress == []:
         word_with_stress = NnUsage.accentuate(word_without_stress)
         word_as_uni = word2ipa(word_with_stress)
@@ -38,7 +34,6 @@ def rhyme(
     else:
         ipa_short_int = find_item_from_wiki(word_with_stress)[0].intipa
 
-    print("ipa_short_int", ipa_short_int)
     pat_of_ipa = Patterns.take_pat_of_ipa(ipa_short_int)
 
     if len(pat_of_ipa) > max_length_pat_of_ipa:
