@@ -153,4 +153,4 @@ def rhyme_only_words(
     ]
 
     only_words = "".join(only_words)
-    return print(only_words)
+    return only_words
