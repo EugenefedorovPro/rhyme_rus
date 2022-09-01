@@ -27,6 +27,8 @@ class NnUsage:
                         return word_with_stress  # user selected word
                     else:
                         return list(uniques)[0]  # the first word from list
+                else:
+                    return list(uniques)[0]  # word with same accents from list_items
             else:
                 return list_items[0].accent  # the only available word
 
