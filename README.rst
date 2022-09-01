@@ -31,7 +31,7 @@ Linux (checked on Ubuntu 20.04.4)::
 Critical dependencies 
 _________________________
 
-``rhyme_rus`` critically depends on: 
+``rhyme_rus`` critically depends on:  
 
 * `a special branch <https://github.com/EugenefedorovPro/ipapy_eugene/tree/forpython310>`_ of my fork of `ipapy <https://github.com/pettarin/ipapy>`_ module. On installation the branch is uploaded from GitHub to your virtual environment. ``ipapy`` is a Python module to work with International Phonetic Alphabet (IPA) strings
 * `wiktionary_rus <https://github.com/EugenefedorovPro/wiktionary_rus>`_ - Russian wiktionary preprocessed for neural networks: word, lowcase, accent, stem, part of speech, meanings, unicode transcription
