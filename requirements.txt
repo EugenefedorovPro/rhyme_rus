@@ -3,6 +3,6 @@ ipapy @ git+https://github.com/EugenefedorovPro/ipapy_eugene.git@1cb62fa932b0ba0
 numpy==1.23.1
 openpyxl==3.0.10
 pandas==1.4.3
-put-stress-rus @ git+https://github.com/EugenefedorovPro/put_stress_rus.git@67c63cecaebada2d676ab5262e4022ff053e8d17
-wiktionary-rus @ git+https://github.com/EugenefedorovPro/wiktionary_rus.git@2855170b336230fce586e48a90b1e3657b179f5c
-word2ipa-rus @ git+https://github.com/EugenefedorovPro/word2ipa_rus.git@f8afc4e8fa70ac2220f4957fb97b48d9281cba3e
+put-stress-rus @ git+https://github.com/EugenefedorovPro/put_stress_rus.git
+wiktionary-rus @ git+https://github.com/EugenefedorovPro/wiktionary_rus.git
+word2ipa-rus @ git+https://github.com/EugenefedorovPro/word2ipa_rus.git
