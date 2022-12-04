@@ -1,2 +1,4 @@
-include rhyme_rus/data/wiki_parsed.pkl
+include rhyme_rus/data/dict_of_int_from_ipa.pkl
+include rhyme_rus/data/list_unique_unicodes.pkl
+include rhyme_rus/data/unique_of_all_int_from_dict.pkl
 

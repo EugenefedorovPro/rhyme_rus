@@ -1,35 +1,9 @@
 from ipapy.ipastring import IPAString
 from ipapy import UNICODE_TO_IPA
 from put_stress_rus.put_stress import put_stress
-from wiktionary_rus.wiktionary import find_item_from_wiki_unstressed
 
 
 class NnUsage:
-    @classmethod
-    def select(cls, word_without_stress):
-        list_items = find_item_from_wiki_unstressed(word_without_stress)
-        if list_items == []:
-            return list_items  # []
-        else:
-            if len(list_items) > 1:
-                uniques = set()
-                for item in list_items:
-                    uniques.add(item.accent)
-                if len(list(uniques)) > 1:
-                    word_with_stress = input(
-                        """Wiktionary has {} omographs: {}.
-                                            Print the stressed word you
-                                            choose - """.format(
-                            len(list(uniques)), ", ".join(list(uniques))
-                        )
-                    )
-                    if word_with_stress:
-                        return word_with_stress  # user selected word
-                    else:
-                        return list(uniques)[0]  # the first word from list
-            else:
-                return list_items[0].accent  # the only available word
-
     @classmethod
     def accentuate(cls, word_without_stress):
         word_with_stress = put_stress(word_without_stress)

@@ -25,5 +25,5 @@ dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools]
 include-package-data = true
-packages = ["rhyme_rus", "rhyme_rus.utils"]
+packages = ["rhyme_rus", "rhyme_rus.utils", "rhyme_rus.data"]
 
