@@ -1,21 +1,18 @@
 from functools import lru_cache
 from ipapy import UNICODE_TO_IPA
 from ipapy.ipastring import IPAString
-from wiktionary_rus.wiktionary import wiki_instances
+
+# from wiktionary_rus.wiktionary import wiki_instances
+import dill
 
 
 class IpaProcessing:
     @classmethod
     @lru_cache
     def get_list_unique_unicodes(cls):
-        all_signs = set()
-        for item in wiki_instances:
-            if item.ipa:
-                value = item.ipa
-                for ch in value:
-                    all_signs.add(ch)
-        list_unique_ipas = [ipa_ch for ipa_ch in list(all_signs)]
-        list_unique_unicodes = [str(ip) for ip in list_unique_ipas]
+        path = "rhyme_rus//data//list_unique_unicodes.pkl"
+        with open(path, "rb") as f:
+            list_unique_unicodes = dill.load(f)
         list_unique_unicodes.sort()
         return list_unique_unicodes
 
@@ -40,12 +37,7 @@ class IpaProcessing:
     @classmethod
     @lru_cache
     def get_max_length_of_ipa(cls):
-        lengths = [
-            len(IPAString(unicode_string=item.sounds))
-            for item in wiki_instances
-            if item.ipa
-        ]
-        max_length_of_ipa = max(lengths)
+        max_length_of_ipa = 25
         return max_length_of_ipa
 
     @classmethod

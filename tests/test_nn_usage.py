@@ -5,9 +5,13 @@ def test_select_none():
     assert [] == nn_usage.NnUsage.select("улисс")
 
 
-def test_select_from_several(monkeypatch):
+def test_select_from_several_user(monkeypatch):
     monkeypatch.setattr("builtins.input", lambda _: "за'мок")
     assert "за'мок" == nn_usage.NnUsage.select("замок")
+
+
+def test_select_from_several_items():
+    assert "ко'рчи" == nn_usage.NnUsage.select("корчи")
 
 
 def test_select_single():

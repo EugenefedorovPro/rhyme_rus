@@ -1,0 +1,2 @@
+rhyme_rus/data/dict_of_int_from_ipa.pkl filter=lfs diff=lfs merge=lfs -text
+dict_of_int_from_ipa.pkl filter=lfs diff=lfs merge=lfs -text

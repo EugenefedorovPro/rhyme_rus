@@ -2,7 +2,7 @@ import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
-from wiktionary_rus.wiktionary import find_item_from_wiki
+# from wiktionary_rus.wiktionary import find_item_from_wiki
 from rhyme_rus.utils.charts import Charts
 from rhyme_rus.utils.ipa_processing import IpaProcessing
 from rhyme_rus.utils.patterns import Patterns
@@ -25,14 +25,10 @@ def rhyme(
     list_score_numbers=range(0, 45, 5),
     max_number_hard_sounds_in_one_pat=1,
 ):
-    word_with_stress = NnUsage.select(word_without_stress)
-    if word_with_stress == []:
-        word_with_stress = NnUsage.accentuate(word_without_stress)
-        word_as_uni = word2ipa(word_with_stress)
-        word_ipa_shortened = NnUsage.get_ipa_shortened(word_as_uni)
-        ipa_short_int = IpaProcessing.uni_string_to_int(str(word_ipa_shortened))
-    else:
-        ipa_short_int = find_item_from_wiki(word_with_stress)[0].intipa
+    word_with_stress = NnUsage.accentuate(word_without_stress)
+    word_as_uni = word2ipa(word_with_stress)
+    word_ipa_shortened = NnUsage.get_ipa_shortened(word_as_uni)
+    ipa_short_int = IpaProcessing.uni_string_to_int(str(word_ipa_shortened))
 
     pat_of_ipa = Patterns.take_pat_of_ipa(ipa_short_int)
 
@@ -153,4 +149,4 @@ def rhyme_only_words(
     ]
 
     only_words = "".join(only_words)
-    return print(only_words)
+    return only_words

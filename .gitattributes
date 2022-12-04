@@ -1,1 +1,1 @@
-rhyme_rus/data/wiki_parsed.pkl filter=lfs diff=lfs merge=lfs -text
+data/dict_of_int_from_ipa.pkl filter=lfs diff=lfs merge=lfs -text 

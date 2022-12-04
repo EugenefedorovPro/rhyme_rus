@@ -14,7 +14,7 @@ rhyme_rus
 Installation
 _________________
 
-*rhyme_rus* package incules a large data file, which is managed by `Git Large File Storage (LFS) <https://git-lfs.github.com/>`_. To upload it properly to Linux machines you should have LFS installed on your PC.
+*rhyme_rus* package incules `wiktionary_rus` dependency with a large data file, which is managed by `Git Large File Storage (LFS) <https://git-lfs.github.com/>`_. To upload it properly to Linux machines you should have LFS installed on your PC.
 
 Linux (checked on Ubuntu 20.04.4)::
 
@@ -27,35 +27,36 @@ Linux (checked on Ubuntu 20.04.4)::
 
     pip install git+https://github.com/EugenefedorovPro/rhyme_rus.git
 
-When calling ``from rhyme_rus.rhyme import rhyme, rhyme_simple_words``, 
-package downloads "wiki_parsed.pkl" file into your system's 
-cache. This database is obligatory for processing ``rhyme`` algorythm. 
-It uses specially parsed Russian part of `English-language Wiktionary <https://en.wiktionary.org/wiki/Wiktionary:Main_Page>`_
-
 
 Critical dependencies 
 _________________________
 
-``rhyme_rus`` critically depends on `a special branch <https://github.com/EugenefedorovPro/ipapy_eugene/tree/forpython310>`_ of my fork of 
-`ipapy <https://github.com/pettarin/ipapy>`_ module. On installation
-the branch is cloned from GitHub to your virtual environment. 
-``ipapy`` is a Python module to work with International Phonetic Alphabet (IPA) strings
+``rhyme_rus`` critically depends on:  
+
+* `a special branch <https://github.com/EugenefedorovPro/ipapy_eugene/tree/forpython310>`_ of my fork of `ipapy <https://github.com/pettarin/ipapy>`_ module. On installation the branch is uploaded from GitHub to your virtual environment. ``ipapy`` is a Python module to work with International Phonetic Alphabet (IPA) strings
+* `wiktionary_rus <https://github.com/EugenefedorovPro/wiktionary_rus>`_ - Russian wiktionary preprocessed for neural networks: word, lowcase, accent, stem, part of speech, meanings, unicode transcription
+* `put_stress_rus <https://github.com/EugenefedorovPro/put_stress_rus>`_ - Python package to put stress on a russian word powered by the trained neural network
+* `word2ipa_rus <https://github.com/EugenefedorovPro/word2ipa_rus>`_ - Python package to convert a russian word to IPA transcription powered by the trained neural network 
+
+
 
 Quick start
 _________________________________________
+
+------------------------------------------
+Input word available in `wiktionary_rus` 
+------------------------------------------
 
 ::
 
     from rhyme_rus.rhyme import rhyme, rhyme_only_words
 
-``rhyme_rus`` processes the whole inbuilt wiki Dictionary with every fresh input word. It does not pick up preselected rhymes from the database. As a consequence ``rhyme_rus`` works faster or slower, depending on the number of syllables after the stressed vowel an input word has. The algorythm provides 
-a set of arguments for you to trade-off between speed and number of rhymes in the output::
+`rhyme_rus` processes the whole inbuilt `wiktionary_rus` with every fresh input word. It does not pick up preselected rhymes from the database. As a consequence `rhyme_rus` works faster or slower, depending on the number of syllables after the stressed vowel an input word has. The algorythm provides a set of arguments for you to trade-off between speed and number of rhymes in the output::
 
     rhyme(word)
 
 *word* accepts a russian word under some conditions:
 
-- available in Wiki dict with more than 400k items
 - low case
 - 'ё' sensitive
 - no blank spaces, no dashes
@@ -122,11 +123,37 @@ You can download resulting dataframe to an external file::
 
 You will enjoy more comfort with  Jupyter, JupyterLab or Colab
 
+
+
+------------------------------------------
+Input word unavailable in `wiktionary_rus` 
+------------------------------------------
+If a word you provide as an input to `rhyme` or `rhyme_only_words` is unavailable in `wiktionary_rus`, or if there are omographs, the program will try and stress the word by itself deploying `put_stress_rus`. The accuracy of the neural network, standing behind the package, is 0.7945. To check if the word is properly accentuated, you will be asked to print "Y" or press Enter, if correct, or print the stressed word, if not
+
+Omographs:: 
+    
+    rhyme("замок")
+    print(rhyme_only_words("замок"))
+
+:: 
+
+    > Wiktionary has 2 omographs: замо'к, за'мок. Print the stressed word you choose -
+
+Word unavailable in `wiktionary_rus`::
+
+    rhyme("коцюбинский")
+    print(rhyme_only_words("коцюбинский"))
+
+:: 
+
+    > Neural Netword stressed коцюбинский as коцюби'нский. Print 'Y' if the stress is put correctly, or print word with a proper accent -
+
+
+
 Algorythm
 __________
 I founded `rhyme_rus` on my understanding, why we hear some
-pairs of words as harmonious, other as not,
-and why contemporary poetry does not use precise rhymes:
+pairs of words as harmonious, other as not, and why contemporary poetry does not use precise rhymes:
 
 * I do not rhyme characters, I do rhyme sounds. That's why I use specifically parsed wiktionary as the only available source enjoying Russian words with IPA transcription
 
