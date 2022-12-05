@@ -1,6 +1,3 @@
-from wiktionary_rus.wiktionary import find_item_from_wiki_unstressed
-
-
 class ExploreRhymes:
     @classmethod
     def find_rhymes_by_score(cls, score_number, table_word_pat_score):
@@ -26,8 +23,4 @@ class ExploreRhymes:
     @classmethod
     def find_rhymes_by_word(cls, word, table_word_pat_score):
         rhymes_by_word = table_word_pat_score[table_word_pat_score["rhymes"] == word]
-        try:
-            str(find_item_from_wiki_unstressed(word)[0].ipa)
-        except IndexError:
-            return "word {} is unavailable in Wiki".format(word)
         return rhymes_by_word

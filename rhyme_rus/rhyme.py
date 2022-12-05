@@ -19,13 +19,17 @@ pd.set_option("display.width", None)
 pd.set_option("display.max_colwidth", None)
 
 
+def stress_word(word_without_stress):
+    word_with_stress = NnUsage.accentuate(word_without_stress)
+    return word_with_stress
+
+
 def rhyme(
-    word_without_stress,
+    word_with_stress,
     max_length_pat_of_ipa=6,
     list_score_numbers=range(0, 45, 5),
     max_number_hard_sounds_in_one_pat=1,
 ):
-    word_with_stress = NnUsage.accentuate(word_without_stress)
     word_as_uni = word2ipa(word_with_stress)
     word_ipa_shortened = NnUsage.get_ipa_shortened(word_as_uni)
     ipa_short_int = IpaProcessing.uni_string_to_int(str(word_ipa_shortened))
@@ -124,14 +128,14 @@ def rhyme(
 
 
 def rhyme_only_words(
-    word,
+    word_with_stress,
     max_length_pat_of_ipa=6,
     list_score_numbers=range(0, 40, 5),
     max_number_hard_sounds_in_one_pat=1,
 ):
 
     table_word_pat_score = rhyme(
-        word,
+        word_with_stress,
         max_length_pat_of_ipa,
         list_score_numbers,
         max_number_hard_sounds_in_one_pat,
