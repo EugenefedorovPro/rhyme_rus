@@ -1,17 +1,42 @@
+import json
+import sqlite3
+from pathlib import Path
 import pandas as pd
 from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.dictionary_processing import DictionaryProcessing
 
 
+def open_db():
+    path = Path.cwd() / "rhyme_rus/data//wiktionary.sqlite3"
+    print("000000000000000000000000", path)
+    connection = sqlite3.connect(path)
+    cur = connection.cursor()
+    return connection, cur
+
+
 class Charts:
     @classmethod
     def make_dict_rhymed_items_pat(cls, dict_all_rhymed_intipa_pat):
+        # print("________________", list(dict_all_rhymed_intipa_pat.items())[0])
         dict_of_int_from_ipa = DictionaryProcessing.make_dict_of_int_from_ipa()
         dict_rhymed_items_pat = {
             dict_of_int_from_ipa[_intipa[0]]: _intipa[1]
             for _intipa in dict_all_rhymed_intipa_pat.items()
         }
         return dict_rhymed_items_pat
+
+    @classmethod
+    def db_make_dict_rhymed_items_pat(cls, dict_all_rhymed_intipa_pat):
+        connection, cur = open_db()
+        db_dict_rhymed_items_pat = []
+        for item in dict_all_rhymed_intipa_pat.items():
+            print("_____________", str(item[0]))
+            data_on_word = cur.execute(
+                "select * from wiki where intipa={}".format(str(item[0]))
+            ).fetchall()
+            db_dict_rhymed_items_pat.append(data_on_word, item[1])
+            connection.close()
+        return db_dict_rhymed_items_pat
 
     @classmethod
     def chart_table_word_pat_score(cls, dict_rhymed_items_pat):
