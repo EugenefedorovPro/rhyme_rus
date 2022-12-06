@@ -3,7 +3,7 @@ from rhyme_rus.utils.explore_rhymes import ExploreRhymes
 from rhyme_rus.rhyme import rhyme
 
 
-word = "ромб"
+word = "ро'мб"
 romb_table = rhyme(word)
 
 
