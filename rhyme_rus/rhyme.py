@@ -115,7 +115,8 @@ def rhyme(
     dict_rhymed_items_pat = Charts.make_dict_rhymed_items_pat(
         dict_all_rhymed_intipa_pat
     )
-
+    my_check = Charts.db_make_dict_rhymed_items_pat(dict_all_rhymed_intipa_pat)
+    print("____________________", my_check)
     table_word_pat_score = Charts.chart_table_word_pat_score(dict_rhymed_items_pat)
 
     print(
