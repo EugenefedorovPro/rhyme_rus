@@ -7,16 +7,7 @@ class NnUsage:
     @classmethod
     def accentuate(cls, word_without_stress):
         word_with_stress = put_stress(word_without_stress)
-
-        text_0 = "Neural Netword stressed {} as {}.".format(
-            word_without_stress, word_with_stress
-        )
-        text_1 = "Print 'Y' if the stress is put correctly, or print word with a proper accent - "
-        user_check = input(text_0 + " " + text_1)
-        if user_check == "" or user_check == "Y":
-            return word_with_stress
-        else:
-            return user_check
+        return word_with_stress
 
     @classmethod
     # func to shorten ipa by scheme: one consonant before stressed vowel (if available)
