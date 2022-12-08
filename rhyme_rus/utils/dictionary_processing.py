@@ -1,10 +1,17 @@
 from functools import lru_cache
-
-# from wiktionary_rus.wiktionary import wiki_instances
+from pathlib import Path
 import dill
 
 
 class DictionaryProcessing:
+    @classmethod
+    @lru_cache
+    def get_dict_word_accent(cls):
+        path_dict_word_accent = Path.cwd() / "rhyme_rus/data/wiki_short_class.pkl"
+        with open(path_dict_word_accent, "rb") as f:
+            dict_word_accent = dill.load(f)
+        return dict_word_accent
+
     @classmethod
     @lru_cache
     def get_unique_of_all_int_from_dict(cls):
@@ -16,7 +23,7 @@ class DictionaryProcessing:
     @classmethod
     @lru_cache
     def make_dict_of_int_from_ipa(cls):
-        path = "rhyme_rus//data//dict_of_int_from_ipa.pkl"
+        path = "rhyme_rus//data//dict_of_int_from_ipa_short.pkl"
         with open(path, "rb") as f:
             dict_of_int_from_ipa = dill.load(f)
         return dict_of_int_from_ipa
