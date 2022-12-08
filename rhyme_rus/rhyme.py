@@ -3,6 +3,7 @@ import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 # from wiktionary_rus.wiktionary import find_item_from_wiki
+from rhyme_rus.utils.dictionary_processing import DictionaryProcessing
 from rhyme_rus.utils.charts import Charts
 from rhyme_rus.utils.ipa_processing import IpaProcessing
 from rhyme_rus.utils.patterns import Patterns
@@ -11,7 +12,8 @@ from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.nn_usage import NnUsage
 import pandas as pd
 from word2ipa_rus.word2ipa import word2ipa
-
+import dill
+from pathlib import Path
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -19,7 +21,13 @@ pd.set_option("display.width", None)
 pd.set_option("display.max_colwidth", None)
 
 
-def stress_word(word_without_stress):
+def stress_word_by_wiki(word_without_stress):
+    dict_word_accent = DictionaryProcessing.get_dict_word_accent()
+    word_stressed = dict_word_accent[word_without_stress]
+    return word_stressed
+
+
+def stress_word_by_nn(word_without_stress):
     word_with_stress = NnUsage.accentuate(word_without_stress)
     return word_with_stress
 
@@ -115,8 +123,6 @@ def rhyme(
     dict_rhymed_items_pat = Charts.make_dict_rhymed_items_pat(
         dict_all_rhymed_intipa_pat
     )
-    my_check = Charts.db_make_dict_rhymed_items_pat(dict_all_rhymed_intipa_pat)
-    print("____________________", my_check)
     table_word_pat_score = Charts.chart_table_word_pat_score(dict_rhymed_items_pat)
 
     print(

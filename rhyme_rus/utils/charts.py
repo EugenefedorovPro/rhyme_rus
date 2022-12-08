@@ -8,7 +8,7 @@ from rhyme_rus.utils.dictionary_processing import DictionaryProcessing
 
 def open_db():
     path = Path.cwd() / "rhyme_rus/data//wiktionary.sqlite3"
-    print("000000000000000000000000", path)
+    # print("000000000000000000000000", path)
     connection = sqlite3.connect(path)
     cur = connection.cursor()
     return connection, cur
@@ -17,7 +17,6 @@ def open_db():
 class Charts:
     @classmethod
     def make_dict_rhymed_items_pat(cls, dict_all_rhymed_intipa_pat):
-        # print("________________", list(dict_all_rhymed_intipa_pat.items())[0])
         dict_of_int_from_ipa = DictionaryProcessing.make_dict_of_int_from_ipa()
         dict_rhymed_items_pat = {
             dict_of_int_from_ipa[_intipa[0]]: _intipa[1]
@@ -30,12 +29,11 @@ class Charts:
         connection, cur = open_db()
         db_dict_rhymed_items_pat = []
         for item in dict_all_rhymed_intipa_pat.items():
-            print("_____________", str(item[0]))
             data_on_word = cur.execute(
-                "select * from wiki where intipa={}".format(str(item[0]))
+                "select word, pos from wiki where intipa='{}'".format(item[0])
             ).fetchall()
-            db_dict_rhymed_items_pat.append(data_on_word, item[1])
-            connection.close()
+            db_dict_rhymed_items_pat.append((data_on_word, item[1]))
+        connection.close()
         return db_dict_rhymed_items_pat
 
     @classmethod
