@@ -1,10 +1,10 @@
 import dill
 from rhyme_rus.utils.explore_rhymes import ExploreRhymes
-from rhyme_rus.rhyme import rhyme
+from rhyme_rus.rhyme import rhyme_to_table
 
 
 word = "ро'мб"
-romb_table = rhyme(word)
+romb_table = rhyme_to_table(word)
 
 
 def test_find_rhymes_by_score():

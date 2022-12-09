@@ -37,6 +37,18 @@ class Charts:
         return db_dict_rhymed_items_pat
 
     @classmethod
+    def get_list_of_lists_word_pat_score_pos(cls, dict_rhymed_items_pat):
+        list_of_lists_word_pat_score_pos = []
+        for item in dict_rhymed_items_pat.items():
+            pat_score = Score.count_score_pat(item[1])
+            pat = item[1]
+            for it in item[0]:
+                list_of_lists_word_pat_score_pos.append(
+                    [it.word, pat, pat_score, it.pos]
+                )
+        return list_of_lists_word_pat_score_pos
+
+    @classmethod
     def chart_table_word_pat_score(cls, dict_rhymed_items_pat):
         col_words = []
         col_pats = []
