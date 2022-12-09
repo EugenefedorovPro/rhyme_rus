@@ -32,7 +32,7 @@ def stress_word_by_nn(word_without_stress):
     return word_with_stress
 
 
-def rhyme(
+def rhyme_till_dict(
     word_with_stress,
     max_length_pat_of_ipa=6,
     list_score_numbers=range(0, 45, 5),
@@ -123,41 +123,43 @@ def rhyme(
     dict_rhymed_items_pat = Charts.make_dict_rhymed_items_pat(
         dict_all_rhymed_intipa_pat
     )
-    table_word_pat_score = Charts.chart_table_word_pat_score(dict_rhymed_items_pat)
+    return dict_rhymed_items_pat
 
-    print(
-        "Algorythm produces {} of {} possible combinations".format(
-            (list(list_score_numbers)), "range(0, 105, 5)"
-        )
+
+def rhyme_to_table(
+    word_with_stress,
+    max_length_pat_of_ipa=6,
+    list_score_numbers=range(0, 45, 5),
+    max_number_hard_sounds_in_one_pat=1,
+):
+
+    dict_rhymed_items_pat = rhyme_till_dict(
+        word_with_stress,
+        max_length_pat_of_ipa,
+        list_score_numbers,
+        max_number_hard_sounds_in_one_pat,
     )
+    table_word_pat_score = Charts.chart_table_word_pat_score(dict_rhymed_items_pat)
 
     return table_word_pat_score
 
 
-def rhyme_only_words(
+def rhyme_to_list(
     word_with_stress,
     max_length_pat_of_ipa=6,
-    list_score_numbers=range(0, 40, 5),
+    list_score_numbers=range(0, 45, 5),
     max_number_hard_sounds_in_one_pat=1,
 ):
 
-    table_word_pat_score = rhyme(
+    dict_rhymed_items_pat = rhyme_till_dict(
         word_with_stress,
         max_length_pat_of_ipa,
         list_score_numbers,
         max_number_hard_sounds_in_one_pat,
     )
 
-    only_words = " ".join(list(table_word_pat_score["rhymes"]))
+    list_of_lists_word_pat_score_pos = Charts.get_list_of_lists_word_pat_score_pos(
+        dict_rhymed_items_pat
+    )
 
-    only_words = only_words.split()
-
-    length_line = 1
-
-    only_words = [
-        " ".join(only_words[i : i + length_line]) + "\n"
-        for i in range(0, len(only_words), length_line)
-    ]
-
-    only_words = "".join(only_words)
-    return only_words
+    return list_of_lists_word_pat_score_pos

@@ -1,5 +1,6 @@
 dill==0.3.5.1
 ipapy @ git+https://github.com/EugenefedorovPro/ipapy_eugene.git@1cb62fa932b0ba0dc530bde5e6469a8e70b2c820
-numpy==1.23.1pandas==1.4.3
+numpy==1.23.1
+pandas==1.4.3
 put-stress-rus @ git+https://github.com/EugenefedorovPro/put_stress_rus.git
 word2ipa-rus @ git+https://github.com/EugenefedorovPro/word2ipa_rus.git

@@ -1,7 +1,31 @@
+from pathlib import Path
 import dill
-from rhyme_rus.rhyme import rhyme
+from rhyme_rus.rhyme import rhyme_till_dict, rhyme_to_table, rhyme_to_list
 
 
-def test_rhyme():
-    with open("tests/test_rhyme/test_rhyme.pkl", "rb") as f:
-        assert bool(True) == dill.load(f).equals(rhyme("ко'т", list_score_numbers=[5]))
+def test_rhyme_till_dict():
+    path = Path.cwd() / "tests/test_rhyme/test_rhyme_till_dict.pkl"
+    with open(path, "rb") as f:
+        expected_result = dill.load(f)
+        expected_result = vars(list(expected_result.items())[10][0][0])
+    word = "ко'нь"
+    func_result = vars(list(rhyme_till_dict(word).items())[10][0][0])
+    assert expected_result == func_result
+
+
+def test_rhyme_to_table():
+    path = Path.cwd() / "tests/test_rhyme/test_rhyme_to_table.pkl"
+    with open(path, "rb") as f:
+        expected_result = dill.load(f)
+    word = "ко'нь"
+    func_result = rhyme_to_table(word)
+    assert all(expected_result) == all(func_result)
+
+
+def test_rhyme_to_list():
+    path = Path.cwd() / "tests/test_rhyme/test_rhyme_to_list.pkl"
+    with open(path, "rb") as f:
+        expected_result = dill.load(f)
+    word = "ко'нь"
+    func_result = rhyme_to_list(word)
+    assert expected_result == func_result
