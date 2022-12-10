@@ -1,17 +1,7 @@
-import json
-import sqlite3
 from pathlib import Path
 import pandas as pd
 from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.dictionary_processing import DictionaryProcessing
-
-
-def open_db():
-    path = Path.cwd() / "rhyme_rus/data//wiktionary.sqlite3"
-    # print("000000000000000000000000", path)
-    connection = sqlite3.connect(path)
-    cur = connection.cursor()
-    return connection, cur
 
 
 class Charts:
@@ -23,30 +13,6 @@ class Charts:
             for _intipa in dict_all_rhymed_intipa_pat.items()
         }
         return dict_rhymed_items_pat
-
-    @classmethod
-    def db_make_dict_rhymed_items_pat(cls, dict_all_rhymed_intipa_pat):
-        connection, cur = open_db()
-        db_dict_rhymed_items_pat = []
-        for item in dict_all_rhymed_intipa_pat.items():
-            data_on_word = cur.execute(
-                "select word, pos from wiki where intipa='{}'".format(item[0])
-            ).fetchall()
-            db_dict_rhymed_items_pat.append((data_on_word, item[1]))
-        connection.close()
-        return db_dict_rhymed_items_pat
-
-    @classmethod
-    def get_list_of_lists_word_pat_score_pos(cls, dict_rhymed_items_pat):
-        list_of_lists_word_pat_score_pos = []
-        for item in dict_rhymed_items_pat.items():
-            pat_score = Score.count_score_pat(item[1])
-            pat = item[1]
-            for it in item[0]:
-                list_of_lists_word_pat_score_pos.append(
-                    [it.word, pat, pat_score, it.pos]
-                )
-        return list_of_lists_word_pat_score_pos
 
     @classmethod
     def chart_table_word_pat_score(cls, dict_rhymed_items_pat):
@@ -78,3 +44,15 @@ class Charts:
         )
 
         return table_word_pat_score
+
+    @classmethod
+    def get_list_of_lists_word_pat_score_pos(cls, dict_rhymed_items_pat):
+        list_of_lists_word_pat_score_pos = []
+        for item in dict_rhymed_items_pat.items():
+            pat_score = Score.count_score_pat(item[1])
+            pat = item[1]
+            for it in item[0]:
+                list_of_lists_word_pat_score_pos.append(
+                    [it.word, pat, pat_score, it.pos]
+                )
+        return list_of_lists_word_pat_score_pos
