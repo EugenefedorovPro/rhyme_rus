@@ -1,16 +1,15 @@
 from functools import lru_cache
 from ipapy import UNICODE_TO_IPA
 from ipapy.ipastring import IPAString
-
-# from wiktionary_rus.wiktionary import wiki_instances
 import dill
+from pathlib import Path
 
 
 class IpaProcessing:
     @classmethod
     @lru_cache
     def get_list_unique_unicodes(cls):
-        path = "rhyme_rus//data//list_unique_unicodes.pkl"
+        path = Path(__file__).parent.parent / "data//list_unique_unicodes.pkl"
         with open(path, "rb") as f:
             list_unique_unicodes = dill.load(f)
         list_unique_unicodes.sort()
