@@ -5,8 +5,8 @@ from rhyme_rus.utils.dictionary_processing import DictionaryProcessing
 
 def test_get_dict_word_accent():
     dict_word_accent = DictionaryProcessing.get_dict_word_accent()
-    stressed_word = "по'чва"
-    assert dict_word_accent["почва"] == stressed_word
+    stressed_word = ("замо'к", "за'мок")
+    assert dict_word_accent["замок"] == stressed_word
 
 
 def test_get_unique_of_all_int_from_dict():
