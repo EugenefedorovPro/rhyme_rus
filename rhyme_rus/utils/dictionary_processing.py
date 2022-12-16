@@ -8,7 +8,7 @@ class DictionaryProcessing:
     @lru_cache
     def get_dict_word_accent(cls):
         path_dict_word_accent = (
-            Path(__file__).parent.parent / "data//wiki_short_class.pkl"
+            Path(__file__).parent.parent / "data//dict_word_accent.pkl"
         )
         with open(path_dict_word_accent, "rb") as f:
             dict_word_accent = dill.load(f)

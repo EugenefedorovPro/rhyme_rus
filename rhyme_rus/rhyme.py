@@ -142,24 +142,3 @@ def rhyme_to_table(
     table_word_pat_score = Charts.chart_table_word_pat_score(dict_rhymed_items_pat)
 
     return table_word_pat_score
-
-
-def rhyme_to_list(
-    word_with_stress,
-    max_length_pat_of_ipa=6,
-    list_score_numbers=range(0, 45, 5),
-    max_number_hard_sounds_in_one_pat=1,
-):
-
-    dict_rhymed_items_pat = rhyme_till_dict(
-        word_with_stress,
-        max_length_pat_of_ipa,
-        list_score_numbers,
-        max_number_hard_sounds_in_one_pat,
-    )
-
-    list_of_lists_word_pat_score_pos = Charts.get_list_of_lists_word_pat_score_pos(
-        dict_rhymed_items_pat
-    )
-
-    return list_of_lists_word_pat_score_pos
