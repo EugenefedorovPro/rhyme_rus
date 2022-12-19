@@ -13,3 +13,5 @@ draft_test.ipynb
 __pycache__
 draft.ipynb
 rhyme_rus/utils/__pycache__/
+draft.py
+sqlite3.exe
