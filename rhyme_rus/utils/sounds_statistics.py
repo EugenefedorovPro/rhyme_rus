@@ -32,8 +32,10 @@ class SoundsStatistics:
     ):
         items_by_n_vowels_after_stress = [
             (item.word, item.sounds)
-            for i, item in enumerate(wiki_instances)
+            for item in wiki_instances
             if item.ipa
+            and item.word
+            and item.sounds
             and len(item.ipa.vowels) == n_vowels_after_stress
             and len(item.ipa) == n_sounds_after_stress
         ]
