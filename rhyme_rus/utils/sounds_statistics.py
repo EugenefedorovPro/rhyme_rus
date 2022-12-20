@@ -31,7 +31,7 @@ class SoundsStatistics:
         random_choice=True,
     ):
         items_by_n_vowels_after_stress = [
-            (item.word, item.sounds)
+            (item.accent, item.sounds)
             for item in wiki_instances
             if item.ipa
             and item.word
