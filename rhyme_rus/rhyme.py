@@ -9,11 +9,8 @@ from rhyme_rus.utils.ipa_processing import IpaProcessing
 from rhyme_rus.utils.patterns import Patterns
 from rhyme_rus.utils.rhymeflow import RhymeFlow
 from rhyme_rus.utils.score import Score
-from rhyme_rus.utils.nn_usage import NnUsage
 import pandas as pd
-from word2ipa_rus.word2ipa import word2ipa
-import dill
-from pathlib import Path
+
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.max_columns", None)
@@ -28,8 +25,22 @@ def stress_word_by_wiki(word_without_stress):
 
 
 def stress_word_by_nn(word_without_stress):
+    from rhyme_rus.utils.nn_usage import NnUsage
+
+    print("stress got by nn")
     word_with_stress = NnUsage.accentuate(word_without_stress)
     return word_with_stress
+
+
+def get_ipa_short_int_from_nn(word_with_stress):
+    from word2ipa_rus.word2ipa import word2ipa
+    from rhyme_rus.utils.nn_usage import NnUsage
+
+    print("ipa got by nn")
+    word_as_uni = word2ipa(word_with_stress)
+    word_ipa_shortened = NnUsage.get_ipa_shortened(word_as_uni)
+    ipa_short_int = IpaProcessing.uni_string_to_int(str(word_ipa_shortened))
+    return ipa_short_int
 
 
 def rhyme_till_dict(
@@ -38,9 +49,12 @@ def rhyme_till_dict(
     list_score_numbers=range(0, 45, 5),
     max_number_hard_sounds_in_one_pat=1,
 ):
-    word_as_uni = word2ipa(word_with_stress)
-    word_ipa_shortened = NnUsage.get_ipa_shortened(word_as_uni)
-    ipa_short_int = IpaProcessing.uni_string_to_int(str(word_ipa_shortened))
+    try:
+        ipa_short_int = DictionaryProcessing.get_ipa_short_int_from_wiki(
+            word_with_stress
+        )
+    except KeyError:
+        ipa_short_int = get_ipa_short_int_from_nn(word_with_stress)
 
     pat_of_ipa = Patterns.take_pat_of_ipa(ipa_short_int)
 
