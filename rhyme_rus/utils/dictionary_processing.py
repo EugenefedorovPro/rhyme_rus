@@ -29,3 +29,12 @@ class DictionaryProcessing:
         with open(path, "rb") as f:
             dict_of_int_from_ipa = dill.load(f)
         return dict_of_int_from_ipa
+
+    @classmethod
+    @lru_cache
+    def get_ipa_short_int_from_wiki(cls, word_with_stress):
+        path = Path(__file__).parent.parent / "data//dict_accent_int.pkl"
+        with open(path, "rb") as f:
+            dict_accent_int = dill.load(f)
+            ipa_short_int = dict_accent_int[word_with_stress]
+        return ipa_short_int
