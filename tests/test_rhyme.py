@@ -1,6 +1,6 @@
 from pathlib import Path
 import dill
-from rhyme_rus.rhyme import rhyme_till_dict, rhyme_to_table
+from rhyme_rus.rhyme.rhyme import rhyme_till_dict, rhyme_to_table
 
 
 def test_rhyme_till_dict():
