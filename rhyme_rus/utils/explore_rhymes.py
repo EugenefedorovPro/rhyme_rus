@@ -16,7 +16,8 @@ class ExploreRhymes:
     @classmethod
     def find_rhymes_by_pattern(cls, pattern, table_word_pat_score):
         rhymes_by_pattern = table_word_pat_score[
-            table_word_pat_score["patterns"].apply(lambda x: tuple(x)) == tuple(pattern)
+            table_word_pat_score["patterns"].apply(
+                lambda x: tuple(x)) == tuple(pattern)
         ]
         return rhymes_by_pattern
 

@@ -1,5 +1,4 @@
 from pathlib import Path
-import dill
 from rhyme_rus.utils.dictionary_processing import DictionaryProcessing
 
 
