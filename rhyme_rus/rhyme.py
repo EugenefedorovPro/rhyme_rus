@@ -1,5 +1,5 @@
 import os
-from numba import jit
+
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 # from wiktionary_rus.wiktionary import find_item_from_wiki
@@ -139,26 +139,8 @@ def rhyme_till_dict(
     )
     return dict_rhymed_items_pat
 
+
 def rhyme_to_table(
-    word_with_stress,
-    max_length_pat_of_ipa=6,
-    list_score_numbers=range(0, 45, 5),
-    max_number_hard_sounds_in_one_pat=1,
-):
-
-    dict_rhymed_items_pat = rhyme_till_dict(
-        word_with_stress,
-        max_length_pat_of_ipa,
-        list_score_numbers,
-        max_number_hard_sounds_in_one_pat,
-    )
-    table_word_pat_score = Charts.chart_table_word_pat_score(dict_rhymed_items_pat)
-
-    return table_word_pat_score
-
-
-@jit
-def rhyme_to_table_with_jit(
     word_with_stress,
     max_length_pat_of_ipa=6,
     list_score_numbers=range(0, 45, 5),
