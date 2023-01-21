@@ -5,3 +5,5 @@ pandas==1.4.3
 put-stress-rus @ git+https://github.com/EugenefedorovPro/put_stress_rus.git
 word2ipa-rus @ git+https://github.com/EugenefedorovPro/word2ipa_rus.git
 multiprocess==0.70.14
+mysql-connector-python
+

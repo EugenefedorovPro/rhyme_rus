@@ -1,9 +1,9 @@
 version: '3.4'
 services:
   db:
-    container_name: "rhyme_db"
+    container_name: rhyme_db
     image: mysql:8.0.31
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --max_allowed_packet=2147483648
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: sql_1980
@@ -12,15 +12,17 @@ services:
       MYSQL_DATABASE: rhymes
     volumes:
       - ./docker/mysql:/var/lib/mysql
-    ports: 
-      - "3307:3306"
+    ports:
+      - "3306:3306"
   rhyme_rus_app:
     links:
       - "db"
     build:
       context: ./docker/python
+    ports:
+      - "8889:8888"
     volumes:
       - .:/home/eugene
     container_name: rhyme_rus_app
-    ports:
-      - "8888:8888"
+    depends_on:
+      - db

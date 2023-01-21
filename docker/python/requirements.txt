@@ -1,4 +1,4 @@
-dill
+mysql-connector-python<=8.0.32
 ipapy @ git+https://github.com/EugenefedorovPro/ipapy_eugene.git@1cb62fa932b0ba0dc530bde5e6469a8e70b2c820
 numpy==1.23.1
 pandas==1.4.3
