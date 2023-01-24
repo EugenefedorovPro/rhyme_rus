@@ -1,55 +1,62 @@
 from abc import ABC, abstractmethod
 from rhyme_rus.seeds.mysql_connect import MySql
 
-class IFetchStress(ABC):
+class AFetchStress(ABC):
+    def __init__(self, unstressed_word: str):
+        self.unstressed_word = unstressed_word
     @abstractmethod
     def fetch_stress(self):
         pass
 
-class FetchStressFromDb(IFetchStress):
-    def __init__(self, unstressed_word):
-        self.unstressed_word = unstressed_word
+class FetchStressFromDb(AFetchStress):
 
-    def fetch_stress(self):
+    def fetch_stress(self) -> list[str]:
         _query = f"select accent from wiki_pickled where word = '{self.unstressed_word}'"
         _msql = MySql()
-        stressed_word = _msql.cur_execute(_query)
-        return stressed_word
-
-
-class FetchStressFromNn(IFetchStress):
-    def __init__(self, unstressed_word: str):
-        self.unstressed_word = unstressed_word
-
-    def fetch_stress(self) -> str:
-        from put_stress_rus.put_stress import put_stress
-        return put_stress(self.unstressed_word)
-
-
-def produce_all_stresses(unstressed_word: str) -> list[tuple]:
-    vowels: list = ["а", "и", "е", "ё", "о", "у", "ы", "э", "ю", "я"]
-    all_stresses: list[tuple] = [tuple((f"{unstressed_word[:i+1]}'{unstressed_word[i+1:]}",)) for i, char in enumerate(unstressed_word) if char in vowels]
-    return all_stresses
-
-def put_nn_word_first(nn_word: str, all_stressed: list[tuple]) -> list[tuple]:
-    nn_word_tuple: tuple = tuple((nn_word,))
-    all_stressed.remove(nn_word_tuple)
-    all_stressed.insert(0, nn_word_tuple)
-    return all_stressed
-
-def fetch_stress(unstressed_word: str):
-    db = FetchStressFromDb(unstressed_word)
-    stressed_words = db.fetch_stress()
-    if stressed_words:
-        print("database returned stressed_word")
+        stressed_words = _msql.cur_execute(_query)
+        stressed_words = [word[0] for word in stressed_words]
         return stressed_words
-    else:
-        nn = FetchStressFromNn(unstressed_word)
-        stressed_word: str = nn.fetch_stress()
-        print(f"neural network returned {stressed_word}")
-        all_stresses = produce_all_stresses(unstressed_word)
-        all_stresses = put_nn_word_first(stressed_word, all_stresses)
+
+
+
+class FetchStressFromNn(AFetchStress):
+
+    # produces a list of all possible variants of stressed and inserts
+    # the word stressed by neural network on the first place
+    @staticmethod
+    def produce_all_stresses(unstressed_word: str, stressed_word: list[str]) -> list[str]:
+        vowels: list = ["а", "и", "е", "ё", "о", "у", "ы", "э", "ю", "я"]
+        stressed_word: str = stressed_word[0]
+        all_stresses: list = []
+        for i, char in enumerate(unstressed_word):
+            if char in vowels:
+                _stressed_word = f"{unstressed_word[:i+1]}'{unstressed_word[i+1:]}"
+                all_stresses.append(_stressed_word)
+        all_stresses.remove(stressed_word)
+        all_stresses.insert(0, stressed_word)
         return all_stresses
+
+    def fetch_stress(self) -> list[str]:
+        from put_stress_rus.put_stress import put_stress
+        stressed_word = put_stress(self.unstressed_word)
+        stressed_word = list((stressed_word,))
+        print(f"neural network returned {stressed_word}")
+        all_stresses = FetchStressFromNn.produce_all_stresses(self.unstressed_word, stressed_word)
+        return all_stresses
+
+
+class FactoryStress:
+    @classmethod
+    def fetch_stress(cls, unstressed_word: str) -> list[str]:
+        db = FetchStressFromDb(unstressed_word)
+        all_stresses = db.fetch_stress()
+        if all_stresses:
+            print(f"database returned {all_stresses}")
+            return all_stresses
+        else:
+            nn = FetchStressFromNn(unstressed_word)
+            all_stresses: list[str] = nn.fetch_stress()
+            return all_stresses
 
 
 
