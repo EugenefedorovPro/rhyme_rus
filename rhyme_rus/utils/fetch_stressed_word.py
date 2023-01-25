@@ -24,7 +24,7 @@ class FetchStressFromNn(AFetchStress):
     # produces a list of all possible variants of stressed and inserts
     # the word stressed by neural network on the first place
     @staticmethod
-    def produce_all_stresses(unstressed_word: str, stressed_word: list[str]) -> list[str]:
+    def __produce_all_stresses(unstressed_word: str, stressed_word: list[str]) -> list[str]:
         vowels: list = ["а", "и", "е", "ё", "о", "у", "ы", "э", "ю", "я"]
         stressed_word: str = stressed_word[0]
         all_stresses: list = []
@@ -37,11 +37,15 @@ class FetchStressFromNn(AFetchStress):
         return all_stresses
 
     def fetch_stress(self) -> list[str]:
+        # supress tf info, warnings, errors
+        import os
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
         from put_stress_rus.put_stress import put_stress
+
         stressed_word = put_stress(self.unstressed_word)
         stressed_word = list((stressed_word,))
         print(f"neural network returned {stressed_word}")
-        all_stresses = FetchStressFromNn.produce_all_stresses(self.unstressed_word, stressed_word)
+        all_stresses = FetchStressFromNn.__produce_all_stresses(self.unstressed_word, stressed_word)
         return all_stresses
 
 
