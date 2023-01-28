@@ -147,7 +147,7 @@ class IpaTypes:
 
     @classmethod
     def convert_chars_to_n(cls, dict_ipa):
-        sign2number = IpaProcessing.get_sign2number()
+        sign2number = IpaProcessing.__get_sign2number()
         n_ipa = {}
         for item in dict_ipa.items():
             key = sign2number[item[0]]
@@ -180,7 +180,7 @@ class IpaTypes:
     @classmethod
     @lru_cache
     def generate_all_cons_n(cls):
-        sign2number = IpaProcessing.get_sign2number()
+        sign2number = IpaProcessing.__get_sign2number()
         all_chars = IpaProcessing.generate_all_chars()
         all_cons_n = []
         for cons in all_chars.consonants:
@@ -190,7 +190,7 @@ class IpaTypes:
     @classmethod
     @lru_cache
     def generate_all_vowels_n(cls):
-        sign2number = IpaProcessing.get_sign2number()
+        sign2number = IpaProcessing.__get_sign2number()
         all_chars = IpaProcessing.generate_all_chars()
         all_vowels_n = []
         for vowel in all_chars.vowels:

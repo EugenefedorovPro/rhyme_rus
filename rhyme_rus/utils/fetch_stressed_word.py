@@ -1,22 +1,24 @@
 from abc import ABC, abstractmethod
 from rhyme_rus.seeds.mysql_connect import MySql
 
+
 class AFetchStress(ABC):
     def __init__(self, unstressed_word: str):
         self.unstressed_word = unstressed_word
+
     @abstractmethod
     def fetch_stress(self):
         pass
 
-class FetchStressFromDb(AFetchStress):
 
+class FetchStressFromDb(AFetchStress):
     def fetch_stress(self) -> list[str]:
         _query = f"select accent from wiki_pickled where word = '{self.unstressed_word}'"
         _msql = MySql()
         stressed_words = _msql.cur_execute(_query)
+        stressed_words = list(set(stressed_words))
         stressed_words = [word[0] for word in stressed_words]
         return stressed_words
-
 
 
 class FetchStressFromNn(AFetchStress):
@@ -30,7 +32,7 @@ class FetchStressFromNn(AFetchStress):
         all_stresses: list = []
         for i, char in enumerate(unstressed_word):
             if char in vowels:
-                _stressed_word = f"{unstressed_word[:i+1]}'{unstressed_word[i+1:]}"
+                _stressed_word = f"{unstressed_word[:i + 1]}'{unstressed_word[i + 1:]}"
                 all_stresses.append(_stressed_word)
         all_stresses.remove(stressed_word)
         all_stresses.insert(0, stressed_word)
@@ -61,7 +63,3 @@ class FactoryStress:
             nn = FetchStressFromNn(unstressed_word)
             all_stresses: list[str] = nn.fetch_stress()
             return all_stresses
-
-
-
-

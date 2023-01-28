@@ -11,17 +11,17 @@ def test_get_list_unique_unicodes():
 
 
 def test_get_sign2number():
-    path = Path(__file__).parent / "test_ipa_processing" / "get_sign2number.json"
+    path = Path(__file__).parent / "test_ipa_processing" / "__get_sign2number.json"
     with open(path, "r") as f:
         sign2number = json.load(f)
-    assert sign2number == str(IpaProcessing.get_sign2number())
+    assert sign2number == str(IpaProcessing.__get_sign2number())
 
 
 def test_get_number2sign():
-    path = Path(__file__).parent / "test_ipa_processing" / "get_number2sign.json"
+    path = Path(__file__).parent / "test_ipa_processing" / "__get_number2sign.json"
     with open(path, "r") as f:
         number2sign = json.load(f)
-    assert number2sign == str(IpaProcessing.get_number2sign())
+    assert number2sign == str(IpaProcessing.__get_number2sign())
 
 
 def test_get_max_length_of_ipa():
