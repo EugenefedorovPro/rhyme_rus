@@ -1,0 +1,165 @@
+[Scia Reto](https://sciareto.org) mind map   
+> __version__=`1.1`
+---
+
+# Rhyme 
+
+## Decorator 
+> leftSide=`true`
+
+
+### word = Word\(unstressed\_word\)
+
+### word = Procedure\(\)\.get\_stressed\_wordf\(word\)
+
+### \(option\) word\.stresssed\_word = str
+> leftSide=`true`
+
+
+### word = Procedure\(\)\.get\_inipa\(word\)
+
+## class Word
+> leftSide=`true`
+
+
+### unstressed\_word
+
+### all\_stresses to choose from
+
+### stressed\_word
+
+### stressed\_vowel
+> leftSide=`true`
+
+
+### sounds
+
+### intipa
+
+### rhymes as intipa: list\[list\[int\], \.\.\.\]
+
+### rhymes as stressed\_words: list\[str, \.\.\.\]
+
+## class Rhyme
+> leftSide=`true`
+
+
+### rhyme as stressed\_word
+
+### pattern
+
+### score
+
+### pos
+
+## class Procedure
+
+### class StressedWord
+
+#### fetch from db
+
+#### ask client
+
+### class IntIpa
+
+#### fetch from db
+
+#### stressed\_word
+
+##### NN to sounds
+
+###### sounds to ipa
+
+####### ipa shorten
+
+######## int
+
+### class AllScopeRhymes
+
+#### SQL request
+
+##### stressed\_vowel
+
+###### stressed
+
+###### similar
+
+##### number of ints
+
+###### \+ 1
+
+###### \-1
+
+#### stressed words
+
+#### intipa
+
+### class Patterns
+
+#### create table of int correspondences
+
+##### int \- int
+
+##### sound \- sound
+
+#### define correspondences
+
+##### stressed
+
+###### similar
+
+##### strong
+
+###### palatal
+
+##### hard
+
+###### soft
+
+##### single
+
+###### double
+
+##### this
+
+###### any
+
+#### convert integers to sounds
+
+#### convert sounds to letters
+
+#### populate child class Rhymes
+
+### class Score
+
+#### table of scores
+
+### class Table
+
+#### rhymes
+
+#### patterns
+
+#### pos
+
+#### score
+
+## Seeds
+
+### ipa
+
+#### sign2number
+
+#### number2sign
+
+#### unique unicode
+
+#### list of numbers to signs
+
+### db
+
+#### connect, cur
+
+#### execute
+
+#### executemany

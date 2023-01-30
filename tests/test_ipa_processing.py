@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from rhyme_rus.utils.ipa_processing import IpaProcessing
+from rhyme_rus.utils.intipa import IpaProcessing
 
 
 def test_get_list_unique_unicodes():
