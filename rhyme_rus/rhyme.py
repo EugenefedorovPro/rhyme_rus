@@ -1,13 +1,10 @@
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.procedure import Procedure
 
-word = Word("конь")
-word = Procedure().get_all_stresses(word)
-word = Procedure().get_stressed_word(word)
-word = Procedure().get_intipa(word)
-word = Procedure().get_all_scope_rhymes(word)
+word = Word("пушкинд")
+word.stressed_word = "пу'шкинд"
+word = Procedure(word).build()
 
-print("___________________________")
 print("word.unstressed_word", word.unstressed_word)
 print("word.all_stresses", word.all_stresses)
 print("word.stressed_word", word.stressed_word)

@@ -46,7 +46,6 @@ class FetchStressFromNn(AFetchStress):
 
         stressed_word = put_stress(self.unstressed_word)
         stressed_word = list((stressed_word,))
-        print(f"neural network returned {stressed_word}")
         all_stresses = FetchStressFromNn.__produce_all_stresses(self.unstressed_word, stressed_word)
         return all_stresses
 
@@ -57,7 +56,6 @@ class FactoryStress:
         db = FetchStressFromDb(unstressed_word)
         all_stresses = db.fetch_stress()
         if all_stresses:
-            print(f"database returned {all_stresses}")
             return all_stresses
         else:
             nn = FetchStressFromNn(unstressed_word)

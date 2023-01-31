@@ -87,9 +87,7 @@ class FactoryIntipa:
     def fetch_intipa(cls, stressed_word):
         intipa = FetchIntipaFromDb(stressed_word).fetch_intipa()
         if intipa:
-            print(f"intipa {intipa} fetched from db")
             return intipa
         else:
             intipa = FetchIntipaFromNn(stressed_word).fetch_intipa()
-            print(f"intipa {intipa} fetched from neural network")
             return intipa
