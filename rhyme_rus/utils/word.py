@@ -4,4 +4,5 @@ class Word:
         self.all_stresses: list[str] = []
         self.stressed_word: str = ''
         self.intipa: list[int] = []
-        self.all_scope_rhymes: list[str] = []
+        self.all_scope_rhymes_str: list[str] = []
+        self.all_scope_rhyme_int: list[int] = []

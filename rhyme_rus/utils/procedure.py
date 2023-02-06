@@ -24,7 +24,7 @@ class Procedure:
         self.word.intipa = FactoryIntipa().fetch_intipa(self.word.stressed_word)
 
     def __get_all_scope_rhymes(self) -> None:
-        self.word.all_scope_rhymes = AllScopeRhymes(self.word.intipa).get_all_scope_rhymes()
+        self.word.all_scope_rhymes_str = AllScopeRhymes(self.word.intipa).get_all_scope_rhymes()
 
     def build(self):
         self.__get_all_stresses()
