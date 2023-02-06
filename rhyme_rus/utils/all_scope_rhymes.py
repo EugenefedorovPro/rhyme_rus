@@ -11,7 +11,7 @@ class AllScopeRhymes:
         self.__get_length_after_stress()
 
     def __get_stressed_vowel(self) -> None:
-        self.stressed_vowel = self.intipa[0] if self.intipa[0] in IpaDicts().number_vowels else self.intipa[1]
+        self.stressed_vowel = self.intipa[0] if self.intipa[0] in IpaDicts().numbers_vowels else self.intipa[1]
         return None
 
     def __get_length_after_stress(self) -> None:
