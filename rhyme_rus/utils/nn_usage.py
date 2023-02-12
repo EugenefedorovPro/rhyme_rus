@@ -10,8 +10,8 @@ class NnUsage:
         return word_with_stress
 
     @classmethod
-    # func to shorten ipa by scheme: one consonant before stressed vowel (if available)
-    # stressed vowel + the rest of characters to the end of word
+    # func to shorten_rhyme ipa by scheme: one consonant before stressed vowel (if available)
+    # stressed vowel + the rest of characters to the end of intipa
     # e.g. ipa ʂɨpʲɪˈlʲævʲɪtʲ shorened to lʲævʲɪtʲ
     def get_ipa_shortened(cls, trans_uni):
         stress_as_uni = "ˈ"
@@ -24,17 +24,17 @@ class NnUsage:
         def shorten_word_without_stress(trans_ipa):
             # first vowel or first single consonant
             if "vowel" in trans_ipa[0].name or (
-                "consonant" in trans_ipa[0].name and "vowel" in trans_ipa[1].name
+                    "consonant" in trans_ipa[0].name and "vowel" in trans_ipa[1].name
             ):
                 ipa_short = trans_ipa
             # more than one initial consonants
             else:
                 first_vowel = trans_ipa.vowels[0]
                 index_of_first_vowel = trans_ipa.index(first_vowel)
-                ipa_short = trans_ipa[index_of_first_vowel - 1 :]
+                ipa_short = trans_ipa[index_of_first_vowel - 1:]
 
                 if ipa_short[0] == palat_ipa:
-                    ipa_short = trans_ipa[index_of_first_vowel - 2 :]
+                    ipa_short = trans_ipa[index_of_first_vowel - 2:]
             return ipa_short
 
         def shorten_all_variants(trans_ipa):

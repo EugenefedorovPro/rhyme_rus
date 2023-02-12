@@ -62,8 +62,8 @@ class FetchIntipaFromNn(AIntIpa):
         self.ipa: ipapy.ipastring = IPAString(unicode_string=self.trans_uni)
         return None
 
-    # func to shorten ipa by scheme: one consonant before stressed vowel (if available)
-    # stressed vowel + the rest of characters to the end of word
+    # func to shorten_rhyme ipa by scheme: one consonant before stressed vowel (if available)
+    # stressed vowel + the rest of characters to the end of intipa
     # e.g. ipa ʂɨpʲɪˈlʲævʲɪtʲ shorened to lʲævʲɪtʲ
     def __shorten_ipa(self) -> None:
         stress_index: int = self.ipa.index(IpaDicts().stress_ipa)

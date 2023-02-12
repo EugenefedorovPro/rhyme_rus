@@ -30,7 +30,7 @@ class Score:
                 rhyme_score.append(score)
             except KeyError:
                 # no_sound in patterns = 0 in scores
-                # no_sound occurs when a rhymed word does not have a previous consonant
+                # no_sound occurs when a rhymed intipa does not have a previous consonant
                 # like in words дом - ом
                 if _int_rhyme == -1:
                     rhyme_score.append(0)
@@ -50,5 +50,3 @@ class Score:
                 list_rhyme_intipa.append(rhyme_intipa)
                 all_rhymes_scores[rhyme_score] = list_rhyme_intipa
         return all_rhymes_scores
-
-

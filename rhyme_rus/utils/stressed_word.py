@@ -24,7 +24,7 @@ class FetchStressFromDb(AFetchStress):
 class FetchStressFromNn(AFetchStress):
 
     # produces a list of all possible variants of stressed and inserts
-    # the word stressed by neural network on the first place
+    # the intipa stressed by neural network on the first place
     @staticmethod
     def __produce_all_stresses(unstressed_word: str, stressed_word: list[str]) -> list[str]:
         vowels: list = ["а", "и", "е", "ё", "о", "у", "ы", "э", "ю", "я"]
