@@ -3,10 +3,11 @@ from rhyme_rus.utils.intipa import FactoryIntipa
 from rhyme_rus.utils.all_scope_rhymes import MetaAllScopeRhymes
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.exceptions import MultipleStresses
-from rhyme_rus.utils.pattern_score import PatternScore
 from rhyme_rus.utils.range_rhymes import RangeRhymes
 from rhyme_rus.utils.pat_word_rhyme import AllPadWordRhyme
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
+from rhyme_rus.utils.pattern import Pattern
+from rhyme_rus.utils.score import Score
 
 
 class Procedure:
@@ -48,14 +49,18 @@ class Procedure:
     def __get_all_scope_pads_list(self) -> None:
         self.word.all_scope_pads_list = [list(item) for item in self.word.all_scope_pads_dict.keys()]
 
-    def __get_all_rhyme_patterns(self) -> None:
-        self.word.all_rhymes_patterns = PatternScore(self.word.intipa, self.word.all_scope_pads_list).get_patterns()
+    def __get_all_rhyme_patterns_dict(self) -> None:
+        self.word.all_rhymes_patterns_dict = Pattern(self.word.intipa,
+                                                     self.word.all_scope_pads_list).get_all_rhymes_patterns()
 
-    def __get_all_rhyme_scores(self) -> None:
-        self.word.all_rhymes_scores = PatternScore(self.word.intipa, self.word.all_scope_rhymes_intipa).get_scores()
+    def __get_all_rhyme_patterns_list(self):
+        self.word.all_rhymes_patterns_list = [key for key in self.word.all_rhymes_patterns_dict.keys()]
+
+    def __get_all_rhyme_scores_dict(self) -> None:
+        self.word.all_rhymes_scores_dict = Score(self.word.all_rhymes_patterns_list).get_all_rhymes_scores_dict()
 
     def __get_sum_scores(self) -> None:
-        self.word.sum_scores = RangeRhymes(self.word.all_rhymes_scores).get_sum_scores()
+        self.word.sum_scores = RangeRhymes(self.word.all_rhymes_scores_dict).get_sum_scores()
 
     def build(self):
         self.__get_all_stresses()
@@ -66,7 +71,8 @@ class Procedure:
         self.__get_all_scope_rhymes_intipa()
         self.__get_all_scope_pads_dict()
         self.__get_all_scope_pads_list()
-        self.__get_all_rhyme_patterns()
-        # self.__get_all_rhyme_scores()
-        # self.__get_sum_scores()
+        self.__get_all_rhyme_patterns_dict()
+        self.__get_all_rhyme_patterns_list()
+        self.__get_all_rhyme_scores_dict()
+        self.__get_sum_scores()
         return self.word

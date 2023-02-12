@@ -9,6 +9,7 @@ class Word:
         self.all_scope_rhymes_intipa: list[tuple[int]] = []
         self.all_scope_pads_dict: dict[tuple[int], list[int]] = {}
         self.all_scope_pads_list: list[list[int]] = []
-        self.all_rhymes_patterns: dict[tuple[str], list[tuple[int]]] = {}
-        self.all_rhymes_scores: dict[tuple[int], list[tuple[int]]] = {}
-        self.sum_scores = {}
+        self.all_rhymes_patterns_dict: dict[tuple[str], list[tuple[int]]] = {}
+        self.all_rhymes_patterns_list: list[tuple[int]] = []
+        self.all_rhymes_scores_dict: dict[tuple[int], tuple[str]] = {}
+        self.sum_scores: dict[int, tuple[str]] = {}

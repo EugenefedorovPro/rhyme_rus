@@ -1,7 +1,7 @@
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.procedure import Procedure
 
-word = Word("дом")
+word = Word("отчествами")
 word = Procedure(word).build()
 
 print("intipa.unstressed_word", word.unstressed_word)
@@ -19,21 +19,25 @@ for i, item in enumerate(word.all_scope_pads_dict.items()):
     if i in [0, 100, 200]:
         print("pads", item)
 # print("all_scope_rhymes_intipa len", len(intipa.all_scope_rhymes_intipa))
-# print("patterns len", len(word.all_rhymes_patterns))
+# print("patterns len", len(word.all_rhymes_patterns_dict))
 print("word.all_scope_pads_list", word.all_scope_pads_list[:10])
-for i, item in enumerate(word.all_rhymes_patterns.items()):
+for i, item in enumerate(word.all_rhymes_patterns_dict.items()):
     if i in [0, 10, 70]:
         print(item)
 
-print("patterns", len(word.all_rhymes_patterns))
-for i, item in enumerate(word.all_rhymes_patterns.items()):
+print("patterns", len(word.all_rhymes_patterns_dict))
+for i, item in enumerate(word.all_rhymes_patterns_dict.items()):
     if i in [0, 10, 20]:
         print(item)
 
-# print("scores len", len(intipa.all_rhymes_scores))
-# print("scores", intipa.all_rhymes_scores)
+print("word.all_rhymes_patterns_list", len(word.all_rhymes_patterns_list))
+print("word.all_rhymes_patterns_list", word.all_rhymes_patterns_list[:3])
+
+print("word.all_rhymes_score_dict", word.all_rhymes_scores_dict)
 #
-# print("intipa.sum_scores", intipa.sum_scores)
+print("intipa.sum_scores", len(word.sum_scores))
+for item in word.sum_scores.items():
+    print(item)
 # print("intipa.sum_scores keys", intipa.sum_scores.keys())
 #
 # lens_values = []
