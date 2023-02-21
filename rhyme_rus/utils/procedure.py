@@ -8,6 +8,7 @@ from rhyme_rus.utils.pat_word_rhyme import AllPadWordRhyme
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.pattern import Pattern
 from rhyme_rus.utils.score import Score
+from rhyme_rus.utils.reverse import Reverse
 
 
 class Procedure:
@@ -29,9 +30,9 @@ class Procedure:
         self.word.intipa = FactoryIntipa().fetch_intipa(self.word.stressed_word)
 
     def __get_stressed_vowel(self) -> None:
-        for intipa in self.word.intipa[:2]:
-            if intipa in IpaDicts().all_stressed_vowels:
-                self.word.stressed_vowel = intipa
+        for int_ipa in self.word.intipa[:2]:
+            if int_ipa in IpaDicts().all_stressed_vowels:
+                self.word.stressed_vowel = int_ipa
 
     def __get_all_scope_rhymes_dict(self) -> None:
         self.word.all_scope_rhymes_dict = MetaAllScopeRhymes(self.word.intipa).get_all_scope_rhymes_dict()
@@ -62,6 +63,13 @@ class Procedure:
     def __get_sum_scores(self) -> None:
         self.word.sum_scores = RangeRhymes(self.word.all_rhymes_scores_dict).get_sum_scores()
 
+    def __get_reverse(self) -> None:
+        self.word.score_rhymes = Reverse(
+            self.word.sum_scores,
+            self.word.all_rhymes_patterns_dict,
+            self.word.all_scope_pads_dict,
+            self.word.all_scope_rhymes_dict).reverse()
+
     def build(self):
         self.__get_all_stresses()
         self.__get_stressed_word()
@@ -71,8 +79,9 @@ class Procedure:
         self.__get_all_scope_rhymes_intipa()
         self.__get_all_scope_pads_dict()
         self.__get_all_scope_pads_list()
-        self.__get_all_rhyme_patterns_dict()
-        self.__get_all_rhyme_patterns_list()
-        self.__get_all_rhyme_scores_dict()
-        self.__get_sum_scores()
+        # self.__get_all_rhyme_patterns_dict()
+        # self.__get_all_rhyme_patterns_list()
+        # self.__get_all_rhyme_scores_dict()
+        # self.__get_sum_scores()
+        # self.__get_reverse()
         return self.word

@@ -13,3 +13,4 @@ class Word:
         self.all_rhymes_patterns_list: list[tuple[int]] = []
         self.all_rhymes_scores_dict: dict[tuple[int], tuple[str]] = {}
         self.sum_scores: dict[int, tuple[str]] = {}
+        self.score_rhymes: dict[int, set[str]] = {}

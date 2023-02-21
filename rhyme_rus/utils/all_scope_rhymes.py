@@ -18,7 +18,7 @@ class AllScopeRhymes:
         self.intipa: list[int] = intipa
         self.length_after_stress: int = 0
         self.stressed_vowel: int = 0
-        self.range = 2
+        self.range = 1
         self.all_scope_rhymes: list[tuple[str, str]] = []
         self.__get_stressed_vowel()
         self.__get_length_after_stress()
