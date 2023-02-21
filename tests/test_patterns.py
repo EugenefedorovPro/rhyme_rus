@@ -20,26 +20,26 @@ def test_shorten_pat_long_words_to_head_tail():
         pat_of_ipa, max_length_pat_of_ipa=8
     )
     assert [
-        "cons",
-        "stress_v",
-        "cons",
-        "cons",
-        "vowel",
-        "cons",
-        "vowel",
-        "cons",
-    ] == head
+               "cons",
+               "stress_v",
+               "cons",
+               "cons",
+               "vowel",
+               "cons",
+               "vowel",
+               "cons",
+           ] == head
     assert ["vowel", "cons", "vowel", "cons"] == tail
 
 
 def test_convert_tail_to_pattern():
     tail = ["vowel", "cons", "vowel", "cons"]
     assert [
-        "same_v",
-        "same_cons",
-        "same_v",
-        "same_cons",
-    ] == Patterns.convert_tail_to_pattern(tail)
+               "same_v",
+               "same_cons",
+               "same_v",
+               "same_cons",
+           ] == Patterns.convert_tail_to_pattern(tail)
 
 
 def test_add_tail_to_pats():
@@ -107,7 +107,7 @@ def test_condition_all_rhyme_pats():
 
 def test_add_sound_to_rhyme_pats():
     with open(
-        "tests/test_patterns/add_sound_to_rhyme_pats.txt", "r", encoding="UTF-8"
+            "tests/test_patterns/add_sound_to_rhyme_pats.txt", "r", encoding="UTF-8"
     ) as f:
         pats = f.read()
     all_rhyme_pats_1 = [["same_cons", "same_stressed_v"]]

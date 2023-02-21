@@ -181,15 +181,15 @@ class RhymeFlow:
                     if cls.find_indexes_same(indexes_same, ipa_short_int_new, _intipa):
                         continue
                     if cls.find_near_stressed_v(
-                        indexes_near_stressed_v, ipa_short_int_new, _intipa
+                            indexes_near_stressed_v, ipa_short_int_new, _intipa
                     ):
                         continue
                     if cls.find_palatal_cons(
-                        indexes_palatal_cons, ipa_short_int_new, _intipa
+                            indexes_palatal_cons, ipa_short_int_new, _intipa
                     ):
                         continue
                     if cls.find_voice_cons(
-                        indexes_voice_cons, ipa_short_int_new, _intipa
+                            indexes_voice_cons, ipa_short_int_new, _intipa
                     ):
                         continue
                     if cls.find_any_cons(indexes_any_cons, ipa_short_int_new, _intipa):

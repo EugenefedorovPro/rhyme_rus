@@ -48,13 +48,13 @@ def test_find_near_stressed_v():
     _intipa_false = [67, 10, 72, 11]
 
     assert bool(False) == RhymeFlow.find_near_stressed_v(indexes_near_stressed_v_empty,
-                                                        ipa_short_int_new, _intipa_false)
+                                                         ipa_short_int_new, _intipa_false)
 
     assert bool(True) == RhymeFlow.find_near_stressed_v(indexes_near_stressed_v,
                                                         ipa_short_int_new, _intipa_true)
 
     assert bool(False) == RhymeFlow.find_near_stressed_v(indexes_near_stressed_v,
-                                                        ipa_short_int_new, _intipa_false)
+                                                         ipa_short_int_new, _intipa_false)
 
 
 def test_find_palatal_cons():
@@ -69,7 +69,7 @@ def test_find_palatal_cons():
     assert bool(True) == RhymeFlow.find_palatal_cons(indexes_palatal_cons,
                                                      ipa_short_int_new, _intipa_true)
     assert bool(False) == RhymeFlow.find_palatal_cons(indexes_palatal_cons_empty,
-                                                     ipa_short_int_new, _intipa_true)
+                                                      ipa_short_int_new, _intipa_true)
 
 
 def test_find_voice_cons():
@@ -84,7 +84,7 @@ def test_find_voice_cons():
     assert bool(True) == RhymeFlow.find_voice_cons(indexes_voice_cons,
                                                    ipa_short_int_new, _intipa_true)
     assert bool(False) == RhymeFlow.find_voice_cons(indexes_voice_cons_empty,
-                                                   ipa_short_int_new, _intipa_true)
+                                                    ipa_short_int_new, _intipa_true)
 
 
 def test_find_any_cons():
@@ -119,7 +119,7 @@ def test_find_any_v():
     assert bool(True) == RhymeFlow.find_any_v(indexes_any_v,
                                               ipa_short_int_new, _intipa_true)
     assert bool(False) == RhymeFlow.find_any_v(indexes_any_v_empty,
-                                              ipa_short_int_new, _intipa_true)
+                                               ipa_short_int_new, _intipa_true)
 
 
 def test_rhymes_by_pat():

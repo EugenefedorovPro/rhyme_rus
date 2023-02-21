@@ -46,8 +46,8 @@ class Score:
                 score_pat = score_pat + dict_score[p]
 
         score_pat = (
-            score_pat / (max_possible_score * len(pat) + penalties_for_position)
-        ) * 100
+                            score_pat / (max_possible_score * len(pat) + penalties_for_position)
+                    ) * 100
         score_pat = round(Score.round_score(score_pat))
 
         return score_pat
@@ -83,7 +83,7 @@ class Score:
 
     @classmethod
     def reduce_all_rhyme_pats_by_score(
-        cls, all_rhyme_pats, list_score_numbers=range(0, 50, 5)
+            cls, all_rhyme_pats, list_score_numbers=range(0, 50, 5)
     ):
         for pat in all_rhyme_pats:
             for sn in list_score_numbers:

@@ -34,6 +34,13 @@ class Procedure:
             if int_ipa in IpaDicts().all_stressed_vowels:
                 self.word.stressed_vowel = int_ipa
 
+    def __get_index_stressed_v(self) -> None:
+        self.word.index_stressed_v = self.word.intipa.index(self.word.stressed_vowel)
+
+    def __get_near_stressed_v(self):
+        dict_near_stressed = IpaDicts().near_stressed_v_int
+        self.word.near_stressed_v = dict_near_stressed[self.word.stressed_vowel]
+
     def __get_all_scope_rhymes_dict(self) -> None:
         self.word.all_scope_rhymes_dict = MetaAllScopeRhymes(self.word.intipa).get_all_scope_rhymes_dict()
 
@@ -44,7 +51,9 @@ class Procedure:
         self.word.all_scope_pads_dict = AllPadWordRhyme(
             intipa=self.word.intipa,
             all_scope_rhymes_intipa=self.word.all_scope_rhymes_intipa,
-            stressed_vowel=self.word.stressed_vowel
+            stressed_vowel=self.word.stressed_vowel,
+            near_stressed_v=self.word.near_stressed_v,
+            index_stressed_v=self.word.index_stressed_v
         ).get_all_pads_dict()
 
     def __get_all_scope_pads_list(self) -> None:
@@ -75,13 +84,15 @@ class Procedure:
         self.__get_stressed_word()
         self.__get_intipa()
         self.__get_stressed_vowel()
+        self.__get_index_stressed_v()
+        self.__get_near_stressed_v()
         self.__get_all_scope_rhymes_dict()
         self.__get_all_scope_rhymes_intipa()
         self.__get_all_scope_pads_dict()
         self.__get_all_scope_pads_list()
-        # self.__get_all_rhyme_patterns_dict()
-        # self.__get_all_rhyme_patterns_list()
-        # self.__get_all_rhyme_scores_dict()
-        # self.__get_sum_scores()
+        self.__get_all_rhyme_patterns_dict()
+        self.__get_all_rhyme_patterns_list()
+        self.__get_all_rhyme_scores_dict()
+        self.__get_sum_scores()
         # self.__get_reverse()
         return self.word

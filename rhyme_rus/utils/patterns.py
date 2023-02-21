@@ -32,7 +32,7 @@ class Patterns:
 
     @classmethod
     def shorten_ipa_short_int_for_long_words(
-        cls, ipa_short_int, max_length_pat_of_ipa=8
+            cls, ipa_short_int, max_length_pat_of_ipa=8
     ):
         if len(ipa_short_int) > max_length_pat_of_ipa:
             ipa_short_int_for_long_words = ipa_short_int[:max_length_pat_of_ipa]
@@ -121,11 +121,11 @@ class Patterns:
             max_palatal_cons
         ) = max_voice_cons = max_any_v = max_number_hard_sounds_in_one_pat
         if (
-            len([p for p in pat if p == "any_cons"]) <= max_any_cons
-            and len([p for p in pat if p == "no_sound"]) <= max_no_sound
-            and len([p for p in pat if p == "palatal_cons"]) <= max_palatal_cons
-            and len([p for p in pat if p == "voice_cons"]) <= max_voice_cons
-            and len([p for p in pat if p == "any_v"]) <= max_any_v
+                len([p for p in pat if p == "any_cons"]) <= max_any_cons
+                and len([p for p in pat if p == "no_sound"]) <= max_no_sound
+                and len([p for p in pat if p == "palatal_cons"]) <= max_palatal_cons
+                and len([p for p in pat if p == "voice_cons"]) <= max_voice_cons
+                and len([p for p in pat if p == "any_v"]) <= max_any_v
         ):
 
             return True
@@ -134,11 +134,11 @@ class Patterns:
 
     @classmethod
     def condition_all_rhyme_pats(
-        cls, all_rhyme_pats, ipa_short_int, max_number_hard_sounds_in_one_pat=1
+            cls, all_rhyme_pats, ipa_short_int, max_number_hard_sounds_in_one_pat=1
     ):
         for pat in all_rhyme_pats:
             if cls.check_n_mutations(
-                pat, max_number_hard_sounds_in_one_pat
+                    pat, max_number_hard_sounds_in_one_pat
             ) and cls.check_if_voice_palatal(ipa_short_int, pat):
                 yield pat
 
@@ -159,17 +159,17 @@ class Patterns:
     @classmethod
     def check_first_double_cons(cls, pat):
         if pat[0] in (
-            "any_cons",
-            "same_cons",
-            "palatal_cons",
-            "voice_cons",
-            "add_sound",
+                "any_cons",
+                "same_cons",
+                "palatal_cons",
+                "voice_cons",
+                "add_sound",
         ) and pat[1] in (
-            "any_cons",
-            "same_cons",
-            "palatal_cons",
-            "voice_cons",
-            "add_sound",
+                "any_cons",
+                "same_cons",
+                "palatal_cons",
+                "voice_cons",
+                "add_sound",
         ):
             return False
         else:
@@ -180,16 +180,16 @@ class Patterns:
         if len(pat) >= 3:
             pat_added_copy = list(pat).copy()
             if (
-                pat_added_copy[0] == "add_sound"
-                and pat_added_copy[1] == "any_cons"
-                and pat_added_copy[2] == "no_sound"
+                    pat_added_copy[0] == "add_sound"
+                    and pat_added_copy[1] == "any_cons"
+                    and pat_added_copy[2] == "no_sound"
             ):
                 return False
 
             elif (
-                pat_added_copy[0] == "no_sound"
-                and pat_added_copy[1] == "any_cons"
-                and pat_added_copy[2] == "add_sound"
+                    pat_added_copy[0] == "no_sound"
+                    and pat_added_copy[1] == "any_cons"
+                    and pat_added_copy[2] == "add_sound"
             ):
                 return False
 
@@ -204,8 +204,8 @@ class Patterns:
     def condition_add_sound_to_rhyme_pats(cls, all_rhyme_pats):
         for pat in all_rhyme_pats:
             if (
-                cls.check_add_no_sequences(pat)
-                and cls.check_first_double_cons(pat)
-                and cls.check_no_any_add(pat)
+                    cls.check_add_no_sequences(pat)
+                    and cls.check_first_double_cons(pat)
+                    and cls.check_no_any_add(pat)
             ):
                 yield list(pat)

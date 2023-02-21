@@ -20,6 +20,8 @@ class IpaDicts:
         self.all_ipa_consonants: list[ipapy.ipachar] = []
         self.stress_ipa = UNICODE_TO_IPA["ˈ"]
         self.trans_uni: str = ''
+        self.near_stressed_v_ipa: dict[ipapy.ipachar, ipapy.ipachar] = {}
+        self.near_stressed_v_int: dict[int, int] = {}
         self.__get_unique_unicodes()
         self.__get_sign2number()
         self.__get_number2sign()
@@ -29,6 +31,8 @@ class IpaDicts:
         self.__get_all_ipa_vowels()
         self.__get_all_ipa_consonants()
         self.__get_all_stressed_vowels()
+        self.__get_near_stressed_v_ipa()
+        self.__get_near_stressed_v_int()
 
     # func does not work with stress mark
     def int_to_ipa_string(self, numbers: list[int]) -> ipapy.ipastring:
@@ -37,6 +41,27 @@ class IpaDicts:
             ipa_str.append(self.number2sign[i])
         ipa_str = IPAString(ipa_chars=ipa_str)
         return ipa_str
+
+    def __get_near_stressed_v_ipa(self) -> None:
+        self.near_stressed_v_ipa = {
+            UNICODE_TO_IPA["a"]: UNICODE_TO_IPA["æ"],
+            UNICODE_TO_IPA["æ"]: UNICODE_TO_IPA["a"],
+            UNICODE_TO_IPA["ɛ"]: UNICODE_TO_IPA["e"],
+            UNICODE_TO_IPA["e"]: UNICODE_TO_IPA["ɛ"],
+            UNICODE_TO_IPA["i"]: UNICODE_TO_IPA["ɨ"],
+            UNICODE_TO_IPA["ɨ"]: UNICODE_TO_IPA["i"],
+            UNICODE_TO_IPA["o"]: UNICODE_TO_IPA["ɵ"],
+            UNICODE_TO_IPA["ɵ"]: UNICODE_TO_IPA["o"],
+            UNICODE_TO_IPA["u"]: UNICODE_TO_IPA["ʉ"],
+            UNICODE_TO_IPA["ʉ"]: UNICODE_TO_IPA["u"],
+        }
+
+    def __get_near_stressed_v_int(self) -> None:
+        for key in self.near_stressed_v_ipa:
+            key_int = self.sign2number[key]
+            value = self.near_stressed_v_ipa[key]
+            value_int = self.sign2number[value]
+            self.near_stressed_v_int[key_int] = value_int
 
     def __get_all_stressed_vowels(self) -> None:
 
@@ -87,3 +112,8 @@ class IpaDicts:
     # TODO: make test for __IpaDict().all_ipa_consonants
     def __get_all_ipa_consonants(self) -> None:
         self.all_ipa_consonants = [sign for sign in self.sign2number if sign.is_consonant]
+
+
+if __name__ == "__main__":
+    print(len(IpaDicts().all_stressed_vowels))
+    print(len(IpaDicts().near_stressed_v_int))
