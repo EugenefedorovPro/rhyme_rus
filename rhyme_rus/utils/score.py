@@ -1,6 +1,4 @@
-import dill
-from pathlib import Path
-from rhyme_rus.utils.intipa import IpaDicts
+from typing import Union
 
 
 class Score:
@@ -20,17 +18,23 @@ class Score:
                                                "no_sound": 5
                                                }
 
-    def __get_rhyme_score(self, pat: tuple[str]) -> list[int]:
+    def __get_rhyme_score(self, pat: tuple[str]) -> tuple[int]:
         pat_copy: list[str] = list(pat)
         score: list[int] = []
         for p in pat_copy:
             score.append(self.dict_pat_score[p])
-        return score
+        return tuple(score)
 
-    def get_all_rhymes_scores_dict(self) -> dict[tuple[int], tuple[str]]:
-        all_rhyme_scores: dict[tuple[int], tuple[str]] = {}
-        pat: tuple[str]
+    def get_all_rhymes_scores_dict(self) -> dict[tuple[int], list[tuple[str]]]:
+        all_rhyme_scores: dict[tuple[int], list[tuple[str]]] = {}
+        pat: Union[tuple[str], list[tuple[str]]]
         for pat in self.patterns:
-            score: list[int] = self.__get_rhyme_score(pat)
-            all_rhyme_scores[tuple(score)] = pat
+            score: tuple[int] = self.__get_rhyme_score(pat)
+            if score not in all_rhyme_scores:
+                all_rhyme_scores[score] = [pat]
+            else:
+                value = all_rhyme_scores[score]
+                value.append(pat)
+                all_rhyme_scores[score] = value
+
         return all_rhyme_scores

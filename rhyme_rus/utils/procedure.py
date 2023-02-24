@@ -1,3 +1,4 @@
+import pandas as pd
 from rhyme_rus.utils.stressed_word import FactoryStress
 from rhyme_rus.utils.intipa import FactoryIntipa
 from rhyme_rus.utils.all_scope_rhymes import MetaAllScopeRhymes
@@ -9,6 +10,7 @@ from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.pattern import Pattern
 from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.reverse import Reverse
+from rhyme_rus.utils.table import Table
 
 
 class Procedure:
@@ -73,11 +75,15 @@ class Procedure:
         self.word.sum_scores = RangeRhymes(self.word.all_rhymes_scores_dict).get_sum_scores()
 
     def __get_reverse(self) -> None:
-        self.word.score_rhymes = Reverse(
+        self.word.score_patterns_rhymes = Reverse(
             self.word.sum_scores,
             self.word.all_rhymes_patterns_dict,
             self.word.all_scope_pads_dict,
             self.word.all_scope_rhymes_dict).reverse()
+
+    def __get_table(self) -> None:
+        table_dict = Table(self.word.score_patterns_rhymes).make_table()
+        self.word.table = pd.DataFrame.from_dict(table_dict)
 
     def build(self):
         self.__get_all_stresses()
@@ -94,5 +100,6 @@ class Procedure:
         self.__get_all_rhyme_patterns_list()
         self.__get_all_rhyme_scores_dict()
         self.__get_sum_scores()
-        # self.__get_reverse()
+        self.__get_reverse()
+        self.__get_table()
         return self.word
