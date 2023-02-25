@@ -14,8 +14,8 @@ class Score:
                                                "palat": 3,
                                                "any_cons": 4,
                                                "any_v": 4,
-                                               "add_sound": 5,
-                                               "no_sound": 5
+                                               "add_sound": 6,
+                                               "no_sound": 6
                                                }
 
     def __get_rhyme_score(self, pat: tuple[str]) -> tuple[int]:

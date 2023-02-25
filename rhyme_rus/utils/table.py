@@ -1,26 +1,31 @@
+import pandas as pd
+
+
 class Table:
-    def __init__(self, score_patterns_rhymes):
-        self.score_patterns_rhymes: dict[int, dict[tuple[str], tuple[str]]] = score_patterns_rhymes
+    def __init__(self, rhyme_pattern_score):
+        self.rhyme_pattern_score: dict[[str, dict[int, tuple[str]]]] = rhyme_pattern_score
 
-    def make_table(self):
-        table_dict: dict[str, list[int | tuple | str]] = {'score': [], 'pattern': [], 'rhyme': []}
-        score: int
-        for score in self.score_patterns_rhymes:
-            patterns: dict[tuple[str], tuple[str]] = self.score_patterns_rhymes[score]
-            pat: tuple[str]
-            for pat in patterns:
-                rhymes: tuple[str] = patterns[pat]
-                for rhyme in rhymes:
-                    value_score = table_dict['score']
-                    value_score.append(score)
-                    table_dict['score'] = value_score
+    def __reduce_table(self, score_pattern_rhyme):
+        pass
 
-                    value_pat = table_dict['pattern']
-                    value_pat.append(pat)
-                    table_dict['pattern'] = value_pat
+    def make_dict_for_table(self) -> dict[str: list[int], str: list[tuple[str], str: list[str]]]:
+        score_pattern_rhyme: dict[str: list[int], str: list[tuple[str], str: list[str]]]
+        score_pattern_rhyme = {"score": [], "pattern": [], "rhyme": []}
+        for rhyme in self.rhyme_pattern_score:
+            score_pattern = self.rhyme_pattern_score[rhyme]
+            for score in score_pattern:
+                pattern = score_pattern[score]
 
-                    value_rhyme = table_dict['rhyme']
-                    value_rhyme.append(rhyme)
-                    table_dict['rhyme'] = value_rhyme
+                scores = score_pattern_rhyme["score"]
+                scores.append(score)
+                score_pattern_rhyme["score"] = scores
 
-        return table_dict
+                patterns = score_pattern_rhyme["pattern"]
+                patterns.append(pattern)
+                score_pattern_rhyme["pattern"] = patterns
+
+                rhymes = score_pattern_rhyme["rhyme"]
+                rhymes.append(rhyme)
+                score_pattern_rhyme["rhyme"] = rhymes
+
+        return score_pattern_rhyme

@@ -75,15 +75,16 @@ class Procedure:
         self.word.sum_scores = RangeRhymes(self.word.all_rhymes_scores_dict).get_sum_scores()
 
     def __get_reverse(self) -> None:
-        self.word.score_patterns_rhymes = Reverse(
+        self.word.rhyme_pattern_score = Reverse(
             self.word.sum_scores,
             self.word.all_rhymes_patterns_dict,
             self.word.all_scope_pads_dict,
             self.word.all_scope_rhymes_dict).reverse()
 
     def __get_table(self) -> None:
-        table_dict = Table(self.word.score_patterns_rhymes).make_table()
-        self.word.table = pd.DataFrame.from_dict(table_dict)
+        score_pattern_rhyme: dict[str: list[int], str: list[tuple[str], str: list[str]]]
+        score_pattern_rhyme = Table(self.word.rhyme_pattern_score).make_dict_for_table()
+        self.word.table = pd.DataFrame.from_dict(score_pattern_rhyme)
 
     def build(self):
         self.__get_all_stresses()

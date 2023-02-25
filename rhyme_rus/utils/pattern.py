@@ -70,3 +70,4 @@ class Pattern:
                 list_rhyme_intipa.append(rhyme_intipa)
                 all_rhymes_patterns[rhyme_pattern] = list_rhyme_intipa
         return all_rhymes_patterns
+

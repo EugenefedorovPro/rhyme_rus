@@ -40,7 +40,7 @@ class AllScopeRhymes:
     def __fetch_all_scope_rhymes(self) -> None:
         all_scope_rhymes: list[tuple[str, str]]
         my_sql = MySql()
-        query: str = f"select accent, intipa from wiki_pickled where stressed_vowel in ({self.stressed_vowel}, {self.near_stressed_v}) " \
+        query: str = f"select word, intipa from wiki_pickled where stressed_vowel in ({self.stressed_vowel}, {self.near_stressed_v}) " \
                      f"and (len_after_stress between {self.length_after_stress - self.range} " \
                      f"and {self.length_after_stress + self.range})"
         self.all_scope_rhymes = my_sql.cur_execute(query)

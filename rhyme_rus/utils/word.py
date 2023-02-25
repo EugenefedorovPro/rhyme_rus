@@ -18,5 +18,5 @@ class Word:
         self.all_rhymes_patterns_list: list[tuple[int]] = []
         self.all_rhymes_scores_dict: dict[tuple[int], list[tuple[str]]] = {}
         self.sum_scores: dict[int, list[tuple[str]]] = {}
-        self.score_patterns_rhymes: dict[int, dict[tuple[str], tuple[str]]] = {}
+        self.rhyme_pattern_score: dict[[str, dict[int, tuple[str]]]] = {}
         self.table: Dataset["score", "pattern", "rhyme"] = 0
