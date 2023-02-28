@@ -1,4 +1,6 @@
 import pandas as pd
+from rhyme_rus.seeds.ipa_dicts import IpaDicts
+from rhyme_rus.utils.exceptions import StressedVowelNotDetected
 from rhyme_rus.utils.stressed_word import FactoryStress
 from rhyme_rus.utils.intipa import FactoryIntipa
 from rhyme_rus.utils.all_scope_rhymes import MetaAllScopeRhymes
@@ -35,6 +37,8 @@ class Procedure:
         for int_ipa in self.word.intipa[:2]:
             if int_ipa in IpaDicts().all_stressed_vowels:
                 self.word.stressed_vowel = int_ipa
+        if not self.word.stressed_vowel:
+            raise StressedVowelNotDetected(self.word.stressed_word, IpaDicts().number2sign, self.word.intipa)
 
     def __get_index_stressed_v(self) -> None:
         self.word.index_stressed_v = self.word.intipa.index(self.word.stressed_vowel)
@@ -69,7 +73,8 @@ class Procedure:
         self.word.all_rhymes_patterns_list = [key for key in self.word.all_rhymes_patterns_dict.keys()]
 
     def __get_all_rhyme_scores_dict(self) -> None:
-        self.word.all_rhymes_scores_dict = Score(self.word.all_rhymes_patterns_list).get_all_rhymes_scores_dict()
+        self.word.all_rhymes_scores_dict = Score(self.word.index_stressed_v,
+                                                 self.word.all_rhymes_patterns_list).get_all_rhymes_scores_dict()
 
     def __get_sum_scores(self) -> None:
         self.word.sum_scores = RangeRhymes(self.word.all_rhymes_scores_dict).get_sum_scores()

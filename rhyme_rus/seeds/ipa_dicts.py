@@ -115,5 +115,6 @@ class IpaDicts:
 
 
 if __name__ == "__main__":
-    print(len(IpaDicts().all_stressed_vowels))
-    print(len(IpaDicts().near_stressed_v_int))
+    print(IpaDicts().all_stressed_vowels)
+    print(IpaDicts().near_stressed_v_int)
+    print(IpaDicts().number2sign[68])

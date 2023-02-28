@@ -7,3 +7,4 @@ word2ipa-rus@ git+https://github.com/EugenefedorovPro/word2ipa_rus.git
 multiprocess==0.70.14
 pytest
 dataenforce
+strictly-typed-pandas

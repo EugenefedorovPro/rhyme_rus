@@ -1,4 +1,4 @@
-from dataenforce import Dataset
+import pandas as pd
 
 
 class Word:
@@ -19,4 +19,4 @@ class Word:
         self.all_rhymes_scores_dict: dict[tuple[int], list[tuple[str]]] = {}
         self.sum_scores: dict[int, list[tuple[str]]] = {}
         self.rhyme_pattern_score: dict[[str, dict[int, tuple[str]]]] = {}
-        self.table: Dataset["score", "pattern", "rhyme"] = 0
+        self.table: pd.DataFrame = pd.DataFrame()

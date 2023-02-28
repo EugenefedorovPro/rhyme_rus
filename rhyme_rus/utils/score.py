@@ -2,7 +2,8 @@ from typing import Union
 
 
 class Score:
-    def __init__(self, patterns):
+    def __init__(self, index_stressed_v, patterns):
+        self.index_stressed_v = index_stressed_v
         self.patterns: list[tuple[int]] = patterns
         self.dict_pat_score: dict[str, int] = {"same_stressed": 0,
                                                "same_v": 0,
@@ -14,15 +15,23 @@ class Score:
                                                "palat": 3,
                                                "any_cons": 4,
                                                "any_v": 4,
-                                               "add_sound": 6,
-                                               "no_sound": 6
+                                               "add_sound": 5,
+                                               "no_sound": 5
                                                }
 
     def __get_rhyme_score(self, pat: tuple[str]) -> tuple[int]:
         pat_copy: list[str] = list(pat)
         score: list[int] = []
-        for p in pat_copy:
-            score.append(self.dict_pat_score[p])
+        for i, p in enumerate(pat_copy):
+            # 'дом' - 'ом', no_sound in 'ом' score 1, not 5 as in other cases
+            # if the stressed 'o' in 'дом' takes the second position, that is index == 1
+            # 'ом' - 'дом', add_sound (-2) in 'дом' scores 1 instead of 5 anyway
+            if (p == "add_sound" and i == 0 and self.index_stressed_v == 1) or (
+                    p == "no_sound" and i == 0 and self.index_stressed_v == 1
+            ):
+                score.append(1)
+            else:
+                score.append(self.dict_pat_score[p])
         return tuple(score)
 
     def get_all_rhymes_scores_dict(self) -> dict[tuple[int], list[tuple[str]]]:

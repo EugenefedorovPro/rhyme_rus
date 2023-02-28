@@ -15,7 +15,7 @@ class AllPadWordRhyme:
 
     def get_all_pads_dict(self) -> dict[tuple[int], list[tuple[int]]]:
         all_scope_pads: dict[tuple[int], list[tuple[int]]] = {}
-        rm: list[int]
+        rm: tuple[int]
         for rm in self.all_scope_rhymes_intipa:
             factory = FactoryPadWordRhyme(
                 intipa=self.word,

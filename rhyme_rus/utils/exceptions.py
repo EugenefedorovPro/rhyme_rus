@@ -10,4 +10,16 @@ class MultipleStresses(Exception):
 
 class WithNoInitialConsonant(Exception):
     def __str__(self):
-        return "something's wrong with(out) initila consonant in intipa_rhyme"
+        return "something's wrong with(out) initial consonant in intipa_rhyme"
+
+
+class StressedVowelNotDetected(Exception):
+    def __init__(self, stressed_word, number2sign, intipa):
+        self.stressed_word = stressed_word
+        self.number2sign = number2sign
+        self.intipa = intipa
+
+    def __str__(self):
+        stressed_vowel_0 = str(self.number2sign[self.intipa[0]])
+        stressed_vowel_1 = str(self.number2sign[self.intipa[1]])
+        return f"in the word {self.stressed_word} stressed vowel {stressed_vowel_0} or {stressed_vowel_1} not detected"
