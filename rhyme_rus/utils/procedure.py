@@ -10,6 +10,7 @@ from rhyme_rus.utils.range_rhymes import RangeRhymes
 from rhyme_rus.utils.pat_word_rhyme import AllPadWordRhyme
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.pattern import Pattern
+from rhyme_rus.utils.rhymes_stressed_index import RhymesStressedIndex
 from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.reverse import Reverse
 from rhyme_rus.utils.table import Table
@@ -69,11 +70,15 @@ class Procedure:
         self.word.all_rhymes_patterns_dict = Pattern(self.word.intipa,
                                                      self.word.all_scope_pads_list).get_all_rhymes_patterns()
 
+    def __get_all_rhymes_stressed_index(self):
+        self.word.all_rhymes_stressed_index = RhymesStressedIndex(
+            self.word.all_rhymes_patterns_dict).get_all_rhymes_stressed_index()
+
     def __get_all_rhyme_patterns_list(self):
         self.word.all_rhymes_patterns_list = [key for key in self.word.all_rhymes_patterns_dict.keys()]
 
     def __get_all_rhyme_scores_dict(self) -> None:
-        self.word.all_rhymes_scores_dict = Score(self.word.index_stressed_v,
+        self.word.all_rhymes_scores_dict = Score(self.word.index_stressed_v, self.word.all_rhymes_stressed_index,
                                                  self.word.all_rhymes_patterns_list).get_all_rhymes_scores_dict()
 
     def __get_sum_scores(self) -> None:
@@ -103,6 +108,7 @@ class Procedure:
         self.__get_all_scope_pads_dict()
         self.__get_all_scope_pads_list()
         self.__get_all_rhyme_patterns_dict()
+        self.__get_all_rhymes_stressed_index()
         self.__get_all_rhyme_patterns_list()
         self.__get_all_rhyme_scores_dict()
         self.__get_sum_scores()

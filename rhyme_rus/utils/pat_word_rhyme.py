@@ -63,15 +63,15 @@ class FactoryPadWordRhyme:
     # process initial consonants
     # when word and rhyme are of the same length, and either of them has initial consonant
     # 0 is a stressed vowels
-    # 1) word = (1, 0, 2, 3), rhyme = (0, 3, 4, 5) -> _rhyme = (-1, 0, 3, 4, 5)
-    # 2) word = (0, 1, 2, 3), rhyme = (1, 0, 2, 3) -> _rhyme = (0, 2, 3)
+    # 1) word = (1, 0, 2, 3), rhyme = (0, 3, 4, 5) -> _rhyme = (-2, 0, 3, 4, 5)
+    # 2) word = (0, 1, 2, 3), rhyme = (1, 0, 2, 3) -> _rhyme = (-1, 0, 2, 3)
     def __get_rhyme_preprocessed(self) -> None:
         if self.index_stressed_vowel_word != self.index_stressed_vowel_rhyme:
-            self.rhyme_preprocessed: list[int] = list(self.rhyme).copy()
+            self.rhyme_preprocessed: list[int] | tuple[int] = list(self.rhyme).copy()
             if self.index_stressed_vowel_word == 1:
-                self.rhyme_preprocessed.insert(0, -1)
+                self.rhyme_preprocessed.insert(0, -2)
             else:
-                self.rhyme_preprocessed = self.rhyme_preprocessed[1:]
+                self.rhyme_preprocessed.insert(0, -1)
             self.rhyme_preprocessed = tuple(self.rhyme_preprocessed)
         else:
             self.rhyme_preprocessed = self.rhyme
@@ -94,10 +94,9 @@ class FactoryPadWordRhyme:
         return dict_rhyme_shorts
 
 
-class PatWordRhyme(FactoryPadWordRhyme):
-    def __init__(self, intipa: list[int], intipa_rhyme: list[int], stressed_vowel: int, near_stressed_v: int,
+class PatWordRhyme():
+    def __init__(self, intipa: list[int], intipa_rhyme: tuple[int], stressed_vowel: int, near_stressed_v: int,
                  index_stressed_vowel_word: int):
-        super().__init__(intipa, intipa_rhyme, stressed_vowel, near_stressed_v, index_stressed_vowel_word)
         self.word = intipa
         self.rhyme = intipa_rhyme
         self.stressed_vowel = stressed_vowel

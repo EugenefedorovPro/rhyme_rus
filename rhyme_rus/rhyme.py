@@ -4,7 +4,6 @@ from rhyme_rus.utils.word_statistics import WordStatistics
 
 word = Word("ом")
 word = Procedure(word).build()
-print(word.table)
 word.table.to_csv("ом.csv")
 
 # word.table.to_csv("long_table.csv")
