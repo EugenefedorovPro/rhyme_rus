@@ -26,19 +26,19 @@ class WikiExplore:
 
     @classmethod
     def get_items_by_n_vowels_after_stress(
-        cls,
-        n_vowels_after_stress,
-        n_sounds_after_stress,
-        n_of_words,
-        random_choice=True,
+            cls,
+            n_vowels_after_stress,
+            n_sounds_after_stress,
+            n_of_words,
+            random_choice=True,
     ):
         items_by_n_vowels_after_stress = [
-            (item.word, item.sounds)
+            (item.word_preprocessed, item.sounds)
             for i, item in enumerate(wiki_instances)
             if item.ipa
-            and item.status
-            and len(item.ipa.vowels) == n_vowels_after_stress
-            and len(item.ipa) == n_sounds_after_stress
+               and item.status
+               and len(item.ipa.vowels) == n_vowels_after_stress
+               and len(item.ipa) == n_sounds_after_stress
         ]
         if random_choice:
             rand_n = [

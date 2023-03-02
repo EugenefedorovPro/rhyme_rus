@@ -1,5 +1,4 @@
 import pandas as pd
-from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.exceptions import StressedVowelNotDetected
 from rhyme_rus.utils.stressed_word import FactoryStress
 from rhyme_rus.utils.intipa import FactoryIntipa
@@ -7,7 +6,7 @@ from rhyme_rus.utils.all_scope_rhymes import MetaAllScopeRhymes
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.exceptions import MultipleStresses
 from rhyme_rus.utils.range_rhymes import RangeRhymes
-from rhyme_rus.utils.pat_word_rhyme import AllPadWordRhyme
+from rhyme_rus.utils.pad import Pad
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.pattern import Pattern
 from rhyme_rus.utils.rhymes_stressed_index import RhymesStressedIndex
@@ -49,13 +48,14 @@ class Procedure:
         self.word.near_stressed_v = dict_near_stressed[self.word.stressed_vowel]
 
     def __get_all_scope_rhymes_dict(self) -> None:
-        self.word.all_scope_rhymes_dict = MetaAllScopeRhymes(self.word.intipa).get_all_scope_rhymes_dict()
+        self.word.all_scope_rhymes_dict = MetaAllScopeRhymes(self.word.range_sql,
+                                                             self.word.intipa).get_all_scope_rhymes_dict()
 
     def __get_all_scope_rhymes_intipa(self) -> None:
         self.word.all_scope_rhymes_intipa = list(self.word.all_scope_rhymes_dict.keys())
 
     def __get_all_scope_pads_dict(self) -> None:
-        self.word.all_scope_pads_dict = AllPadWordRhyme(
+        self.word.all_scope_pads_dict = Pad(
             intipa=self.word.intipa,
             all_scope_rhymes_intipa=self.word.all_scope_rhymes_intipa,
             stressed_vowel=self.word.stressed_vowel,
@@ -70,15 +70,11 @@ class Procedure:
         self.word.all_rhymes_patterns_dict = Pattern(self.word.intipa,
                                                      self.word.all_scope_pads_list).get_all_rhymes_patterns()
 
-    def __get_all_rhymes_stressed_index(self):
-        self.word.all_rhymes_stressed_index = RhymesStressedIndex(
-            self.word.all_rhymes_patterns_dict).get_all_rhymes_stressed_index()
-
     def __get_all_rhyme_patterns_list(self):
         self.word.all_rhymes_patterns_list = [key for key in self.word.all_rhymes_patterns_dict.keys()]
 
     def __get_all_rhyme_scores_dict(self) -> None:
-        self.word.all_rhymes_scores_dict = Score(self.word.index_stressed_v, self.word.all_rhymes_stressed_index,
+        self.word.all_rhymes_scores_dict = Score(self.word.index_stressed_v,
                                                  self.word.all_rhymes_patterns_list).get_all_rhymes_scores_dict()
 
     def __get_sum_scores(self) -> None:
@@ -108,7 +104,6 @@ class Procedure:
         self.__get_all_scope_pads_dict()
         self.__get_all_scope_pads_list()
         self.__get_all_rhyme_patterns_dict()
-        self.__get_all_rhymes_stressed_index()
         self.__get_all_rhyme_patterns_list()
         self.__get_all_rhyme_scores_dict()
         self.__get_sum_scores()

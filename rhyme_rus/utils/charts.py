@@ -25,7 +25,7 @@ class Charts:
             pat_score = Score.count_score_pat(item[1])
             pat = item[1]
             for it in item[0]:
-                col_words.append(it.word)
+                col_words.append(it.word_preprocessed)
                 col_pats.append(pat)
                 col_score.append(pat_score)
                 col_pos.append(it.pos)
@@ -53,6 +53,6 @@ class Charts:
             pat = item[1]
             for it in item[0]:
                 list_of_lists_word_pat_score_pos.append(
-                    [it.word, pat, pat_score, it.pos]
+                    [it.word_preprocessed, pat, pat_score, it.pos]
                 )
         return list_of_lists_word_pat_score_pos

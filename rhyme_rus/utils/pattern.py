@@ -26,21 +26,23 @@ class Pattern:
         with open(path, "rb") as f:
             self.similarities: dict[int, dict[int, str]] = dill.load(f)
 
-    # if word = [1,2,3], rhyme = [1,2,3,-2,-2]
+    # if word_preprocessed = [1,2,3], rhyme = [1,2,3,-2,-2]
     # fun will process only first three positions:
     # ["any", "any", "any"]
-    def __get_rhyme_pattern_short(self, rhyme_intipa) -> list[str]:
+    def __get_rhyme_pattern_short(self, word_padded, rhyme_intipa) -> list[str]:
+        except_pats = {-1: "no_sound", -2: "add_sound", -3: "no_init_cons", -4: "add_init_cons"}
         rhyme_pattern: list = []
-        for _int_word, _int_rhyme in zip(self.word_intipa, rhyme_intipa):
-            similarity: dict[int, str] = self.similarities[_int_word]
+        for _int_word, _int_rhyme in zip(word_padded, rhyme_intipa):
+            try:
+                similarity: dict[int, str] = self.similarities[_int_word]
+            except KeyError:
+                similarity = {-4: "add_init_cons"}
             try:
                 pat: str = similarity[_int_rhyme]
                 rhyme_pattern.append(pat)
             except KeyError:
-                if _int_rhyme == -1:
-                    rhyme_pattern.append("no_sound")
-                elif _int_rhyme == -2:
-                    rhyme_pattern.append("add_sound")
+                if _int_rhyme in except_pats:
+                    rhyme_pattern.append(except_pats[_int_rhyme])
                 elif _int_rhyme in self.all_vowels:
                     rhyme_pattern.append("any_v")
                 elif _int_rhyme in self.all_consonants:
@@ -50,11 +52,14 @@ class Pattern:
         return rhyme_pattern
 
     def __get_rhyme_pattern(self, rhyme_intipa) -> tuple[str]:
-        rhyme_pattern: list[str] = self.__get_rhyme_pattern_short(rhyme_intipa)
+        word_padded = self.word_intipa.copy()
+        if rhyme_intipa[0] == -4:
+            word_padded.insert(0, 0)
+        rhyme_pattern: list[str] = self.__get_rhyme_pattern_short(word_padded, rhyme_intipa)
         len_word = len(self.word_intipa)
         len_rhyme = len(rhyme_intipa)
         len_dif = abs(len_word - len_rhyme)
-        if len(self.word_intipa) < len(rhyme_intipa):
+        if len(word_padded) < len(rhyme_intipa):
             rhyme_pattern.extend(["add_sound" for _ in range(len_dif)])
         return tuple(rhyme_pattern)
 
@@ -70,4 +75,3 @@ class Pattern:
                 list_rhyme_intipa.append(rhyme_intipa)
                 all_rhymes_patterns[rhyme_pattern] = list_rhyme_intipa
         return all_rhymes_patterns
-

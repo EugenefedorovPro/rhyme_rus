@@ -4,22 +4,23 @@ from rhyme_rus.seeds.mysql_connect import MySql
 
 
 class MetaAllScopeRhymes:
-    def __init__(self, intipa):
+    def __init__(self, range_sql, intipa):
+        self.range_sql = range_sql
         self.intipa = intipa
         self.all_scope_rhymes_dict: dict[tuple[int], set[str]] = {}
 
     def get_all_scope_rhymes_dict(self) -> dict[tuple[int], set[str]]:
-        self.all_scope_rhymes_dict = AllScopeRhymes(self.intipa).get_all_scope_rhymes_dict()
+        self.all_scope_rhymes_dict = AllScopeRhymes(self.range_sql, self.intipa).get_all_scope_rhymes_dict()
         return self.all_scope_rhymes_dict
 
 
 class AllScopeRhymes:
-    def __init__(self, intipa):
+    def __init__(self, range_sql, intipa):
         self.intipa: list[int] = intipa
         self.length_after_stress: int = 0
         self.stressed_vowel: int = 0
         self.near_stressed_v: int = 0
-        self.range = 1
+        self.range_sql = range_sql
         self.all_scope_rhymes: list[tuple[str, str]] = []
         self.__get_stressed_vowel()
         self.__get_length_after_stress()
@@ -41,8 +42,8 @@ class AllScopeRhymes:
         all_scope_rhymes: list[tuple[str, str]]
         my_sql = MySql()
         query: str = f"select word, intipa from wiki_pickled where stressed_vowel in ({self.stressed_vowel}, {self.near_stressed_v}) " \
-                     f"and (len_after_stress between {self.length_after_stress - self.range} " \
-                     f"and {self.length_after_stress + self.range})"
+                     f"and (len_after_stress between {self.length_after_stress - self.range_sql} " \
+                     f"and {self.length_after_stress + self.range_sql})"
         self.all_scope_rhymes = my_sql.cur_execute(query)
 
     def get_all_scope_rhymes_dict(self) -> dict[tuple[int], set[str]]:
