@@ -2,7 +2,7 @@ import pandas as pd
 from rhyme_rus.utils.exceptions import StressedVowelNotDetected
 from rhyme_rus.utils.stressed_word import FactoryStress
 from rhyme_rus.utils.intipa import FactoryIntipa
-from rhyme_rus.utils.all_scope_rhymes import MetaAllScopeRhymes
+from rhyme_rus.utils.intipa_words import MetaAllIntipaWords
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.exceptions import MultipleStresses
 from rhyme_rus.utils.range_rhymes import RangeRhymes
@@ -47,7 +47,7 @@ class Procedure:
         self.word.near_stressed_v = dict_near_stressed[self.word.stressed_vowel]
 
     def __get_all_intipa_words(self) -> None:
-        self.word.all_intipa_words = MetaAllScopeRhymes(self.word.range_sql,
+        self.word.all_intipa_words = MetaAllIntipaWords(self.word.range_sql,
                                                         self.word.intipa).get_all_intipa_words()
 
     def __get_all_intipa(self) -> None:

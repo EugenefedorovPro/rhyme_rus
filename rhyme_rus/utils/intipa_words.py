@@ -3,18 +3,18 @@ from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.seeds.mysql_connect import MySql
 
 
-class MetaAllScopeRhymes:
+class MetaAllIntipaWords:
     def __init__(self, range_sql, intipa):
         self.range_sql = range_sql
         self.intipa = intipa
         self.all_intipa_words: dict[tuple[int], set[str]] = {}
 
     def get_all_intipa_words(self) -> dict[tuple[int], set[str]]:
-        self.all_intipa_words = AllScopeRhymes(self.range_sql, self.intipa).get_all_intipa_words()
+        self.all_intipa_words = AllIntipaWords(self.range_sql, self.intipa).get_all_intipa_words()
         return self.all_intipa_words
 
 
-class AllScopeRhymes:
+class AllIntipaWords:
     def __init__(self, range_sql, intipa):
         self.intipa: list[int] = intipa
         self.length_after_stress: int = 0
