@@ -7,7 +7,7 @@ from typing import Iterable
 class Pad:
     def __init__(self, intipa: list[int], all_scope_rhymes_intipa: list[tuple[int]], stressed_vowel: int,
                  near_stressed_v: int, index_stressed_v: int):
-        self.all_scope_rhymes_intipa = all_scope_rhymes_intipa
+        self.all_intipa = all_scope_rhymes_intipa
         self.word = intipa
         self.stressed_vowel = stressed_vowel
         self.near_stressed_v: int = near_stressed_v
@@ -16,7 +16,7 @@ class Pad:
     def get_all_pads_dict(self) -> dict[tuple[int], list[tuple[int]]]:
         all_scope_pads: dict[tuple[int], list[tuple[int]]] = {}
         rm: tuple[int]
-        for rm in self.all_scope_rhymes_intipa:
+        for rm in self.all_intipa:
             factory = FactoryPad(
                 intipa=self.word,
                 intipa_rhyme=rm,
@@ -66,6 +66,7 @@ class FactoryPad:
     def __get_index_stressed_vowel_rhyme(self) -> None:
         self.index_stressed_vowel_rhyme = self.rhyme.index(self.stressed_vowel)
 
+    # TODO correct logics
     # process initial consonants
     # when word_preprocessed and rhyme are of the same length, and either of them has initial consonant
     # 0 is a stressed vowels

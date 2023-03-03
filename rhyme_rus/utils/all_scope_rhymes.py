@@ -7,11 +7,11 @@ class MetaAllScopeRhymes:
     def __init__(self, range_sql, intipa):
         self.range_sql = range_sql
         self.intipa = intipa
-        self.all_scope_rhymes_dict: dict[tuple[int], set[str]] = {}
+        self.all_intipa_words: dict[tuple[int], set[str]] = {}
 
-    def get_all_scope_rhymes_dict(self) -> dict[tuple[int], set[str]]:
-        self.all_scope_rhymes_dict = AllScopeRhymes(self.range_sql, self.intipa).get_all_scope_rhymes_dict()
-        return self.all_scope_rhymes_dict
+    def get_all_intipa_words(self) -> dict[tuple[int], set[str]]:
+        self.all_intipa_words = AllScopeRhymes(self.range_sql, self.intipa).get_all_intipa_words()
+        return self.all_intipa_words
 
 
 class AllScopeRhymes:
@@ -46,17 +46,17 @@ class AllScopeRhymes:
                      f"and {self.length_after_stress + self.range_sql})"
         self.all_scope_rhymes = my_sql.cur_execute(query)
 
-    def get_all_scope_rhymes_dict(self) -> dict[tuple[int], set[str]]:
+    def get_all_intipa_words(self) -> dict[tuple[int], set[str]]:
         # TODO: add similar sound to stressed_vowel
         # TODO: make length_after_stress +- 1(2?)
-        all_scope_rhymes_dict: dict[tuple[int], set[str]] = {}
+        all_intipa_words: dict[tuple[int], set[str]] = {}
         for item in self.all_scope_rhymes:
             word: str = item[0]
             intipa: tuple[int] = tuple(json.loads(item[1]))
-            if intipa not in all_scope_rhymes_dict:
-                all_scope_rhymes_dict[intipa] = {word}
+            if intipa not in all_intipa_words:
+                all_intipa_words[intipa] = {word}
             else:
-                list_word = all_scope_rhymes_dict[intipa]
+                list_word = all_intipa_words[intipa]
                 list_word.update([word])
-                all_scope_rhymes_dict[intipa] = list_word
-        return all_scope_rhymes_dict
+                all_intipa_words[intipa] = list_word
+        return all_intipa_words

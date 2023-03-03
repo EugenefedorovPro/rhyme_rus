@@ -21,3 +21,9 @@ class MySql:
         self.cur.executemany(query, values)
         self.con.commit()
         return f"{self.cur.rowcount} 'was inserted'"
+
+
+if __name__ == "__main__":
+    my_sql = MySql()
+    result = my_sql.cur_execute("select accent from wiki_pickled where word = 'дом'")
+    print(result)

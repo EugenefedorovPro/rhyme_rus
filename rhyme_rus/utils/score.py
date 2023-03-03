@@ -28,7 +28,7 @@ class Score:
             score.append(self.dict_pat_score[p])
         return tuple(score)
 
-    def get_all_rhymes_scores_dict(self) -> dict[tuple[int], list[tuple[str]]]:
+    def get_all_score_patterns(self) -> dict[tuple[int], list[tuple[str]]]:
         all_rhyme_scores: dict[tuple[int], list[tuple[str]]] = {}
         pat: Union[tuple[str], list[tuple[str]]]
         rm_stress_index: int

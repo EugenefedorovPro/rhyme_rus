@@ -1,5 +1,14 @@
 version: '3.4'
 services:
+  python:
+    build:
+      context: ./docker/python
+    ports:
+      - "8889:8888"
+    volumes:
+      - .:/home/eugene
+    depends_on:
+      - db
   db:
     image: mysql:latest
     command: --default-authentication-plugin=mysql_native_password --max_allowed_packet=2147483648
@@ -13,12 +22,3 @@ services:
       - ./docker/mysql:/var/lib/mysql
     ports:
       - "3306:3306"
-  python:
-    build:
-      context: ./docker/python
-    ports:
-      - "8889:8888"
-    volumes:
-      - .:/home/eugene
-    depends_on:
-      - db
