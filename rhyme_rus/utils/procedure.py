@@ -3,6 +3,7 @@ from rhyme_rus.utils.exceptions import StressedVowelNotDetected
 from rhyme_rus.utils.stressed_word import FactoryStress
 from rhyme_rus.utils.intipa import FactoryIntipa
 from rhyme_rus.utils.intipa_words import MetaAllIntipaWords
+from rhyme_rus.utils.word_numbers import get_all_word_numbers
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.exceptions import MultipleStresses
 from rhyme_rus.utils.range_rhymes import RangeRhymes
@@ -11,6 +12,7 @@ from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.pattern import Pattern
 from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.reverse import Reverse
+from rhyme_rus.utils.assonance import Assonance
 from rhyme_rus.utils.table import Table
 
 
@@ -53,6 +55,9 @@ class Procedure:
     def __get_all_intipa(self) -> None:
         self.word.all_intipa = list(self.word.all_intipa_words.keys())
 
+    def __get_all_word_numbers(self) -> None:
+        self.word.all_word_numbers = get_all_word_numbers(self.word.all_intipa_words)
+
     def __get_all_pad_intipa(self) -> None:
         self.word.all_pad_intipa = Pad(
             intipa=self.word.intipa,
@@ -90,7 +95,13 @@ class Procedure:
     def __get_score_pattern_rhyme(self):
         self.word.score_pattern_rhyme = Table(self.word.rhyme_scores_patterns).make_dict_for_table()
 
+    def __get_assonance(self):
+        self.word.assonance = Assonance(word_intipa=self.word.intipa,
+                                        all_word_numbers=self.word.all_word_numbers,
+                                        score_pattern_rhyme=self.word.score_pattern_rhyme).get_all_assonance()
+
     def __get_table(self) -> None:
+        self.word.score_pattern_rhyme["assonance"] = self.word.assonance
         self.word.table = pd.DataFrame.from_dict(self.word.score_pattern_rhyme)
 
     def build(self):
@@ -102,6 +113,7 @@ class Procedure:
         self.__get_near_stressed_v()
         self.__get_all_intipa_words()
         self.__get_all_intipa()
+        self.__get_all_word_numbers()
         self.__get_all_pad_intipa()
         self.__get_all_pads()
         self.__get_all_pattern_pads()
@@ -110,5 +122,6 @@ class Procedure:
         self.__get_sum_scores()
         self.__get_reverse()
         self.__get_score_pattern_rhyme()
+        self.__get_assonance()
         self.__get_table()
         return self.word

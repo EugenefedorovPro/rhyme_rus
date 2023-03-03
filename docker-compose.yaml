@@ -4,7 +4,7 @@ services:
     build:
       context: ./docker/python
     ports:
-      - "8889:8888"
+      - "8888:8888"
     volumes:
       - .:/home/eugene
     depends_on:
