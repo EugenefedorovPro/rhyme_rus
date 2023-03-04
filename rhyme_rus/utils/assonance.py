@@ -9,8 +9,10 @@ class Assonance:
     def get_all_assonance(self):
         all_assonance: list[int] = []
         for rhyme in self.rhymes:
-           n_same_sounds: list[str] = [_str for _str in rhyme if _str in self.unstressed_word]
-           all_assonance.append(len(n_same_sounds))
+           n_same_sounds: list[str] = len([_str for _str in rhyme if _str in self.unstressed_word])
+           len_rhyme = len(rhyme)
+           ratio_n_same_sounds_len = round(round(n_same_sounds / len_rhyme, 1)*10)
+           all_assonance.append(ratio_n_same_sounds_len)
         return all_assonance
 
 
