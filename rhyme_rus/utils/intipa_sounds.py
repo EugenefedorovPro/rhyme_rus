@@ -7,47 +7,60 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 
-class AIntIpa(ABC):
+class AIntIpaSounds(ABC):
     def __init__(self, stressed_word):
         self.stressed_word = stressed_word
 
     @abstractmethod
-    def fetch_intipa(self):
+    def fetch_intipa_sounds(self):
         pass
 
-
-class FetchIntipaFromDb(AIntIpa):
-
-    def fetch_intipa(self) -> Optional[list[int]]:
-        _query: str = f'''select intipa from  wiki_pickled where accent = "{self.stressed_word}"'''
-        _mysql = MySql()
-        intipa = _mysql.cur_execute(_query)
-        if intipa:
-            intipa = list(set(intipa))
-            intipa = json.loads(intipa[0][0])
-            return intipa
+class FactoryIntipaNumbers:
+    @classmethod
+    def fetch_intipa_sounds(cls, stressed_word):
+        intipa, sounds = FetchIntipaSoundsDb(stressed_word).fetch_intipa_sounds()
+        if intipa and sounds:
+            return intipa, sounds
         else:
-            return None
+            intipa, sounds = FetchIntipaSoundsNn(stressed_word).fetch_intipa_sounds()
+            return intipa, sounds
 
 
-class FetchIntipaFromNn(AIntIpa):
+class FetchIntipaSoundsDb(AIntIpaSounds):
+    def fetch_intipa_sounds(self) -> tuple[list[int], str] | tuple[None, None]:
+        _query: str = f'''select intipa, sounds from  wiki_pickled where accent = "{self.stressed_word}"'''
+        _mysql = MySql()
+        intipa_sounds = _mysql.cur_execute(_query)
+        if intipa_sounds:
+            intipa_sounds = intipa_sounds[0]
+            intipa = intipa_sounds[0]
+            intipa = json.loads(intipa)
+            sounds = intipa_sounds[1]
+            return intipa, sounds
+        else:
+            return None, None
+
+
+class FetchIntipaSoundsNn(AIntIpaSounds):
 
     def __init__(self, stressed_word):
         super().__init__(stressed_word)
+        self.trans_uni: str = ''
         self.ipa: ipapy.ipastring = None
         self.shortened_ipa: list[ipapy.ipastring] = []
         self.__stressed_word_to_trans_uni()
         self.__trans_uni_to_ipa()
         self.__shorten_ipa()
 
-    def fetch_intipa(self):
+    def fetch_intipa_sounds(self) -> tuple[list[int], str]:
         intipa: list[int] = []
         for sign in self.shortened_ipa:
             _int = IpaDicts().sign2number[sign]
             intipa.append(_int)
-        return intipa
+        return intipa, self.trans_uni
 
     def __stressed_word_to_trans_uni(self) -> None:
+        # TODO add stress for sounds from db
         # nn yields no stress mark for one syllable words
         # dom -> 'dom'
         from word2ipa_rus.word2ipa import word2ipa
@@ -56,7 +69,7 @@ class FetchIntipaFromNn(AIntIpa):
             self.trans_uni = trans_uni
         else:
             self.trans_uni = f"ˈ{trans_uni}"
-        return None
+        return None 
 
     def __trans_uni_to_ipa(self) -> None:
         self.ipa: ipapy.ipastring = IPAString(unicode_string=self.trans_uni)
@@ -82,12 +95,3 @@ class FetchIntipaFromNn(AIntIpa):
             return None
 
 
-class FactoryIntipa:
-    @classmethod
-    def fetch_intipa(cls, stressed_word):
-        intipa = FetchIntipaFromDb(stressed_word).fetch_intipa()
-        if intipa:
-            return intipa
-        else:
-            intipa = FetchIntipaFromNn(stressed_word).fetch_intipa()
-            return intipa

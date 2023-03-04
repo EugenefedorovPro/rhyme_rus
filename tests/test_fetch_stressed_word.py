@@ -1,7 +1,7 @@
 from unittest.mock import patch
 import pytest
 
-from rhyme_rus.utils.fetch_stressed_word import (
+from rhyme_rus.utils.stressed_word import (
     FetchStressFromNn,
     FactoryStress
 )

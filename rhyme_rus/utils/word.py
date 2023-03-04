@@ -11,6 +11,8 @@ class Word:
         self.all_stresses: list[str] = []
         self.stressed_word: str = ''
         self.intipa: list[int] = []
+        self.sounds: str = ''
+        self.numbers: list[int] = []
         self.all_intipa_words: dict[tuple[int], set[str]] = {}
         self.all_word_numbers: dict[str, tuple[int]] = {}
         self.all_intipa: list[tuple[int]] = []

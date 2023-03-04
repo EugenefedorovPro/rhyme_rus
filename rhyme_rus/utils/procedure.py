@@ -1,9 +1,9 @@
 import pandas as pd
+from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.exceptions import StressedVowelNotDetected
 from rhyme_rus.utils.stressed_word import FactoryStress
-from rhyme_rus.utils.intipa import FactoryIntipa
+from rhyme_rus.utils.intipa_sounds import FactoryIntipaNumbers
 from rhyme_rus.utils.intipa_words import MetaAllIntipaWords
-from rhyme_rus.utils.word_numbers import get_all_word_numbers
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.exceptions import MultipleStresses
 from rhyme_rus.utils.range_rhymes import RangeRhymes
@@ -32,7 +32,14 @@ class Procedure:
             raise MultipleStresses(self.word.unstressed_word, self.word.all_stresses)
 
     def __get_intipa(self) -> None:
-        self.word.intipa = FactoryIntipa().fetch_intipa(self.word.stressed_word)
+        intipa, sounds = FactoryIntipaNumbers().fetch_intipa_sounds(self.word.stressed_word)
+        # remove initial stresses, put by NN
+        if "ˈ" in sounds:
+            sounds = sounds[1:]
+        self.word.intipa, self.word.sounds = intipa, sounds
+
+    def __get_numbers(self):
+        self.word.numbers = IpaDicts().unistring_to_numbers(self.word.sounds)
 
     def __get_stressed_vowel(self) -> None:
         for int_ipa in self.word.intipa[:2]:
@@ -49,14 +56,12 @@ class Procedure:
         self.word.near_stressed_v = dict_near_stressed[self.word.stressed_vowel]
 
     def __get_all_intipa_words(self) -> None:
-        self.word.all_intipa_words = MetaAllIntipaWords(self.word.range_sql,
+        self.word.all_intipa_words, self.word.all_word_numbers = MetaAllIntipaWords(self.word.range_sql,
                                                         self.word.intipa).get_all_intipa_words()
 
     def __get_all_intipa(self) -> None:
         self.word.all_intipa = list(self.word.all_intipa_words.keys())
 
-    def __get_all_word_numbers(self) -> None:
-        self.word.all_word_numbers = get_all_word_numbers(self.word.all_intipa_words)
 
     def __get_all_pad_intipa(self) -> None:
         self.word.all_pad_intipa = Pad(
@@ -96,7 +101,7 @@ class Procedure:
         self.word.score_pattern_rhyme = Table(self.word.rhyme_scores_patterns).make_dict_for_table()
 
     def __get_assonance(self):
-        self.word.assonance = Assonance(word_intipa=self.word.intipa,
+        self.word.assonance = Assonance(numbers=self.word.numbers,
                                         all_word_numbers=self.word.all_word_numbers,
                                         score_pattern_rhyme=self.word.score_pattern_rhyme).get_all_assonance()
 
@@ -108,12 +113,12 @@ class Procedure:
         self.__get_all_stresses()
         self.__get_stressed_word()
         self.__get_intipa()
+        self.__get_numbers()
         self.__get_stressed_vowel()
         self.__get_index_stressed_v()
         self.__get_near_stressed_v()
         self.__get_all_intipa_words()
         self.__get_all_intipa()
-        self.__get_all_word_numbers()
         self.__get_all_pad_intipa()
         self.__get_all_pads()
         self.__get_all_pattern_pads()
