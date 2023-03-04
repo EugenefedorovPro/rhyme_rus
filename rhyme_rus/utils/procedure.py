@@ -101,8 +101,7 @@ class Procedure:
         self.word.score_pattern_rhyme = Table(self.word.rhyme_scores_patterns).make_dict_for_table()
 
     def __get_assonance(self):
-        self.word.assonance = Assonance(numbers=self.word.numbers,
-                                        all_word_numbers=self.word.all_word_numbers,
+        self.word.assonance = Assonance(unstressed_word=self.word.unstressed_word,
                                         score_pattern_rhyme=self.word.score_pattern_rhyme).get_all_assonance()
 
     def __get_table(self) -> None:
