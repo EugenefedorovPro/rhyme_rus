@@ -3,7 +3,7 @@ from rhyme_rus.utils.procedure import Procedure
 from rhyme_rus.utils.word_statistics import WordStatistics
 from rhyme_rus.utils.exceptions import MultipleStresses
 
-target_word = "отрок"
+target_word = "облако"
 word = Word(target_word)
 word = Procedure(word).build()
 word.table.to_csv(f"{target_word}_{word.range_sql}_.csv")

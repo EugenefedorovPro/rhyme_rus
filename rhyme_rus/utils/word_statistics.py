@@ -109,6 +109,6 @@ class WordStatistics:
 
 if __name__ == "__main__":
     # print(WordStatistics().factory_length_word(seed=True))
-    print(WordStatistics().get_accent_intipa_by_length(11))
+    print(WordStatistics().get_accent_intipa_by_length(6))
     # print(WordStatistics().seed_length_word)
     # print(WordStatistics().seed_length_word)

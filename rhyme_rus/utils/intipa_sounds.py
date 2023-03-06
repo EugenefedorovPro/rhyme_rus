@@ -71,7 +71,7 @@ class FetchIntipaNn(AIntIpa):
         self.ipa: ipapy.ipastring = IPAString(unicode_string=self.trans_uni)
         return None
 
-    # func to change_rhyme ipa by scheme: one consonant before stressed vowel (if available)
+    # func to change_unequal_rhyme ipa by scheme: one consonant before stressed vowel (if available)
     # stressed vowel + the rest of characters to the end of intipa
     # e.g. ipa ʂɨpʲɪˈlʲævʲɪtʲ shorened to lʲævʲɪtʲ
     def __shorten_ipa(self) -> None:
