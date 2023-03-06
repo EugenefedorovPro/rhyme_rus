@@ -98,9 +98,9 @@ class FactoryPad:
         len_rhyme_preprocessed = len(self.rhyme_preprocessed)
         len_word_preprocessed = len(self.word_preprocessed)
         if len_rhyme_preprocessed < len_word_preprocessed:
-            shorts = pwr.prolong_rhyme()
+            shorts = pwr.change_rhyme(shorten=False)
         elif len_rhyme_preprocessed > len_word_preprocessed:
-            shorts = pwr.shorten_rhyme()
+            shorts = pwr.change_rhyme(shorten=True)
         else:
             shorts = [list(self.rhyme_preprocessed)]
 
@@ -121,7 +121,9 @@ class PadWordRhyme:
         self.target_len = abs(len(intipa) - len(intipa_rhyme))
         self.index_farthest_stressed_v = index_farthest_stressed_v
 
-    def shorten_rhyme(self) -> list[list[int]]:
+    def change_rhyme(self, shorten = True) -> list[list[int]]:
+        shorten_change = {True:-1, False:-2}
+        change = shorten_change[shorten]
         shorts: list[list[int]] = []
         indexes_to_replace: Iterable[tuple] = combinations(range(self.index_farthest_stressed_v + 1, self.rhyme_len),
                                                            self.target_len)
@@ -129,19 +131,17 @@ class PadWordRhyme:
         for indexes in indexes_to_replace:
             rhyme_copy = list(self.rhyme).copy()
             for index in indexes:
-                rhyme_copy[index] = -1
-            # condition to retain stressed_vowel in any combination
+                if shorten:
+                    # remove sounds
+                    rhyme_copy[index] = change
+                else:
+                    # add_sounds
+                    rhyme_copy.insert(index, change)
+            # condition to retain stressed_vowel in any combinations
             if self.stressed_vowel == rhyme_copy[self.index_stressed_vowel_word]:
                 shorts.append(rhyme_copy)
         return shorts
 
-    def prolong_rhyme(self) -> list[list[int]]:
-        shorts: list[list[int]] = []
-        prolonged_rhyme = list(self.rhyme).copy()
-        list_to_extend = [-2 for _ in range(self.target_len)]
-        prolonged_rhyme.extend(list_to_extend)
-        shorts.append(prolonged_rhyme)
-        return shorts
 
 # if __name__ == "__main__":
 #     word_preprocessed = [4, 2, 8]

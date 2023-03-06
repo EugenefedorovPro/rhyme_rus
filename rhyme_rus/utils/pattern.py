@@ -29,16 +29,21 @@ class Pattern:
     # if word_preprocessed = [1,2,3], rhyme = [1,2,3,-2,-2]
     # fun will process only first three positions:
     # ["any", "any", "any"]
+    # TODO vowels_but_stressed - how to simplify?
     def __get_rhyme_pattern_short(self, word_padded, rhyme_intipa) -> list[str]:
         except_pats = {-1: "no_sound", -2: "add_sound", -3: "no_init_cons", -4: "add_init_cons"}
+        vowels_but_stressed = {"same_stressed": "same_v", "near_stressed": "near_v"}
         rhyme_pattern: list = []
-        for _int_word, _int_rhyme in zip(word_padded, rhyme_intipa):
+        for i, _int_word_int_rhyme in enumerate(zip(word_padded, rhyme_intipa)):
+            _int_word, _int_rhyme = _int_word_int_rhyme[0], _int_word_int_rhyme[1]
             try:
                 similarity: dict[int, str] = self.similarities[_int_word]
             except KeyError:
                 similarity = {-4: "add_init_cons"}
             try:
                 pat: str = similarity[_int_rhyme]
+                if i not in (0,1) and pat in ("same_stressed", "near_stressed"):
+                    pat = vowels_but_stressed[pat]
                 rhyme_pattern.append(pat)
             except KeyError:
                 if _int_rhyme in except_pats:
@@ -51,10 +56,18 @@ class Pattern:
         rhyme_pattern: list[str] = rhyme_pattern
         return rhyme_pattern
 
-    def __get_rhyme_pattern(self, rhyme_intipa) -> tuple[str]:
-        word_padded = self.word_intipa.copy()
+    def __get_word_padded(self, rhyme_intipa):
+        word_padded: list[int] = self.word_intipa.copy()
         if rhyme_intipa[0] == -4:
             word_padded.insert(0, 0)
+        indexes_minus_1 = [i for i, __ in enumerate(rhyme_intipa) if __ == -1]
+        for index in indexes_minus_1:
+            word_padded.insert(index, 0)
+        return word_padded
+
+
+    def __get_rhyme_pattern(self, rhyme_intipa) -> tuple[str]:
+        word_padded = self.__get_word_padded(rhyme_intipa)
         rhyme_pattern: list[str] = self.__get_rhyme_pattern_short(word_padded, rhyme_intipa)
         len_word = len(self.word_intipa)
         len_rhyme = len(rhyme_intipa)
@@ -63,9 +76,9 @@ class Pattern:
             rhyme_pattern.extend(["add_sound" for _ in range(len_dif)])
         return tuple(rhyme_pattern)
 
-    def get_all_rhymes_patterns(self) -> dict[tuple[str], list[tuple[int]]]:
-        all_rhymes_patterns: dict[tuple[str], list[tuple[int]]] = {}
-        rhyme_intipa: tuple[int]
+    def get_all_rhymes_patterns(self) -> dict[tuple[str], list[list[int]]]:
+        all_rhymes_patterns: dict[tuple[str], list[list[int]]] = {}
+        rhyme_intipa: list[int]
         for rhyme_intipa in self.list_intipa:
             rhyme_pattern: tuple[str] = self.__get_rhyme_pattern(rhyme_intipa)
             if rhyme_pattern not in all_rhymes_patterns:

@@ -46,15 +46,13 @@ class AllIntipaWords:
                      f"and {self.length_after_stress + self.range_sql})"
         self.word_intipa_word_as_number = my_sql.cur_execute(query)
 
-    def get_all_intipa_words(self) -> tuple[dict[tuple[int], set[str]], dict[str, tuple[int]]]:
+    def get_all_intipa_words(self) -> dict[tuple[int], set[str]]:
         # TODO: add similar sound to stressed_vowel
         # TODO: make length_after_stress +- 1(2?)
         all_intipa_words: dict[tuple[int], set[str]] = {}
-        all_word_numbers: dict[str, tuple[int]] = {}
         for item in self.word_intipa_word_as_number:
             word: str = item[0]
             intipa: tuple[int] = tuple(json.loads(item[1]))
-            word_as_numbers: tuple[int] = tuple(json.loads(item[2]))
             if intipa not in all_intipa_words:
                 all_intipa_words[intipa] = {word}
             else:
@@ -62,6 +60,4 @@ class AllIntipaWords:
                 list_word.update([word])
                 all_intipa_words[intipa] = list_word
 
-            all_word_numbers[word] = word_as_numbers
-
-        return all_intipa_words, all_word_numbers
+        return all_intipa_words

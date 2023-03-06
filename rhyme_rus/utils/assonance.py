@@ -4,16 +4,21 @@ class Assonance:
     def __init__(self, unstressed_word, score_pattern_rhyme):
         self.unstressed_word = unstressed_word
         self.rhymes = score_pattern_rhyme["rhyme"]
+        self.score = score_pattern_rhyme["score"]
 
-
+    #TODO correct type hints
     def get_all_assonance(self):
         all_assonance: list[int] = []
-        for rhyme in self.rhymes:
+        for rhyme, score in zip(self.rhymes, self.score):
            n_same_sounds: list[str] = len([_str for _str in rhyme if _str in self.unstressed_word])
            len_rhyme = len(rhyme)
-           ratio_n_same_sounds_len = round(round(n_same_sounds / len_rhyme, 1)*10)
+           dif_lengths = abs(len(self.unstressed_word) - len_rhyme)
+           ratio_n_same_sounds_len = round(
+               score / (round(round(n_same_sounds / (len_rhyme + dif_lengths), 1) * 10) + 1))
            all_assonance.append(ratio_n_same_sounds_len)
         return all_assonance
+
+
 
 
 

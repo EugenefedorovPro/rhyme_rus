@@ -9,6 +9,7 @@ class Score:
                                                "same_v": 0,
                                                "same_cons": 0,
                                                "near_stressed": 1,
+                                               "near_v": 1,
                                                "add_init_cons": 1,
                                                "no_init_cons": 1,
                                                "prolong": 1,

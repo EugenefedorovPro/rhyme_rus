@@ -2,7 +2,7 @@ import pandas as pd
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.exceptions import StressedVowelNotDetected
 from rhyme_rus.utils.stressed_word import FactoryStress
-from rhyme_rus.utils.intipa_sounds import FactoryIntipaNumbers
+from rhyme_rus.utils.intipa_sounds import FactoryIntipa
 from rhyme_rus.utils.intipa_words import MetaAllIntipaWords
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.exceptions import MultipleStresses
@@ -14,6 +14,7 @@ from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.reverse import Reverse
 from rhyme_rus.utils.assonance import Assonance
 from rhyme_rus.utils.table import Table
+from rhyme_rus.utils.reduce_table import ReduceTable
 
 
 class Procedure:
@@ -32,14 +33,7 @@ class Procedure:
             raise MultipleStresses(self.word.unstressed_word, self.word.all_stresses)
 
     def __get_intipa(self) -> None:
-        intipa, sounds = FactoryIntipaNumbers().fetch_intipa_sounds(self.word.stressed_word)
-        # remove initial stresses, put by NN
-        if "ˈ" in sounds:
-            sounds = sounds[1:]
-        self.word.intipa, self.word.sounds = intipa, sounds
-
-    def __get_numbers(self):
-        self.word.numbers = IpaDicts().unistring_to_numbers(self.word.sounds)
+        self.word.intipa = FactoryIntipa().fetch_intipa(self.word.stressed_word)
 
     def __get_stressed_vowel(self) -> None:
         for int_ipa in self.word.intipa[:2]:
@@ -56,7 +50,7 @@ class Procedure:
         self.word.near_stressed_v = dict_near_stressed[self.word.stressed_vowel]
 
     def __get_all_intipa_words(self) -> None:
-        self.word.all_intipa_words, self.word.all_word_numbers = MetaAllIntipaWords(self.word.range_sql,
+        self.word.all_intipa_words = MetaAllIntipaWords(self.word.range_sql,
                                                         self.word.intipa).get_all_intipa_words()
 
     def __get_all_intipa(self) -> None:
@@ -103,16 +97,21 @@ class Procedure:
     def __get_assonance(self):
         self.word.assonance = Assonance(unstressed_word=self.word.unstressed_word,
                                         score_pattern_rhyme=self.word.score_pattern_rhyme).get_all_assonance()
+        self.word.score_pattern_rhyme["assonance"] = self.word.assonance
+
+    def __get_table_long(self) -> None:
+        self.word.table_long = pd.DataFrame.from_dict(self.word.score_pattern_rhyme)
+        self.word.table_long = self.word.table_long[['score', 'assonance', 'pattern', 'rhyme']]
 
     def __get_table(self) -> None:
-        self.word.score_pattern_rhyme["assonance"] = self.word.assonance
-        self.word.table = pd.DataFrame.from_dict(self.word.score_pattern_rhyme)
+        self.word.table = ReduceTable(word_intipa=self.word.intipa, table_long=self.word.table_long).get_reduced_table()
+        self.word.table = self.word.table.reset_index(drop=True)
+        self.word.table.index.name = 'id'
 
     def build(self):
         self.__get_all_stresses()
         self.__get_stressed_word()
         self.__get_intipa()
-        self.__get_numbers()
         self.__get_stressed_vowel()
         self.__get_index_stressed_v()
         self.__get_near_stressed_v()
@@ -127,5 +126,6 @@ class Procedure:
         self.__get_reverse()
         self.__get_score_pattern_rhyme()
         self.__get_assonance()
+        self.__get_table_long()
         self.__get_table()
         return self.word
