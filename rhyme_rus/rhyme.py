@@ -3,16 +3,17 @@ from rhyme_rus.utils.procedure import Procedure
 from rhyme_rus.utils.word_statistics import WordStatistics
 from rhyme_rus.utils.exceptions import MultipleStresses
 
-target_word = "облако"
+target_word = "скобка"
 word = Word(target_word)
 word = Procedure(word).build()
-word.table.to_csv(f"{target_word}_{word.range_sql}_.csv")
+word.table.to_csv(f"{target_word}_{word.range_sql}_long.csv")
+
 # print(word.reduce_table_figures)
 # print(type(word.reduce_table_figures[2]))
 
 # word_preprocessed.table.to_csv("long_table.csv")
 
-# WordStatistics().write_all_rhymes(seed=False)
+# WordStatistics().write_all_rhymes(seed=False, long=False)
 # WordStatistics().write_all_rhymes(depends_on:
 # print(word.table)
 # print(len(word.all_word_numbers))

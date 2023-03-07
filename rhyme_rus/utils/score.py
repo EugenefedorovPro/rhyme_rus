@@ -22,11 +22,18 @@ class Score:
                                                "no_sound": 5
                                                }
 
+    def __initial_sound(self, i, p) -> int:
+        if i == 0 and p in ("voice", "voice_prolong", "palat", "any_cons"):
+            return 1
+        else:
+            return self.dict_pat_score[p]
+
     def __get_rhyme_score(self, pat: tuple[str]) -> tuple[int]:
         pat_copy: list[str] = list(pat)
         score: list[int] = []
-        for p in pat_copy:
-            score.append(self.dict_pat_score[p])
+        for i, p in enumerate(pat_copy):
+            scr = self.__initial_sound(i, p)
+            score.append(scr)
         return tuple(score)
 
     def get_all_score_patterns(self) -> dict[tuple[int], list[tuple[str]]]:

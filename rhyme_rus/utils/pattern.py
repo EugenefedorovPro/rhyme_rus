@@ -31,7 +31,7 @@ class Pattern:
     # ["any", "any", "any"]
     # TODO vowels_but_stressed - how to simplify?
     def __get_rhyme_pattern_short(self, word_padded, rhyme_intipa) -> list[str]:
-        except_pats = {-1: "no_sound", -2: "add_sound", -3: "no_init_cons", -4: "add_init_cons"}
+        except_pats = {-1: "add_sound", -2: "no_sound", -3: "no_init_cons", -4: "add_init_cons"}
         vowels_but_stressed = {"same_stressed": "same_v", "near_stressed": "near_v"}
         rhyme_pattern: list = []
         for i, _int_word_int_rhyme in enumerate(zip(word_padded, rhyme_intipa)):

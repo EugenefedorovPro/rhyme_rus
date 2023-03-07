@@ -60,8 +60,13 @@ class FactoryPad:
         self.__get_index_farthest_stressed_v()
 
     def __fit_stressed_vowel(self):
-        if self.rhyme[0] != self.stressed_vowel and self.rhyme[1] != self.stressed_vowel:
-            self.stressed_vowel = self.near_stressed_v
+        if self.rhyme_len >= 2:
+            if self.rhyme[0] != self.stressed_vowel and self.rhyme[1] != self.stressed_vowel:
+                self.stressed_vowel = self.near_stressed_v
+        else:
+            if self.rhyme[0] != self.stressed_vowel:
+                self.stressed_vowel = self.near_stressed_v
+
 
     def __get_index_stressed_vowel_rhyme(self) -> None:
         self.index_stressed_vowel_rhyme = self.rhyme.index(self.stressed_vowel)
@@ -219,6 +224,7 @@ class PadWordRhyme:
         shorts_no = self.__put_all_no_sounds()
         shorts_add = self.__put_all_add_sounds()
         shorts_no_add = self.__put_no_add_sounds()
+        shorts.append(list(self.rhyme))
         shorts.extend(shorts_no)
         shorts.extend(shorts_add)
         shorts.extend(shorts_no_add)

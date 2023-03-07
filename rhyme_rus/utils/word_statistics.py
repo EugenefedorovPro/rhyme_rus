@@ -89,26 +89,29 @@ class WordStatistics:
         return length_word
 
     @staticmethod
-    def write_rhyme(selected_word):
+    def write_rhyme(selected_word, long):
         word = Word(selected_word)
         word = Procedure(word).build()
         length = len(word.intipa)
         file_name = f"{length}_{selected_word}.csv"
-        word.table.to_csv(file_name)
-        print(f"saved {file_name}", flush=True)
+        if long:
+            word.table_long.to_csv(file_name)
+        else:
+            word.table.to_csv(file_name)
+        print(f"saved {file_name}, long is {long}", flush=True)
 
-    def write_all_rhymes(self, seed=True, lengths=range(1, 17)):
+    def write_all_rhymes(self, seed=True, long=True, lengths=range(1, 17)):
         length_word = self.factory_length_word(seed)
         self.length_word = length_word
         print(self.length_word)
         for length in length_word:
             if length in lengths:
                 selected_word = length_word[length]
-                WordStatistics().write_rhyme(selected_word)
+                WordStatistics().write_rhyme(selected_word, long)
 
 
 if __name__ == "__main__":
     # print(WordStatistics().factory_length_word(seed=True))
-    print(WordStatistics().get_accent_intipa_by_length(6))
+    print(WordStatistics().get_accent_intipa_by_length(11))
     # print(WordStatistics().seed_length_word)
     # print(WordStatistics().seed_length_word)
