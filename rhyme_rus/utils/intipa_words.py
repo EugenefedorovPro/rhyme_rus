@@ -3,17 +3,6 @@ from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.seeds.mysql_connect import MySql
 
 
-class MetaAllIntipaWords:
-    def __init__(self, range_sql, intipa):
-        self.range_sql = range_sql
-        self.intipa = intipa
-        self.all_intipa_words: dict[tuple[int], set[str]] = {}
-
-    def get_all_intipa_words(self) -> dict[tuple[int], set[str]]:
-        self.all_intipa_words = AllIntipaWords(self.range_sql, self.intipa).get_all_intipa_words()
-        return self.all_intipa_words
-
-
 class AllIntipaWords:
     def __init__(self, range_sql, intipa):
         self.intipa: list[int] = intipa
@@ -41,7 +30,7 @@ class AllIntipaWords:
     def __fetch_all_scope_rhymes(self) -> None:
         all_scope_rhymes: list[tuple[str, str]]
         my_sql = MySql()
-        query: str = f"select word, intipa, word_as_numbers from wiki_pickled where stressed_vowel in ({self.stressed_vowel}, {self.near_stressed_v}) " \
+        query: str = f"select word, intipa from wiki_pickled where stressed_vowel in ({self.stressed_vowel}, {self.near_stressed_v}) " \
                      f"and (len_after_stress between {self.length_after_stress - self.range_sql} " \
                      f"and {self.length_after_stress + self.range_sql})"
         self.word_intipa_word_as_number = my_sql.cur_execute(query)

@@ -6,10 +6,9 @@ from rhyme_rus.utils.intipa import FactoryIntipa
 from rhyme_rus.utils.stressed_vowel import get_stressed_vowel
 from rhyme_rus.utils.index_stressed_v import get_index_stressed_v
 from rhyme_rus.utils.near_stressed_v import get_near_stressed_v
-from rhyme_rus.utils.intipa_words import MetaAllIntipaWords
+from rhyme_rus.utils.intipa_words import AllIntipaWords
 from rhyme_rus.utils.range_rhymes import RangeRhymes
 from rhyme_rus.utils.pad import Pad
-from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.pattern import Pattern
 from rhyme_rus.utils.score import Score
 from rhyme_rus.utils.reverse import Reverse
@@ -41,7 +40,7 @@ class Procedure:
         self.word.near_stressed_v = get_near_stressed_v(self.word.stressed_vowel)
 
     def __get_all_intipa_words(self) -> None:
-        self.word.all_intipa_words = MetaAllIntipaWords(self.word.range_sql,
+        self.word.all_intipa_words = AllIntipaWords(self.word.range_sql,
                                                         self.word.intipa).get_all_intipa_words()
 
     def __get_all_intipa(self) -> None:
