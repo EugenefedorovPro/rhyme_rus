@@ -1,10 +1,10 @@
 import pandas as pd
-from rhyme_rus.utils.exceptions import StressedVowelNotDetected
-from rhyme_rus.utils.stressed_word import FactoryStress
+from rhyme_rus.utils.all_stresses import FactoryStress
+from rhyme_rus.utils.stressed_word import get_stressed_word
 from rhyme_rus.utils.intipa import FactoryIntipa
+from rhyme_rus.utils.stressed_vowel import get_stressed_vowel
 from rhyme_rus.utils.intipa_words import MetaAllIntipaWords
 from rhyme_rus.utils.word import Word
-from rhyme_rus.utils.exceptions import MultipleStresses
 from rhyme_rus.utils.range_rhymes import RangeRhymes
 from rhyme_rus.utils.pad import Pad
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
@@ -24,22 +24,13 @@ class Procedure:
         self.word.all_stresses = FactoryStress().fetch_stress(self.word.unstressed_word)
 
     def __get_stressed_word(self) -> None:
-        if len(self.word.all_stresses) == 1:
-            self.word.stressed_word = self.word.all_stresses[0]
-        elif self.word.stressed_word:
-            pass
-        else:
-            raise MultipleStresses(self.word.unstressed_word, self.word.all_stresses)
+       self.word.stressed_word = get_stressed_word(self.word.all_stresses, self.word.unstressed_word)
 
     def __get_intipa(self) -> None:
         self.word.intipa = FactoryIntipa().fetch_intipa(self.word.stressed_word)
 
     def __get_stressed_vowel(self) -> None:
-        for int_ipa in self.word.intipa[:2]:
-            if int_ipa in IpaDicts().all_stressed_vowels:
-                self.word.stressed_vowel = int_ipa
-        if not self.word.stressed_vowel:
-            raise StressedVowelNotDetected(self.word.stressed_word, IpaDicts().number2sign, self.word.intipa)
+        self.word.stressed_vowel = get_stressed_vowel(self.word.intipa, self.word.stressed_word)
 
     def __get_index_stressed_v(self) -> None:
         self.word.index_stressed_v = self.word.intipa.index(self.word.stressed_vowel)
