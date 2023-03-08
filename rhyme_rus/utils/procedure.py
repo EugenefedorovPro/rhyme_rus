@@ -1,10 +1,11 @@
 import pandas as pd
+from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.all_stresses import FactoryStress
 from rhyme_rus.utils.stressed_word import get_stressed_word
 from rhyme_rus.utils.intipa import FactoryIntipa
 from rhyme_rus.utils.stressed_vowel import get_stressed_vowel
+from rhyme_rus.utils.index_stressed_v import get_index_stressed_v
 from rhyme_rus.utils.intipa_words import MetaAllIntipaWords
-from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.range_rhymes import RangeRhymes
 from rhyme_rus.utils.pad import Pad
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
@@ -33,7 +34,7 @@ class Procedure:
         self.word.stressed_vowel = get_stressed_vowel(self.word.intipa, self.word.stressed_word)
 
     def __get_index_stressed_v(self) -> None:
-        self.word.index_stressed_v = self.word.intipa.index(self.word.stressed_vowel)
+        self.word.index_stressed_v = get_index_stressed_v(self.word.intipa, self.word.stressed_vowel)
 
     def __get_near_stressed_v(self):
         dict_near_stressed = IpaDicts().near_stressed_v_int
