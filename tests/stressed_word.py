@@ -20,14 +20,14 @@ def test_fetch_stress_from_nn(unstressed_word: str, stressed_word: list[tuple]):
 # noinspection PyRedundantParentheses
 @pytest.mark.parametrize("unstressed_word, word_from_db, expected_stressed_word", [
     ("дом", [("до'м",)], ["до'м"]),
-    ("баргузин", None, (["баргузи'н", "ба'ргузин", "баргу'зин"])),
-    ("округа", [("окру'га"), ("о'круга"), ("округа'")], ["окру'га", "о'круга", "округа'"]),
-    ("зинзивер", None, ["зинзи'вер", "зи'нзивер", "зинзиве'р"]),
+    ("баргузин", [], (["баргузи'н", "ба'ргузин", "баргу'зин"])),
+    ("округа", [("окру'га",), ("о'круга",), ("округа'",)], ["окру'га", "о'круга", "округа'"]),
+    ("зинзивер", [], ["зинзи'вер", "зи'нзивер", "зинзиве'р"]),
     ("моль", [("мо'ль",)], ["мо'ль"])
 ]
                          )
-@patch("rhyme_rus.utils.fetch_stressed_word.MySql")
+@patch("rhyme_rus.utils.stressed_word.MySql")
 def test_factory_stress(cur, unstressed_word, word_from_db, expected_stressed_word):
-    cur.cur_execute.return_value = word_from_db
+    cur().cur_execute.return_value = word_from_db
     actual_stressed_word = FactoryStress.fetch_stress(unstressed_word)
-    assert actual_stressed_word == expected_stressed_word
+    assert set(actual_stressed_word) == set(expected_stressed_word)

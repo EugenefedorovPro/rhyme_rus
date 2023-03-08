@@ -1,4 +1,4 @@
-from rhyme_rus.utils.intipa_sounds import IpaDicts
+from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.pattern import Pattern
 from rhyme_rus.utils.score import Score
 

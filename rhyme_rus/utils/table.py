@@ -1,6 +1,3 @@
-import pandas as pd
-
-
 class Table:
     def __init__(self, rhyme_pattern_score):
         self.rhyme_pattern_score: dict[[str, dict[int, tuple[str]]]] = rhyme_pattern_score

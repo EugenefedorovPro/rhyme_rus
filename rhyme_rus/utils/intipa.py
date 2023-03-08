@@ -16,7 +16,7 @@ class AIntIpa(ABC):
 
 class FactoryIntipa:
     @classmethod
-    def fetch_intipa(cls, stressed_word):
+    def fetch_intipa(cls, stressed_word) -> list[int]:
         intipa = FetchIntipaDb(stressed_word).fetch_intipa()
         if intipa:
             return intipa
@@ -28,8 +28,7 @@ class FactoryIntipa:
 class FetchIntipaDb(AIntIpa):
     def fetch_intipa(self) -> list[int] | None:
         _query: str = f'''select intipa from  wiki_pickled where accent = "{self.stressed_word}"'''
-        _mysql = MySql()
-        intipa = _mysql.cur_execute(_query)
+        intipa = MySql().cur_execute(_query)
         if intipa:
             intipa = intipa[0][0]
             intipa = json.loads(intipa)
@@ -49,12 +48,12 @@ class FetchIntipaNn(AIntIpa):
         self.__trans_uni_to_ipa()
         self.__shorten_ipa()
 
-    def fetch_intipa(self) -> tuple[list[int], str]:
+    def fetch_intipa(self) -> list[int]:
         intipa: list[int] = []
         for sign in self.shortened_ipa:
             _int = IpaDicts().sign2number[sign]
             intipa.append(_int)
-        return intipa, self.trans_uni
+        return intipa
 
     def __stressed_word_to_trans_uni(self) -> None:
         # nn yields no stress mark for one syllable words
