@@ -1,4 +1,4 @@
-from itertools import combinations, permutations
+from itertools import combinations
 from typing import Iterable
 
 
@@ -24,7 +24,7 @@ class Pad:
                 near_stressed_v=self.near_stressed_v,
                 index_stressed_v=self.index_stressed_v
             )
-            shorts = factory.shorten()
+            shorts = factory.shorten_prolong()
             for key in shorts:
                 if key not in all_scope_pads:
                     value = [shorts[key]]
@@ -71,7 +71,6 @@ class FactoryPad:
     def __get_index_stressed_vowel_rhyme(self) -> None:
         self.index_stressed_vowel_rhyme = self.rhyme.index(self.stressed_vowel)
 
-    # TODO correct logics
     # process initial consonants
     # when word_preprocessed and rhyme are of the same length, and either of them has initial consonant
     # 0 is a stressed vowels
@@ -97,7 +96,7 @@ class FactoryPad:
     def __get_index_farthest_stressed_v(self):
         self.index_farthest_stressed_v = max(self.index_stressed_vowel_word, self.index_stressed_vowel_rhyme)
 
-    def shorten(self) -> dict[tuple[int], tuple[int]]:
+    def shorten_prolong(self) -> dict[tuple[int], tuple[int]]:
         pwr = PadWordRhyme(self.word_preprocessed, self.rhyme_preprocessed, self.stressed_vowel, self.near_stressed_v,
                            self.index_stressed_vowel_word, self.index_farthest_stressed_v)
         len_rhyme_preprocessed = len(self.rhyme_preprocessed)
@@ -105,7 +104,7 @@ class FactoryPad:
         if len_rhyme_preprocessed < len_word_preprocessed:
             shorts = pwr.prolong_rhyme()
         elif len_rhyme_preprocessed > len_word_preprocessed:
-            shorts = pwr.shorten_rhyme(shorten=True)
+            shorts = pwr.shorten_rhyme()
         else:
             shorts = [tuple(self.rhyme_preprocessed)]
 
@@ -127,9 +126,7 @@ class PadWordRhyme:
         self.index_farthest_stressed_v = index_farthest_stressed_v
         self.all_indexes_to_replace: list[list[tuple[int]]] = []
 
-    def shorten_rhyme(self, shorten) -> list[list[int]]:
-        shorten_change = {True:-1, False:-2}
-        change = shorten_change[shorten]
+    def shorten_rhyme(self) -> list[list[int]]:
         shorts: list[list[int]] = []
         indexes_to_replace: Iterable[tuple] = combinations(range(self.index_farthest_stressed_v + 1, self.rhyme_len),
                                                            self.target_len)
@@ -137,30 +134,30 @@ class PadWordRhyme:
         for indexes in indexes_to_replace:
             rhyme_copy = self.rhyme.copy()
             for index in indexes:
-                if shorten:
-                    # remove sounds
-                    rhyme_copy[index] = change
-                else:
-                    # add_sounds
-                    rhyme_copy.insert(index, change)
+                # remove sounds
+                rhyme_copy[index] = -1
                 shorts.append(rhyme_copy)
         return shorts
 
     def prolong_rhyme(self):
+        # add -8 to rhyme to have indexes to insert
+        # target_word  = [1,2,3,4,5], rhyme = [1,2,5]
+        # result = [1,2,5,-8,-8]
+        # so I can add sounds to the last position, e.g. [1,2,-2,5,-2]
         add_eights = [-8 for _ in range(self.target_len)]
-        rhyme_eighted: list[int] = self.rhyme.copy()
-        rhyme_eighted.extend(add_eights)
-        indexes_to_replace: Iterable[tuple] = combinations(range(self.index_farthest_stressed_v + 1, len(rhyme_eighted)),
+        rhyme_eight: list[int] = self.rhyme.copy()
+        rhyme_eight.extend(add_eights)
+        indexes_to_replace: Iterable[tuple] = combinations(range(self.index_farthest_stressed_v + 1, len(rhyme_eight)),
                                                            self.target_len)
         shorts: list[list[int]] = []
         for indexes in indexes_to_replace:
-            rhyme_eighted_copy = rhyme_eighted.copy()
+            rhyme_eight_copy = rhyme_eight.copy()
             for index in indexes:
                 # add_sounds
-                rhyme_eighted_copy.insert(index, -2)
+                rhyme_eight_copy.insert(index, -2)
                 #remove eights
-                rhyme_eighted_copy = [_int for _int in rhyme_eighted_copy if _int != -8]
-                shorts.append(rhyme_eighted_copy)
+                rhyme_eight_copy = [_int for _int in rhyme_eight_copy if _int != -8]
+                shorts.append(rhyme_eight_copy)
         return shorts
 
 
@@ -172,5 +169,5 @@ class PadWordRhyme:
 #     word_preprocessed = [4, 2, 8]
 #     rhyme = [2, 1]
 #     stressed_vowel = 2
-#     patted_rhyme = FactoryPad(word_preprocessed, rhyme, stressed_vowel).shorten()
+#     patted_rhyme = FactoryPad(word_preprocessed, rhyme, stressed_vowel).shorten_prolong()
 #     print(patted_rhyme)
