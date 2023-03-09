@@ -5,9 +5,9 @@ from typing import Iterable
 # -1 add_sound
 # -2 no_sound
 class Pad:
-    def __init__(self, intipa: list[int], all_scope_rhymes_intipa: list[tuple[int]], stressed_vowel: int,
+    def __init__(self, intipa: list[int], all_intipa_word: dict[tuple[int, ...], set[str]], stressed_vowel: int,
                  near_stressed_v: int, index_stressed_v: int):
-        self.all_intipa = all_scope_rhymes_intipa
+        self.all_intipa = list(all_intipa_word.keys())
         self.word = intipa
         self.stressed_vowel = stressed_vowel
         self.near_stressed_v: int = near_stressed_v
@@ -40,11 +40,11 @@ class Pad:
 
 
 class FactoryPad:
-    def __init__(self, intipa: list[int], intipa_rhyme: list[int], stressed_vowel: int, near_stressed_v: int,
+    def __init__(self, intipa: list[int], intipa_rhyme: tuple[int], stressed_vowel: int, near_stressed_v: int,
                  index_stressed_v: int):
         self.word = intipa
-        self.rhyme = intipa_rhyme
-        self.rhyme_preprocessed: tuple[int] = tuple()
+        self.rhyme: list[int] = list(intipa_rhyme)
+        self.rhyme_preprocessed: list[int] = []
         self.word_preprocessed: list[int] = []
         self.stressed_vowel: int = stressed_vowel
         self.near_stressed_v: int = near_stressed_v
@@ -79,13 +79,13 @@ class FactoryPad:
     # 2) word_preprocessed = (0, 1, 2, 3), rhyme = (1, 0, 2, 3) -> _rhyme = (-4, 0, 2, 3)
     def __get_rhyme_preprocessed(self) -> None:
         if self.index_stressed_vowel_word != self.index_stressed_vowel_rhyme:
-            self.rhyme_preprocessed: list[int] | tuple[int] = list(self.rhyme).copy()
+            self.rhyme_preprocessed: list[int] = list(self.rhyme).copy()
             if self.index_stressed_vowel_word == 1:
                 self.rhyme_preprocessed.insert(0, -3)
             else:
                 self.rhyme_preprocessed.pop(0)
                 self.rhyme_preprocessed.insert(0, -4)
-            self.rhyme_preprocessed = tuple(self.rhyme_preprocessed)
+            self.rhyme_preprocessed = self.rhyme_preprocessed
         else:
             self.rhyme_preprocessed = self.rhyme
 
@@ -95,7 +95,7 @@ class FactoryPad:
             self.word_preprocessed.insert(0, 0)
 
     def __get_index_farthest_stressed_v(self):
-        self.index_farthest_stressed_v = max(self.index_farthest_stressed_v, self.index_stressed_vowel_rhyme)
+        self.index_farthest_stressed_v = max(self.index_stressed_vowel_word, self.index_stressed_vowel_rhyme)
 
     def shorten(self) -> dict[tuple[int], tuple[int]]:
         pwr = PadWordRhyme(self.word_preprocessed, self.rhyme_preprocessed, self.stressed_vowel, self.near_stressed_v,
@@ -103,18 +103,18 @@ class FactoryPad:
         len_rhyme_preprocessed = len(self.rhyme_preprocessed)
         len_word_preprocessed = len(self.word_preprocessed)
         if len_rhyme_preprocessed < len_word_preprocessed:
-            shorts = pwr.change_unequal_rhyme(shorten=False)
+            shorts = pwr.prolong_rhyme()
         elif len_rhyme_preprocessed > len_word_preprocessed:
-            shorts = pwr.change_unequal_rhyme(shorten=True)
+            shorts = pwr.shorten_rhyme(shorten=True)
         else:
-            shorts = pwr.change_equal_rhyme()
+            shorts = [tuple(self.rhyme_preprocessed)]
 
-        dict_rhyme_shorts = {tuple(key): self.rhyme for key in shorts}
+        dict_rhyme_shorts = {tuple(key): tuple(self.rhyme) for key in shorts}
         return dict_rhyme_shorts
 
 
 class PadWordRhyme:
-    def __init__(self, intipa: list[int], intipa_rhyme: tuple[int], stressed_vowel: int, near_stressed_v: int,
+    def __init__(self, intipa: list[int], intipa_rhyme: list[int], stressed_vowel: int, near_stressed_v: int,
                  index_stressed_vowel_word: int, index_farthest_stressed_v: int):
         self.word_preprocessed = intipa
         self.rhyme = intipa_rhyme
@@ -126,9 +126,8 @@ class PadWordRhyme:
         self.target_len = abs(len(intipa) - len(intipa_rhyme))
         self.index_farthest_stressed_v = index_farthest_stressed_v
         self.all_indexes_to_replace: list[list[tuple[int]]] = []
-        self.__generate_all_indexes_to_replace()
 
-    def change_unequal_rhyme(self, shorten) -> list[list[int]]:
+    def shorten_rhyme(self, shorten) -> list[list[int]]:
         shorten_change = {True:-1, False:-2}
         change = shorten_change[shorten]
         shorts: list[list[int]] = []
@@ -136,7 +135,7 @@ class PadWordRhyme:
                                                            self.target_len)
         indexes_to_replace = list(indexes_to_replace)
         for indexes in indexes_to_replace:
-            rhyme_copy = list(self.rhyme).copy()
+            rhyme_copy = self.rhyme.copy()
             for index in indexes:
                 if shorten:
                     # remove sounds
@@ -147,88 +146,25 @@ class PadWordRhyme:
                 shorts.append(rhyme_copy)
         return shorts
 
-
-    def __generate_all_indexes_to_replace(self):
-        for max_n_ind in range(1,4):
-            indexes_to_replace: Iterable[tuple] = combinations(range(self.index_farthest_stressed_v + 1, self.rhyme_len),max_n_ind)
-            indexes_to_replace = list(indexes_to_replace)
-            self.all_indexes_to_replace.append(indexes_to_replace)
-
-
-    def __put_all_no_sounds(self) -> list[list[int]]:
+    def prolong_rhyme(self):
+        add_eights = [-8 for _ in range(self.target_len)]
+        rhyme_eighted: list[int] = self.rhyme.copy()
+        rhyme_eighted.extend(add_eights)
+        indexes_to_replace: Iterable[tuple] = combinations(range(self.index_farthest_stressed_v + 1, len(rhyme_eighted)),
+                                                           self.target_len)
         shorts: list[list[int]] = []
-        for indexes in self.all_indexes_to_replace:
-            if indexes:
-                for index in indexes:
-                    rhyme_copy = list(self.rhyme).copy()
-                    for ndx in index:
-                        # remove sounds
-                        rhyme_copy[ndx] = -1
-                        shorts.append(rhyme_copy)
+        for indexes in indexes_to_replace:
+            rhyme_eighted_copy = rhyme_eighted.copy()
+            for index in indexes:
+                # add_sounds
+                rhyme_eighted_copy.insert(index, -2)
+                #remove eights
+                rhyme_eighted_copy = [_int for _int in rhyme_eighted_copy if _int != -8]
+                shorts.append(rhyme_eighted_copy)
         return shorts
 
-    def __put_all_add_sounds(self)-> list[list[int]]:
-        shorts: list[list[int]] = []
-        for indexes in self.all_indexes_to_replace:
-            if indexes:
-                for index in indexes:
-                    rhyme_copy = list(self.rhyme).copy()
-                    for ndx in index:
-                        # add_sounds
-                        rhyme_copy.insert(ndx, -2)
-                        shorts.append(rhyme_copy)
-        return shorts
 
-    # TODO simplify, reduce dupes
-    def __put_no_add_sounds(self) -> list[list[int]]:
-        shorts: list[list[int]] = []
-        for indexes in self.all_indexes_to_replace:
-            if indexes:
-                for index in indexes:
-                    if len(index) == 3:
-                        new_pack_indexes = permutations(index,3)
-                        new_pack_indexes = list(new_pack_indexes)
-                        for ndx in new_pack_indexes:
-                            rhyme_copy = list(self.rhyme).copy()
-                            # remove sounds
-                            rhyme_copy[ndx[0]] = -1
-                            rhyme_copy[ndx[1]] = -1
-                            # add_sounds
-                            rhyme_copy.insert(ndx[2], -2)
-                            shorts.append(rhyme_copy)
 
-                        for ndx in new_pack_indexes:
-                            rhyme_copy = list(self.rhyme).copy()
-                            # remove sounds
-                            rhyme_copy[ndx[0]] = -1
-                            # add_sounds
-                            rhyme_copy.insert(ndx[1], -2)
-                            rhyme_copy.insert(ndx[2], -2)
-                            shorts.append(rhyme_copy)
-
-                    elif len(index) == 2:
-                        new_pack_indexes = [index]
-                        for ndx in new_pack_indexes:
-                            rhyme_copy = list(self.rhyme).copy()
-                            # remove sounds
-                            rhyme_copy[ndx[0]] = -1
-                            # add_sounds
-                            rhyme_copy.insert(ndx[1], -2)
-                            shorts.append(rhyme_copy)
-                    else:
-                        break
-        return shorts
-
-    def change_equal_rhyme(self) -> list[list[int]]:
-        shorts: list[list[int]] = []
-        shorts_no = self.__put_all_no_sounds()
-        shorts_add = self.__put_all_add_sounds()
-        shorts_no_add = self.__put_no_add_sounds()
-        shorts.append(list(self.rhyme))
-        shorts.extend(shorts_no)
-        shorts.extend(shorts_add)
-        shorts.extend(shorts_no_add)
-        return shorts
 
 
 

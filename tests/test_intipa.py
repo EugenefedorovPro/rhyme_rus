@@ -1,6 +1,5 @@
 import pytest
 from unittest.mock import patch
-from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.intipa import FactoryIntipa
 from collections import namedtuple
 from typing import NamedTuple

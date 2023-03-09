@@ -43,14 +43,10 @@ class Procedure:
         self.word.all_intipa_words = AllIntipaWords(self.word.range_sql,
                                                         self.word.intipa).get_all_intipa_words()
 
-    def __get_all_intipa(self) -> None:
-        self.word.all_intipa = list(self.word.all_intipa_words.keys())
-
-
     def __get_all_pad_intipa(self) -> None:
         self.word.all_pad_intipa = Pad(
             intipa=self.word.intipa,
-            all_scope_rhymes_intipa=self.word.all_intipa,
+            all_intipa_word=self.word.all_intipa_words,
             stressed_vowel=self.word.stressed_vowel,
             near_stressed_v=self.word.near_stressed_v,
             index_stressed_v=self.word.index_stressed_v
@@ -106,7 +102,6 @@ class Procedure:
         self.__get_index_stressed_v()
         self.__get_near_stressed_v()
         self.__get_all_intipa_words()
-        self.__get_all_intipa()
         self.__get_all_pad_intipa()
         self.__get_all_pads()
         self.__get_all_pattern_pads()
