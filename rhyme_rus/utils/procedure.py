@@ -82,11 +82,9 @@ class Procedure:
     def __get_table_long(self) -> None:
         self.word.table_long = get_table_long(self.word.score_pattern_rhyme)
 
-    def __get_table(self) -> None:
+    def __get_table_reduced(self) -> None:
         self.word.table = ReduceTable(word_intipa = self.word.intipa,
                                       table_long = self.word.table_long).get_reduced_table()
-        self.word.table = self.word.table.reset_index(drop = True)
-        self.word.table.index.name = 'id'
 
     def build(self):
         self.__get_all_stresses()
@@ -104,5 +102,5 @@ class Procedure:
         self.__get_score_pattern_rhyme()
         self.__get_assonance()
         self.__get_table_long()
-        self.__get_table()
+        self.__get_table_reduced()
         return self.word

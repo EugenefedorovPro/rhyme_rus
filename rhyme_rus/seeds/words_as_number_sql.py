@@ -4,6 +4,7 @@ from rhyme_rus.seeds.ipa_dicts import IpaDicts
 import ipapy.ipachar
 from ipapy.ipastring import IPAString
 
+
 class WordsNumbers:
     def __init__(self):
         self.sign2number = IpaDicts().full_sign2number
@@ -29,7 +30,7 @@ class WordsNumbers:
 
     def __get_all_ipa(self):
         for sounds in self.all_sounds:
-            self.all_ipa.append(IPAString(unicode_string=sounds))
+            self.all_ipa.append(IPAString(unicode_string = sounds))
 
     def __get_all_numbers(self):
         for ipa in self.all_ipa:
@@ -45,13 +46,13 @@ class WordsNumbers:
         for _num, _id in zip(self.all_numbers, self.all_id):
             self.numbers_id.append((json.dumps(_num), _id))
 
-
     def update_word_as_numbers(self):
         query_column = "alter table wiki_pickled add word_as_numbers json"
         query_update = "update wiki_pickled set word_as_numbers = %s where id = %s"
         MySql().cur_execute(query_column)
-        n_rows_processed = MySql().cur_executemany(query_update,self.numbers_id)
+        n_rows_processed = MySql().cur_executemany(query_update, self.numbers_id)
         return n_rows_processed
+
 
 if __name__ == "__main__":
     numbers_id = WordsNumbers().numbers_id

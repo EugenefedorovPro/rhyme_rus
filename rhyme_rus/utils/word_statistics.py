@@ -9,7 +9,7 @@ from rhyme_rus.utils.procedure import Procedure
 class WordStatistics:
     def __init__(self):
         self.all_lengths_after_stress: list[int] = []
-        self.word_statistics: pd.DataFrame = pd.DataFrame(columns=["length", "number"])
+        self.word_statistics: pd.DataFrame = pd.DataFrame(columns = ["length", "number"])
         self.samples: dict[int, str] = {}
         self.seed_length_word: dict[int, str] = {}
         self.seed_length_word: dict[int, str] = {}
@@ -41,7 +41,7 @@ class WordStatistics:
             lengths = length_number["length"]
             lengths.append(length)
             length_number["length"] = lengths
-        return pd.DataFrame.from_dict(length_number).sort_values(by="length")
+        return pd.DataFrame.from_dict(length_number).sort_values(by = "length")
 
     def factory_length_word(self, seed) -> dict[int, str]:
         select_seed: dict[bool, dict[int, str]] = {True: self.__select_length_word(seed),
@@ -84,7 +84,7 @@ class WordStatistics:
             while not WordStatistics().__check_if_only_word(word):
                 word = WordStatistics().__get_word(length, seed)
             while not WordStatistics().__check_stress_intipa(word):
-                word = WordStatistics().__get_word(length, seed=False)
+                word = WordStatistics().__get_word(length, seed = False)
             length_word[length] = word
         return length_word
 
@@ -98,9 +98,9 @@ class WordStatistics:
             word.table_long.to_csv(file_name)
         else:
             word.table.to_csv(file_name)
-        print(f"saved {file_name}, long is {long}", flush=True)
+        print(f"saved {file_name}, long is {long}", flush = True)
 
-    def write_all_rhymes(self, seed=True, long=True, lengths=range(1, 17)):
+    def write_all_rhymes(self, seed = True, long = True, lengths = range(1, 17)):
         length_word = self.factory_length_word(seed)
         self.length_word = length_word
         print(self.length_word)
