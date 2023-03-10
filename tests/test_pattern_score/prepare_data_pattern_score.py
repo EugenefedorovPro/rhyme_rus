@@ -38,7 +38,7 @@ intipa_dom = list_intipa[0]
 intipa_lom = list_intipa[1]
 intipa_led = list_intipa[2]
 
-pats = Pattern(intipa_dom, [intipa_lom, intipa_led]).get_all_rhymes_patterns()
+pats = Pattern(intipa_dom, [intipa_lom, intipa_led]).get_all_pattern_pads()
 print(pats)
 
 path_pat = "../test_pattern/test_pattern.pkl"

@@ -2,8 +2,7 @@ from itertools import combinations
 from typing import Iterable
 
 
-# -1 add_sound
-# -2 no_sound
+# legend - {-1: "add_sound", -2: "no_sound", -3: "no_init_cons", -4: "add_init_cons"}
 class Pad:
     def __init__(self, intipa: list[int], all_intipa_word: dict[tuple[int, ...], set[str]], stressed_vowel: int,
                  near_stressed_v: int, index_stressed_v: int):

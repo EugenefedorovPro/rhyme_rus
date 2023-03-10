@@ -3,10 +3,10 @@ from rhyme_rus.utils.procedure import Procedure
 from rhyme_rus.utils.word_statistics import WordStatistics
 from rhyme_rus.utils.exceptions import MultipleStresses
 
-target_word = "веслом"
+target_word = "молоко"
 word = Word(target_word)
 word = Procedure(word).build()
-word.table_long.to_csv(f"{target_word}_{word.range_sql}_long_2.csv")
+word.table_long.to_csv(f"{target_word}_{word.range_sql}_long.csv")
 
 # print(word.reduce_table_figures)
 # print(type(word.reduce_table_figures[2]))

@@ -4,9 +4,9 @@ from rhyme_rus.seeds.ipa_dicts import IpaDicts
 
 
 class Pattern:
-    def __init__(self, word_intipa: list[int], list_intipa: list[list[int]]):
+    def __init__(self, word_intipa: list[int], list_intipa: dict[tuple[int], list[tuple[int]]]):
         self.word_intipa: list[int] = word_intipa
-        self.list_intipa: list[list[int]] = list_intipa
+        self.list_intipa: list[tuple[int]] = list(list_intipa)
         self.all_vowels: tuple[int] = tuple()
         self.all_consonants: tuple[int] = tuple()
         self.similarities: dict[int, dict[int, str]] = {}
@@ -76,7 +76,7 @@ class Pattern:
             rhyme_pattern.extend(["add_sound" for _ in range(len_dif)])
         return tuple(rhyme_pattern)
 
-    def get_all_rhymes_patterns(self) -> dict[tuple[str], list[list[int]]]:
+    def get_all_pattern_pads(self) -> dict[tuple[str], list[list[int]]]:
         all_rhymes_patterns: dict[tuple[str], list[list[int]]] = {}
         rhyme_intipa: list[int]
         for rhyme_intipa in self.list_intipa:

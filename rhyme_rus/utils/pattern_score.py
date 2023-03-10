@@ -14,7 +14,7 @@ class PatternScore:
         self.all_vowels: tuple[int] = IpaDicts().numbers_vowels
 
     def get_patterns(self):
-        all_rhymes_patterns = Pattern(self.word_intipa, self.list_intipa).get_all_rhymes_patterns()
+        all_rhymes_patterns = Pattern(self.word_intipa, self.list_intipa).get_all_pattern_pads()
         return all_rhymes_patterns
 
     def get_scores(self):

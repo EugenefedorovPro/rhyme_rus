@@ -52,12 +52,10 @@ class Procedure:
             index_stressed_v=self.word.index_stressed_v
         ).get_all_pads_dict()
 
-    def __get_all_pads(self) -> None:
-        self.word.all_pads = [list(item) for item in self.word.all_pad_intipa.keys()]
 
     def __get_all_pattern_pads(self) -> None:
         self.word.all_pattern_pads = Pattern(self.word.intipa,
-                                             self.word.all_pads).get_all_rhymes_patterns()
+                                             self.word.all_pad_intipa).get_all_pattern_pads()
 
     def __get_all_patterns(self):
         self.word.all_patterns = [key for key in self.word.all_pattern_pads.keys()]
@@ -103,7 +101,6 @@ class Procedure:
         self.__get_near_stressed_v()
         self.__get_all_intipa_words()
         self.__get_all_pad_intipa()
-        self.__get_all_pads()
         self.__get_all_pattern_pads()
         self.__get_all_patterns()
         self.__get_all_score_patterns()
