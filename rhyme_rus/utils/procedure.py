@@ -57,12 +57,10 @@ class Procedure:
         self.word.all_pattern_pads = Pattern(self.word.intipa,
                                              self.word.all_pad_intipa).get_all_pattern_pads()
 
-    def __get_all_patterns(self):
-        self.word.all_patterns = [key for key in self.word.all_pattern_pads.keys()]
 
     def __get_all_score_patterns(self) -> None:
         self.word.all_score_patterns = Score(self.word.index_stressed_v,
-                                             self.word.all_patterns).get_all_score_patterns()
+                                             self.word.all_pattern_pads).get_all_score_patterns()
 
     def __get_sum_scores(self) -> None:
         self.word.sum_scores = RangeRhymes(self.word.all_score_patterns).get_sum_scores()
@@ -102,7 +100,6 @@ class Procedure:
         self.__get_all_intipa_words()
         self.__get_all_pad_intipa()
         self.__get_all_pattern_pads()
-        self.__get_all_patterns()
         self.__get_all_score_patterns()
         self.__get_sum_scores()
         self.__get_reverse()

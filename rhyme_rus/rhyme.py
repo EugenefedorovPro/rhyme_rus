@@ -6,7 +6,7 @@ from rhyme_rus.utils.exceptions import MultipleStresses
 target_word = "молоко"
 word = Word(target_word)
 word = Procedure(word).build()
-word.table_long.to_csv(f"{target_word}_{word.range_sql}_long.csv")
+word.table.to_csv(f"{target_word}_{word.range_sql}.csv")
 
 # print(word.reduce_table_figures)
 # print(type(word.reduce_table_figures[2]))

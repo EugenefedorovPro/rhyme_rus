@@ -2,9 +2,9 @@ from typing import Union
 
 
 class Score:
-    def __init__(self, index_stressed_v, patterns):
+    def __init__(self, index_stressed_v, all_pattern_pads: dict[tuple[str, ...], list[tuple[int, ...]]]):
         self.index_stressed_v = index_stressed_v
-        self.patterns: list[tuple[int]] = patterns
+        self.patterns: list[tuple[str]] = list(all_pattern_pads.keys())
         self.dict_pat_score: dict[str, int] = {"same_stressed": 0,
                                                "same_v": 0,
                                                "same_cons": 0,

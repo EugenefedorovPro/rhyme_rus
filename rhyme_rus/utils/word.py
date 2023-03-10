@@ -14,7 +14,6 @@ class Word:
         self.all_intipa_words: dict[tuple[int], set[str]] = {}
         self.all_pad_intipa: dict[tuple[int], list[tuple[int]]] = {}
         self.all_pattern_pads: dict[tuple[str], list[tuple[int]]] = {}
-        self.all_patterns: list[tuple[int]] = []
         self.all_score_patterns: dict[tuple[int], list[tuple[str]]] = {}
         self.sum_scores: dict[int, list[tuple[str]]] = {}
         self.rhyme_scores_patterns: dict[[str, dict[int, tuple[str]]]] = {}
