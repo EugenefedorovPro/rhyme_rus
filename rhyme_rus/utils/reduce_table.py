@@ -47,5 +47,6 @@ class ReduceTable:
             (self.table.score <= word_some.score) | (self.table.assonance <= word_some.assonance)]
         reduced_table = reduced_table.reset_index(drop = True)
         reduced_table.index.name = 'id'
+        reduced_table = reduced_table.sort_values(by = ["score", "rhyme"])
 
         return reduced_table

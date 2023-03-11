@@ -1,5 +1,4 @@
 import pandas as pd
-from rhyme_rus.utils.reduce_table import Table
 
 
 class Word:
@@ -21,8 +20,8 @@ class Word:
         self.score_pattern_rhyme: dict[str: list[int], str: list[tuple[str], str: list[str]]] | dict[str: list[int],
                                                                                                 str: list[int],
                                                                                                 str: list[tuple[str],
-                                                                                                     str: list[str]]]
-        self.score_pattern_rhyme: dict[str: list[int], str: list[tuple[str], str: list[str]]] = {}
+                                                                                                     str: list[
+                                                                                                         str]]] = {}
         self.assonance: list[int] = []
         self.table_long: pd.DataFrame = pd.DataFrame()
         self.table: pd.DataFrame = pd.DataFrame()

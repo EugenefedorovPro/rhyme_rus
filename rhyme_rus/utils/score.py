@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from typing import Union
 
 
@@ -37,7 +38,7 @@ class Score:
         return tuple(score)
 
     def get_all_score_patterns(self) -> dict[tuple[int], list[tuple[str]]]:
-        all_rhyme_scores: dict[tuple[int], list[tuple[str]]] = {}
+        all_rhyme_scores: dict[tuple[int], list[tuple[str]]] = OrderedDict()
         pat: Union[tuple[str], list[tuple[str]]]
         rm_stress_index: int
         for pat in self.patterns:

@@ -3,27 +3,27 @@ from unittest.mock import patch
 from rhyme_rus.utils.intipa_words import AllIntipaWords
 
 
-@pytest.mark.parametrize("intipa, db_response, expected_word_intipa",
-                         [
-                             (
-                                     [43,34,30],
-                                     [
-                                         ('ясон', '[43,34,30]'),
-                                         ('аксон', '[43,34,30]'),
-                                         ('персона', '[43, 34, 30, 71]'),
-                                         ('фасона', '[43, 34, 30, 71]'),
-                                         ('колесо', '[43, 34]'),
+@pytest.mark.parametrize(
+    "intipa, db_response, expected_word_intipa",
+    [
+        (
+                [43, 34, 30],
+                [
+                    ('ясон', '[43,34,30]'),
+                    ('аксон', '[43,34,30]'),
+                    ('персона', '[43, 34, 30, 71]'),
+                    ('фасона', '[43, 34, 30, 71]'),
+                    ('колесо', '[43, 34]'),
 
-                                     ],
-                                     {
-                                         (43,34,30): {'ясон', 'аксон'},
-                                         (43, 34, 30, 71): {'персона', 'фасона'},
-                                         (43, 34): {'колесо'}
-                                     }
-                             )
-                        ]
-                         )
-
+                    ],
+                {
+                    (43, 34, 30): ['аксон', 'ясон'],
+                    (43, 34, 30, 71): ['персона', 'фасона'],
+                    (43, 34): ['колесо']
+                    }
+                )
+        ]
+    )
 @patch("rhyme_rus.utils.intipa_words.MySql")
 def test_get_intipa_words(cur, intipa, db_response, expected_word_intipa):
     range_sql = 3

@@ -8,8 +8,8 @@ def test_table():
                                   'even': {1: ('any_cons', 'same_stressed')}
                                   }
     actual = Table(
-        rhyme_pattern_score = test_rhyme_scores_patterns
-    ).make_dict_for_table()
+        rhyme_scores_patterns = test_rhyme_scores_patterns
+        ).make_dict_for_table()
     expected = {'score': [0, 0, 1, 1], 'pattern': [('same_cons', 'same_stressed'), ('same_cons', 'same_stressed'),
                                                    ('any_cons', 'same_stressed'), ('any_cons', 'same_stressed')],
                 'rhyme': ['changes', 'all', 'today', 'even']}
