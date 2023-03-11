@@ -3,10 +3,10 @@ from rhyme_rus.utils.procedure import Procedure
 from rhyme_rus.utils.word_statistics import WordStatistics
 from rhyme_rus.utils.exceptions import MultipleStresses
 
-target_word = "беженец"
-word = Word(target_word)
-word = Procedure(word).build()
-word.table_long.to_csv(f"{target_word}_{word.range_sql})_long.csv")
+# target_word = "беженец"
+# word = Word(target_word)
+# word = Procedure(word).build()
+# word.table_long.to_csv(f"{target_word}_{word.range_sql})_long.csv")
 
 # print(word.reduce_table_figures)
 # print(type(word.reduce_table_figures[2]))
@@ -23,6 +23,5 @@ word.table_long.to_csv(f"{target_word}_{word.range_sql})_long.csv")
 # WordStatistics().write_rhyme("соотечественница")
 
 
-# word = Word("дром")
-# word.stressed_word = "дро'м"
-# word = Procedure(word).build()
+word = Word("дромса")
+word = Procedure(word).build()

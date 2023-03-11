@@ -1,6 +1,5 @@
 import dill
 from pathlib import Path
-from collections import OrderedDict
 
 
 class Reverse:
@@ -25,7 +24,7 @@ class Reverse:
             self.similarities: dict[int, dict[int, str]] = dill.load(f)
 
     def reverse(self) -> dict[[str, dict[int, tuple[str]]]]:
-        rhyme_scores_patterns: dict[[str, dict[int, tuple[str]]]] = OrderedDict()
+        rhyme_scores_patterns: dict[[str, dict[int, tuple[str]]]] = {}
         score: int
         for score in self.sum_scores:
             patterns: tuple[str] = self.sum_scores[score]
@@ -41,9 +40,8 @@ class Reverse:
                             # rhyme_scores_patterns
                             if rm in rhyme_scores_patterns:
                                 score_pat: dict[int, tuple[str]] = rhyme_scores_patterns[rm]
-                                min_score_pat: dict[int, tuple[str]] = OrderedDict(
-                                    [(min(score_pat), score_pat[min(score_pat)])]
-                                    )
+                                min_score_pat: dict[int, tuple[str]] = {min(score_pat): score_pat[min(score_pat)]}
+
                                 rhyme_scores_patterns[rm] = min_score_pat
                             else:
                                 rhyme_scores_patterns[rm] = {score: pat}
