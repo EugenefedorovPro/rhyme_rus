@@ -23,4 +23,3 @@ env_rhyme_rus_lx/
 *.csv
 *.ods
 .coverage
-*.stats
