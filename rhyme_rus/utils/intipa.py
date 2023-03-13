@@ -11,8 +11,9 @@ class AIntIpa(ABC):
         self.stressed_word = stressed_word
 
     @abstractmethod
-    def fetch_intipa(self):
+    def fetch_intipa(self):  # pragma: no cover
         pass
+
 
 class FactoryIntipa:
     @classmethod
@@ -67,7 +68,7 @@ class FetchIntipaNn(AIntIpa):
         return None
 
     def __trans_uni_to_ipa(self) -> None:
-        self.ipa: ipapy.ipastring = IPAString(unicode_string=self.trans_uni)
+        self.ipa: ipapy.ipastring = IPAString(unicode_string = self.trans_uni)
         return None
 
     # func to shorten_rhyme ipa by scheme: one consonant before stressed vowel (if available)
@@ -84,9 +85,5 @@ class FetchIntipaNn(AIntIpa):
                 break
         if index_stressed_vowel and self.ipa[index_stressed_vowel - 1].is_consonant:
             self.shortened_ipa: list[ipapy.ipachar] = self.ipa[index_stressed_vowel - 1:]
-            return None
         else:
             self.shortened_ipa = self.ipa[index_stressed_vowel:]
-            return None
-
-

@@ -45,23 +45,20 @@ class IpaDicts:
         self.__get_near_stressed_v_ipa()
         self.__get_near_stressed_v_int()
 
-
     def unistring_to_numbers(self, uni_string: str):
         numbers: list[int] = []
-        ipa_string = IPAString(unicode_string=uni_string)
+        ipa_string = IPAString(unicode_string = uni_string)
         for sign in ipa_string:
             numbers.append(self.full_sign2number[sign])
         return numbers
-
 
     # func does not work with stress mark
     def int_to_ipa_string(self, numbers: list[int]) -> ipapy.ipastring:
         ipa_str: ipapy.ipastring = []
         for i in numbers:
             ipa_str.append(self.number2sign[i])
-        ipa_str = IPAString(ipa_chars=ipa_str)
+        ipa_str = IPAString(ipa_chars = ipa_str)
         return ipa_str
-
 
     def __get_near_stressed_v_ipa(self) -> None:
         self.near_stressed_v_ipa = {
@@ -75,7 +72,7 @@ class IpaDicts:
             UNICODE_TO_IPA["ɵ"]: UNICODE_TO_IPA["o"],
             UNICODE_TO_IPA["u"]: UNICODE_TO_IPA["ʉ"],
             UNICODE_TO_IPA["ʉ"]: UNICODE_TO_IPA["u"],
-        }
+            }
 
     def __get_near_stressed_v_int(self) -> None:
         for key in self.near_stressed_v_ipa:
@@ -92,7 +89,7 @@ class IpaDicts:
             UNICODE_TO_IPA["i"], UNICODE_TO_IPA["ɨ"],
             UNICODE_TO_IPA["o"], UNICODE_TO_IPA["ɵ"],
             UNICODE_TO_IPA["u"], UNICODE_TO_IPA["ʉ"],
-        ]
+            ]
         all_stressed_vowels: list[int] = []
         uni: ipapy.ipachar
         for uni in all_stressed_uni:
@@ -108,13 +105,13 @@ class IpaDicts:
 
     def __get_sign2number(self) -> None:
         self.sign2number: dict[ipapy.ipachar, int] = dict(
-            (UNICODE_TO_IPA[l], i) for i, l in enumerate(self.unique_unicodes, start=1)
-        )
+            (UNICODE_TO_IPA[l], i) for i, l in enumerate(self.unique_unicodes, start = 1)
+            )
 
     def __get_number2sign(self) -> None:
         self.number2sign: dict[int, ipapy.ipachar] = dict(
-            (i, UNICODE_TO_IPA[l]) for i, l in enumerate(self.unique_unicodes, start=1)
-        )
+            (i, UNICODE_TO_IPA[l]) for i, l in enumerate(self.unique_unicodes, start = 1)
+            )
 
     def __get_additional_ipa(self) -> None:
         for uni in self.additional_uni:
@@ -129,9 +126,8 @@ class IpaDicts:
     def __get_full_sign2number(self):
         self.full_sign2number = {**self.sign2number, **self.additional_ipa2number}
 
-
     def __get_full_number2sign(self):
-        self.full_number2sign = {self.full_sign2number[sign]:sign for sign in self.full_sign2number}
+        self.full_number2sign = {self.full_sign2number[sign]: sign for sign in self.full_sign2number}
 
     def __get_numbers_vowels(self) -> None:
         self.numbers_vowels = [self.sign2number[sign] for sign in self.sign2number if sign.is_vowel]
@@ -150,12 +146,3 @@ class IpaDicts:
     # TODO: make test for __IpaDict().all_ipa_consonants
     def __get_all_ipa_consonants(self) -> None:
         self.all_ipa_consonants = [sign for sign in self.sign2number if sign.is_consonant]
-
-
-if __name__ == "__main__":
-    uni_string = "ɐˈprʲelʲ"
-    expected_numbers = IpaDicts().unistring_to_numbers(uni_string)
-    print(expected_numbers)
-    # for sign in IpaDicts().full_sign2number:
-    #     print(sign, sign.name)
-

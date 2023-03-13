@@ -7,7 +7,7 @@ class AFetchStress(ABC):
         self.unstressed_word = unstressed_word
 
     @abstractmethod
-    def fetch_stress(self):
+    def fetch_stress(self):  # pragma: no cover
         pass
 
 

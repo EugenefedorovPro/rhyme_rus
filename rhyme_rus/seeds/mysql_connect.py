@@ -6,11 +6,12 @@ class MySql:
 
     def __init__(self):
         self.con = mysql.connector.connect(
-            host='db',
-            user='eugene',
-            password='sql_1980',
-            port=3306,
-            database="rhymes")
+            host = 'db',
+            user = 'eugene',
+            password = 'sql_1980',
+            port = 3306,
+            database = "rhymes"
+            )
         self.cur = self.con.cursor()
 
     def cur_execute(self, query: str) -> list[tuple]:
@@ -23,7 +24,7 @@ class MySql:
         return f"{self.cur.rowcount} 'was inserted'"
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     my_sql = MySql()
     result = my_sql.cur_execute("select accent from wiki_pickled where word = 'дом'")
     print(result)

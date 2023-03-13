@@ -7,7 +7,8 @@ import pytest
     "unstressed_word, all_stresses, stressed_word, expected_stressed_word", [
         ("дом", ["до'м"], '', "до'м"),
         ("остров", ["о'стров"], '', "о'стров"),
-        ("ель", ["е'ль"], '', "е'ль")
+        ("ель", ["е'ль"], '', "е'ль"),
+        ("палама", ["па'лама", "пала'ма", "палама'"], "пала'ма", "пала'ма")
         ]
     )
 def test_get_stressed_word(unstressed_word, all_stresses, stressed_word, expected_stressed_word):

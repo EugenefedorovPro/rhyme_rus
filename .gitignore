@@ -1,7 +1,6 @@
 docker/mysql/
 backup_rhymes.sql
 wiki.pkl
-.vscode/
 /build/
 /rhyme_rus.egg-info/
 /.pytest_cache/
@@ -23,3 +22,4 @@ env_rhyme_rus_lx/
 .ropeproject/
 *.csv
 *.ods
+.coverage

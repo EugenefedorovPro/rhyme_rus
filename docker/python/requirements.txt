@@ -8,3 +8,6 @@ multiprocess==0.70.14
 pytest
 dataenforce
 strictly-typed-pandas
+coverage
+pytest-cov
+ipython

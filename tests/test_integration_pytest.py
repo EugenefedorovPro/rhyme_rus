@@ -2,8 +2,8 @@ import dill
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.procedure import Procedure
 
-target_words = ['ом', 'дом', 'кома', 'палама']
-words_names = ['om', 'dom', 'koma', 'palama']
+target_words = ['ом', 'дом', 'кома', 'палама', 'сыл']
+words_names = ['om', 'dom', 'koma', 'palama', 'syl']
 
 
 def load_tables(words, names):
