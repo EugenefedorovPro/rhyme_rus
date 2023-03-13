@@ -1,7 +1,6 @@
 import mysql.connector
 
 
-# singleton to quick access mysql db
 class MySql:
 
     def __init__(self):
