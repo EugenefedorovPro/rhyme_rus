@@ -35,7 +35,8 @@ class AllIntipaWords:
                      f"and {self.length_after_stress + self.range_sql})"
         self.word_intipa_word_as_number = my_sql.cur_execute(query)
 
-    def turn_set_to_sorted_list(self, all_intipa_words) -> dict[tuple[int], list[str]]:
+    @staticmethod
+    def turn_set_to_sorted_list(all_intipa_words) -> dict[tuple[int], list[str]]:
         all_intipa_words_list = {}
         for intipa in all_intipa_words:
             words: set[str] = all_intipa_words[intipa]

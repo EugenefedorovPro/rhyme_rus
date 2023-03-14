@@ -9,8 +9,10 @@ profiler.enable()
 target_word = "облако"
 word = Word(target_word)
 word = Procedure(word).build()
-#
+
 path = "rhyme_profile_2.stats"
+# path = "rhyme_profile.stats"
+#
 profiler.disable()
 profiler.dump_stats(path)
 

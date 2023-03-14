@@ -8,17 +8,13 @@ class Pattern:
         self.word_intipa: list[int] = word_intipa
         self.list_intipa: list[tuple[int]] = list(list_intipa)
         self.all_vowels: tuple[int] = tuple()
-        self.all_consonants: tuple[int] = tuple()
         self.similarities: dict[int, dict[int, str]] = {}
+        self.vowels_but_stressed = {"same_stressed": "same_v", "near_stressed": "near_v"}
         self.__get_all_vowels()
-        self.__get_all_consonants()
         self.__get_similarities()
 
     def __get_all_vowels(self):
         self.all_vowels: tuple[int] = IpaDicts().numbers_vowels
-
-    def __get_all_consonants(self):
-        self.all_consonants: tuple[int] = IpaDicts().numbers_consonants
 
     def __get_similarities(self):
         # TODO similarities data is in seeds folder, not in data
@@ -32,26 +28,19 @@ class Pattern:
     # TODO vowels_but_stressed - how to simplify?
     def __get_rhyme_pattern_short(self, rhyme_intipa) -> tuple[str]:
         word_padded = self.__get_word_padded(rhyme_intipa)
-        except_pats = {-1: "add_sound", -2: "no_sound", -3: "no_init_cons", -4: "add_init_cons"}
-        vowels_but_stressed = {"same_stressed": "same_v", "near_stressed": "near_v"}
         rhyme_pattern: list = []
         for i, _int_word_int_rhyme in enumerate(zip(word_padded, rhyme_intipa)):
             _int_word, _int_rhyme = _int_word_int_rhyme[0], _int_word_int_rhyme[1]
-            try:
-                similarity: dict[int, str] = self.similarities[_int_word]
-            except KeyError:
-                similarity = {-4: "add_init_cons"}
+            similarity: dict[int, str] = self.similarities[_int_word]
             try:
                 pat: str = similarity[_int_rhyme]
                 if i not in (0, 1) and pat in ("same_stressed", "near_stressed"):
-                    pat = vowels_but_stressed[pat]
+                    pat = self.vowels_but_stressed[pat]
                 rhyme_pattern.append(pat)
             except KeyError:
-                if _int_rhyme in except_pats:
-                    rhyme_pattern.append(except_pats[_int_rhyme])
-                elif _int_rhyme in self.all_vowels:
+                if _int_rhyme in self.all_vowels:
                     rhyme_pattern.append("any_v")
-                elif _int_rhyme in self.all_consonants:
+                else:
                     rhyme_pattern.append("any_cons")
 
         rhyme_pattern: tuple[str] = tuple(rhyme_pattern)
