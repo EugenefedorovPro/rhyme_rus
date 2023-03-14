@@ -13,7 +13,7 @@ from rhyme_rus.utils.procedure import Procedure
 path = "rhyme_profile_2.stats"
 # profiler.disable()
 # profiler.dump_stats(path)
-#
+
 stats = pstats.Stats(path)
 stats.sort_stats("cumtime").print_stats(30)
-# stats.print_callees("mysql_connect.py:19")
+# stats.print_callees("mysql_connect.py:23")

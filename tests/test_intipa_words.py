@@ -24,9 +24,9 @@ from rhyme_rus.utils.intipa_words import AllIntipaWords
                 )
         ]
     )
-@patch("rhyme_rus.utils.intipa_words.MySql")
-def test_get_intipa_words(cur, intipa, db_response, expected_word_intipa):
+@patch("rhyme_rus.utils.intipa_words.my_sql")
+def test_get_intipa_words(my_sql, intipa, db_response, expected_word_intipa):
     range_sql = 3
-    cur().cur_execute.return_value = db_response
+    my_sql.cur_execute.return_value = db_response
     actual_word_intipa = AllIntipaWords(range_sql, intipa).get_all_intipa_words()
     assert actual_word_intipa == expected_word_intipa

@@ -1,5 +1,5 @@
 import json
-from rhyme_rus.seeds.mysql_connect import MySql
+from rhyme_rus.seeds.mysql_connect import my_sql
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
 import ipapy.ipachar
 from ipapy.ipastring import IPAString
@@ -21,7 +21,7 @@ class WordsNumbers:
 
     def __get_all_sounds(self):
         query = "select id, sounds from wiki_pickled"
-        id_sounds: list[tuple[int, str]] = MySql().cur_execute(query)
+        id_sounds: list[tuple[int, str]] = my_sql.cur_execute(query)
         for i_s in id_sounds:
             _id: int = i_s[0]
             sounds = i_s[1]
@@ -49,8 +49,8 @@ class WordsNumbers:
     def update_word_as_numbers(self):
         query_column = "alter table wiki_pickled add word_as_numbers json"
         query_update = "update wiki_pickled set word_as_numbers = %s where id = %s"
-        MySql().cur_execute(query_column)
-        n_rows_processed = MySql().cur_executemany(query_update, self.numbers_id)
+        my_sql.cur_execute(query_column)
+        n_rows_processed = my_sql.cur_executemany(query_update, self.numbers_id)
         return n_rows_processed
 
 

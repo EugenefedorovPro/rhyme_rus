@@ -1,6 +1,6 @@
 import json
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
-from rhyme_rus.seeds.mysql_connect import MySql
+from rhyme_rus.seeds.mysql_connect import my_sql
 
 
 class AllIntipaWords:
@@ -29,7 +29,6 @@ class AllIntipaWords:
 
     def __fetch_all_scope_rhymes(self) -> None:
         all_scope_rhymes: list[tuple[str, str]]
-        my_sql = MySql()
         query: str = f"select word, intipa from wiki_pickled where stressed_vowel in ({self.stressed_vowel}, " \
                      f"{self.near_stressed_v}) " \
                      f"and (len_after_stress between {self.length_after_stress - self.range_sql} " \

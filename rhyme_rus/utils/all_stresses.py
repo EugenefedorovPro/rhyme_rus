@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from rhyme_rus.seeds.mysql_connect import MySql
+from rhyme_rus.seeds.mysql_connect import my_sql
 
 
 class AFetchStress(ABC):
@@ -13,9 +13,8 @@ class AFetchStress(ABC):
 
 class FetchStressFromDb(AFetchStress):
     def fetch_stress(self) -> list[str]:
-        _query = f"select accent from wiki_pickled where word = '{self.unstressed_word}'"
-        _msql = MySql()
-        stressed_words = _msql.cur_execute(_query)
+        query = f"select accent from wiki_pickled where word = '{self.unstressed_word}'"
+        stressed_words = my_sql.cur_execute(query)
         stressed_words = list(set(stressed_words))
         stressed_words = [word[0] for word in stressed_words]
         return stressed_words

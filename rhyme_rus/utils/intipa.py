@@ -1,7 +1,7 @@
 import ipapy.ipastring
 from ipapy.ipastring import IPAString
 import json
-from rhyme_rus.seeds.mysql_connect import MySql
+from rhyme_rus.seeds.mysql_connect import my_sql
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from abc import ABC, abstractmethod
 
@@ -29,7 +29,7 @@ class FactoryIntipa:
 class FetchIntipaDb(AIntIpa):
     def fetch_intipa(self) -> list[int] | None:
         _query: str = f'''select intipa from  wiki_pickled where accent = "{self.stressed_word}"'''
-        intipa = MySql().cur_execute(_query)
+        intipa = my_sql.cur_execute(_query)
         if intipa:
             intipa = intipa[0][0]
             intipa = json.loads(intipa)

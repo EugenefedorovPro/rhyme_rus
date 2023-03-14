@@ -28,8 +28,8 @@ def test_fetch_stress_from_nn(unstressed_word: str, stressed_word: list[tuple]):
         ("моль", [("мо'ль",)], ["мо'ль"])
         ]
     )
-@patch("rhyme_rus.utils.all_stresses.MySql")
-def test_factory_stress(cur, unstressed_word, word_from_db, expected_stressed_word):
-    cur().cur_execute.return_value = word_from_db
+@patch("rhyme_rus.utils.all_stresses.my_sql")
+def test_factory_stress(my_sql, unstressed_word, word_from_db, expected_stressed_word):
+    my_sql.cur_execute.return_value = word_from_db
     actual_stressed_word = FactoryStress.fetch_stress(unstressed_word)
     assert set(actual_stressed_word) == set(expected_stressed_word)

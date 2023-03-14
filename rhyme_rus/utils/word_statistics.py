@@ -1,6 +1,6 @@
 import json
 import pandas as pd
-from rhyme_rus.seeds.mysql_connect import MySql
+from rhyme_rus.seeds.mysql_connect import my_sql
 from rhyme_rus.seeds.ipa_dicts import IpaDicts
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.procedure import Procedure
@@ -18,12 +18,12 @@ class WordStatistics:
     @staticmethod
     def get_accent_intipa_by_length(length: int):
         query = f"select accent, intipa from wiki_pickled where len_after_stress = {length}"
-        words_by_length = MySql().cur_execute(query)
+        words_by_length = my_sql.cur_execute(query)
         return words_by_length
 
     def get_all_lengths_after_stress(self) -> list[int]:
         query = "select distinct (len_after_stress) from wiki_pickled"
-        self.all_lengths_after_stress = MySql().cur_execute(query)
+        self.all_lengths_after_stress = my_sql.cur_execute(query)
         self.all_lengths_after_stress = [item[0] for item in self.all_lengths_after_stress]
         self.all_lengths_after_stress.sort()
         return self.all_lengths_after_stress
@@ -34,7 +34,7 @@ class WordStatistics:
         for length in self.all_lengths_after_stress:
             query = f"select count(len_after_stress) as number_words " \
                     f"from wiki_pickled where len_after_stress = {length}"
-            number = MySql().cur_execute(query)
+            number = my_sql.cur_execute(query)
             numbers = length_number["number"]
             numbers.append(number[0][0])
             length_number["number"] = numbers
@@ -52,13 +52,13 @@ class WordStatistics:
     @staticmethod
     def __check_if_only_word(word):
         query_check = f"select word from wiki_pickled where word = '{word}'"
-        check = MySql().cur_execute(query_check)
+        check = my_sql.cur_execute(query_check)
         return len(check) == 1
 
     @staticmethod
     def __check_stress_intipa(word) -> True | False:
         query = f"select intipa from wiki_pickled where word = '{word}'"
-        intipa: list[tuple[str]] = MySql().cur_execute(query)
+        intipa: list[tuple[str]] = my_sql.cur_execute(query)
         intipa: list[int] = json.loads(intipa[0][0])
         sound_1 = intipa[0]
         sound_2 = 0
@@ -72,7 +72,7 @@ class WordStatistics:
         rand_select = {False: "rand()", True: "rand(3)"}
         rand_option = rand_select[seed]
         query = f"select word from wiki_pickled where len_after_stress = {length} order by {rand_option} limit 1"
-        word = MySql().cur_execute(query)
+        word = my_sql.cur_execute(query)
         word = word[0][0]
         return word
 

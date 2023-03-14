@@ -2,8 +2,15 @@ import mysql.connector
 
 
 class MySql:
+    _self = None
+
+    def __new__(cls):
+        if not cls._self:
+            cls._self = super().__new__(cls)
+        return cls._self
 
     def __init__(self):
+        print("instantiate self.con and self.cur")
         self.con = mysql.connector.connect(
             host = 'db',
             user = 'eugene',
@@ -23,7 +30,8 @@ class MySql:
         return f"{self.cur.rowcount} 'was inserted'"
 
 
+my_sql = MySql()
+
 if __name__ == "__main__":  # pragma: no cover
-    my_sql = MySql()
     result = my_sql.cur_execute("select accent from wiki_pickled where word = 'дом'")
     print(result)
