@@ -9,5 +9,4 @@ pytest
 dataenforce
 strictly-typed-pandas
 coverage
-pytest-cov
 ipython
