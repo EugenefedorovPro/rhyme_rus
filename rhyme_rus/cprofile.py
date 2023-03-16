@@ -18,4 +18,3 @@ profiler.dump_stats(path)
 
 stats = pstats.Stats(path)
 stats.sort_stats("cumtime").print_stats(30)
-# stats.print_callees("pattern.py:35")
