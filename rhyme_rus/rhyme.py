@@ -4,9 +4,9 @@ from rhyme_rus.utils.word_statistics import WordStatistics
 from rhyme_rus.utils.exceptions import MultipleStresses
 import coverage
 
-target_word = "палама"
+target_word = "облако"
 word = Word(target_word)
-word.stressed_word = "пала'ма"
+# word.stressed_word = "пала'ма"
 word = Procedure(word).build()
 print(word.table)
 # print(word.reduce_table_figures)

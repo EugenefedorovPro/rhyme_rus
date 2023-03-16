@@ -1,4 +1,5 @@
-import mysql.connector
+from pathlib import Path
+import sqlite3
 
 
 class MySql:
@@ -10,14 +11,8 @@ class MySql:
         return cls._self
 
     def __init__(self):
-        print("instantiate self.con and self.cur")
-        self.con = mysql.connector.connect(
-            host = 'db',
-            user = 'eugene',
-            password = 'sql_1980',
-            port = 3306,
-            database = "rhymes"
-            )
+        path = Path(__file__).parent.parent.parent / "rhyme.sqlite3"
+        self.con = sqlite3.connect(path)
         self.cur = self.con.cursor()
 
     def cur_execute(self, query: str) -> list[tuple]:

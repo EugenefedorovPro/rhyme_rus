@@ -4,8 +4,8 @@ rhyme_rus
 
 ``rhyme_rus`` is the python package, which finds rhymes to a Russian word
 
-* Version 0.0.1
-* Date: 2022, July, 31
+* Version 0.0.2
+* Date: 2023, Marh, 15
 * Developer: Eugene Proskulikov
 * License: MIT
 * Contact: `LinkedIn <https://www.linkedin.com/in/eugene-proskulikov-168050a4/>`_
@@ -14,7 +14,6 @@ rhyme_rus
 Installation
 _________________
 
-*rhyme_rus* package incules `wiktionary_rus` dependency with a large data file, which is managed by `Git Large File Storage (LFS) <https://git-lfs.github.com/>`_. To upload it properly to Linux machines you should have LFS installed on your PC.
 
 Linux (checked on Ubuntu 20.04.4)::
 
@@ -34,7 +33,6 @@ _________________________
 ``rhyme_rus`` critically depends on:  
 
 * `a special branch <https://github.com/EugenefedorovPro/ipapy_eugene/tree/forpython310>`_ of my fork of `ipapy <https://github.com/pettarin/ipapy>`_ module. On installation the branch is uploaded from GitHub to your virtual environment. ``ipapy`` is a Python module to work with International Phonetic Alphabet (IPA) strings
-* `wiktionary_rus <https://github.com/EugenefedorovPro/wiktionary_rus>`_ - Russian wiktionary preprocessed for neural networks: word, lowcase, accent, stem, part of speech, meanings, unicode transcription
 * `put_stress_rus <https://github.com/EugenefedorovPro/put_stress_rus>`_ - Python package to put stress on a russian word powered by the trained neural network
 * `word2ipa_rus <https://github.com/EugenefedorovPro/word2ipa_rus>`_ - Python package to convert a russian word to IPA transcription powered by the trained neural network 
 

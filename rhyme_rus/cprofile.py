@@ -10,7 +10,7 @@ target_word = "облако"
 word = Word(target_word)
 word = Procedure(word).build()
 
-path = "rhyme_profile_2.stats"
+path = "rhyme_profile_sqlite.stats"
 # path = "rhyme_profile.stats"
 #
 profiler.disable()
