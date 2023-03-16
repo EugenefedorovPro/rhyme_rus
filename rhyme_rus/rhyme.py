@@ -1,14 +1,26 @@
+from time import perf_counter
+import pandas as pd
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.procedure import Procedure
 from rhyme_rus.utils.word_statistics import WordStatistics
 from rhyme_rus.utils.exceptions import MultipleStresses
 import coverage
 
+pd.set_option("display.max_rows", None)
+pd.set_option("display.max_columns", None)
+pd.set_option("display.width", None)
+pd.set_option("display.max_colwidth", None)
+
+start = perf_counter()
+
 target_word = "облако"
 word = Word(target_word)
 # word.stressed_word = "пала'ма"
 word = Procedure(word).build()
 print(word.table)
+
+stop = perf_counter()
+print("time = ", stop - start)
 # print(word.reduce_table_figures)
 # print(type(word.reduce_table_figures[2]))
 
