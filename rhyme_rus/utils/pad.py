@@ -4,8 +4,10 @@ from typing import Iterable
 
 # legend - {-1: "add_sound", -2: "no_sound", -3: "no_init_cons", -4: "add_init_cons"}
 class Pad:
-    def __init__(self, intipa: list[int], all_intipa_word: dict[tuple[int, ...], set[str]], stressed_vowel: int,
-                 near_stressed_v: int, index_stressed_v: int):
+    def __init__(
+            self, intipa: list[int], all_intipa_word: dict[tuple[int, ...], set[str]], stressed_vowel: int,
+            near_stressed_v: int, index_stressed_v: int
+            ):
         self.all_intipa = list(all_intipa_word.keys())
         self.word = intipa
         self.stressed_vowel = stressed_vowel
@@ -17,12 +19,12 @@ class Pad:
         rm: tuple[int]
         for rm in self.all_intipa:
             factory = FactoryPad(
-                intipa=self.word,
-                intipa_rhyme=rm,
-                stressed_vowel=self.stressed_vowel,
-                near_stressed_v=self.near_stressed_v,
-                index_stressed_v=self.index_stressed_v
-            )
+                intipa = self.word,
+                intipa_rhyme = rm,
+                stressed_vowel = self.stressed_vowel,
+                near_stressed_v = self.near_stressed_v,
+                index_stressed_v = self.index_stressed_v
+                )
             shorts = factory.shorten_prolong()
             for key in shorts:
                 if key not in all_scope_pads:
@@ -39,8 +41,10 @@ class Pad:
 
 
 class FactoryPad:
-    def __init__(self, intipa: list[int], intipa_rhyme: tuple[int], stressed_vowel: int, near_stressed_v: int,
-                 index_stressed_v: int):
+    def __init__(
+            self, intipa: list[int], intipa_rhyme: tuple[int], stressed_vowel: int, near_stressed_v: int,
+            index_stressed_v: int
+            ):
         self.word = intipa
         self.rhyme: list[int] = list(intipa_rhyme)
         self.rhyme_preprocessed: list[int] = []
@@ -65,7 +69,6 @@ class FactoryPad:
         else:
             if self.rhyme[0] != self.stressed_vowel:
                 self.stressed_vowel = self.near_stressed_v
-
 
     def __get_index_stressed_vowel_rhyme(self) -> None:
         self.index_stressed_vowel_rhyme = self.rhyme.index(self.stressed_vowel)
@@ -96,8 +99,10 @@ class FactoryPad:
         self.index_farthest_stressed_v = max(self.index_stressed_vowel_word, self.index_stressed_vowel_rhyme)
 
     def shorten_prolong(self) -> dict[tuple[int], tuple[int]]:
-        pwr = PadWordRhyme(self.word_preprocessed, self.rhyme_preprocessed, self.stressed_vowel, self.near_stressed_v,
-                           self.index_stressed_vowel_word, self.index_farthest_stressed_v)
+        pwr = PadWordRhyme(
+            self.word_preprocessed, self.rhyme_preprocessed, self.stressed_vowel, self.near_stressed_v,
+            self.index_stressed_vowel_word, self.index_farthest_stressed_v
+            )
         len_rhyme_preprocessed = len(self.rhyme_preprocessed)
         len_word_preprocessed = len(self.word_preprocessed)
         if len_rhyme_preprocessed < len_word_preprocessed:
@@ -112,8 +117,10 @@ class FactoryPad:
 
 
 class PadWordRhyme:
-    def __init__(self, intipa: list[int], intipa_rhyme: list[int], stressed_vowel: int, near_stressed_v: int,
-                 index_stressed_vowel_word: int, index_farthest_stressed_v: int):
+    def __init__(
+            self, intipa: list[int], intipa_rhyme: list[int], stressed_vowel: int, near_stressed_v: int,
+            index_stressed_vowel_word: int, index_farthest_stressed_v: int
+            ):
         self.word_preprocessed = intipa
         self.rhyme = intipa_rhyme
         self.stressed_vowel = stressed_vowel
@@ -127,8 +134,10 @@ class PadWordRhyme:
 
     def shorten_rhyme(self) -> list[list[int]]:
         shorts: list[list[int]] = []
-        indexes_to_replace: Iterable[tuple] = combinations(range(self.index_farthest_stressed_v + 1, self.rhyme_len),
-                                                           self.target_len)
+        indexes_to_replace: Iterable[tuple] = combinations(
+            range(self.index_farthest_stressed_v + 1, self.rhyme_len),
+            self.target_len
+            )
         indexes_to_replace = list(indexes_to_replace)
         for indexes in indexes_to_replace:
             rhyme_copy = self.rhyme.copy()
@@ -146,23 +155,20 @@ class PadWordRhyme:
         add_eights = [-8 for _ in range(self.target_len)]
         rhyme_eight: list[int] = self.rhyme.copy()
         rhyme_eight.extend(add_eights)
-        indexes_to_replace: Iterable[tuple] = combinations(range(self.index_farthest_stressed_v + 1, len(rhyme_eight)),
-                                                           self.target_len)
+        indexes_to_replace: Iterable[tuple] = combinations(
+            range(self.index_farthest_stressed_v + 1, len(rhyme_eight)),
+            self.target_len
+            )
         shorts: list[list[int]] = []
         for indexes in indexes_to_replace:
             rhyme_eight_copy = rhyme_eight.copy()
             for index in indexes:
                 # add_sounds
                 rhyme_eight_copy.insert(index, -2)
-                #remove eights
+                # remove eights
                 rhyme_eight_copy = [_int for _int in rhyme_eight_copy if _int != -8]
                 shorts.append(rhyme_eight_copy)
         return shorts
-
-
-
-
-
 
 # if __name__ == "__main__":
 #     word_preprocessed = [4, 2, 8]

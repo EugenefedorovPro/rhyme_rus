@@ -11,6 +11,8 @@ pd.set_option("display.max_columns", None)
 pd.set_option("display.width", None)
 pd.set_option("display.max_colwidth", None)
 
+# time 1.661
+# word = "облако"
 start = perf_counter()
 
 target_word = "облако"

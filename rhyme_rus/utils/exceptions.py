@@ -22,3 +22,5 @@ class StressedVowelNotDetected(Exception):
     def __str__(self):
         stressed_vowel_0 = str(self.number2sign[self.intipa[0]])
         stressed_vowel_1 = str(self.number2sign[self.intipa[1]])
+        return f'''stressed_vowel_0 is {self.intipa[0]} - {stressed_vowel_0}, 
+                stressed_vowel_1 is {self.intipa[1]} {stressed_vowel_1}'''
