@@ -95,6 +95,15 @@ class WordStatistics:
             print(length, word)
         return length_word
 
+    def select_word_length(self, seed):
+        word_length: dict[str, int] = {}
+        self.get_all_lengths_after_stress()
+        for length in self.all_lengths_after_stress:
+            word = self.get_word(length, seed)
+            word_length[word] = length
+            print(word, length)
+        return word_length
+
     @staticmethod
     def write_rhyme(selected_word, long):
         word = Word(selected_word)
@@ -132,17 +141,26 @@ class WordStatistics:
 
     @staticmethod
     def __get_time_average(time_table: pd.DataFrame) -> pd.DataFrame:
-        time_average: tuple[Any] = tuple(round(sum(row) / len(row), 2) for row in time_table["time"])
-        time_table["average_time"] = time_average
+        columns_names = list(time_table.columns.values)
+        if "time" in columns_names:
+            time_average: tuple[Any] = tuple(round(sum(row) / len(row), 2) for row in time_table["time"])
+            time_table["average_time"] = time_average
+        elif "time_mult" and "time_one" in columns_names:
+            time_average_mult: tuple[Any] = tuple(round(sum(row) / len(row), 2) for row in time_table["time_mult"])
+            time_table["mult_average_time"] = time_average_mult
+            time_average_one: tuple[Any] = tuple(round(sum(row) / len(row), 2) for row in time_table["time_one"])
+            time_table["one_average_time"] = time_average_one
+        else:
+            print("__get_time_average failed as no proper column names")
         return time_table
 
     @staticmethod
-    def __get_time_table(word_length_time) -> pd.DataFrame:
+    def get_time_table(word_length_time) -> pd.DataFrame:
         time_table = pd.DataFrame.from_dict(word_length_time)
         time_table = time_table.reset_index(drop = True)
         time_table.index.name = "id"
         time_table = WordStatistics().__get_time_average(time_table)
-        time_table = time_table.sort_values(by = ["length", "average_time"])
+        time_table = time_table.sort_values(by = "length")
         return time_table
 
     word_length_time: (dict[str:list[str], str:list[int], str:list[float]] |
@@ -175,19 +193,11 @@ class WordStatistics:
         return split_array
 
     @staticmethod
-    def __list2tuple(word_length_time: dict[str:list[str], str:list[int], str:list[float]], cycles: int):
-        value_t = word_length_time["word"]
-        value_t = WordStatistics().__get_tuple_split(value_t, cycles)
-        word_length_time["word"] = value_t
-
-        value_t = word_length_time["length"]
-        value_t = WordStatistics().__get_tuple_split(value_t, cycles)
-        word_length_time["length"] = value_t
-
-        value_t = word_length_time["time"]
-        value_t = WordStatistics().__get_tuple_split(value_t, cycles)
-        word_length_time["time"] = value_t
-
+    def list2tuple(word_length_time: dict[str:list[str], str:list[int], str:list[float]], cycles: int):
+        for key in word_length_time:
+            value_t = word_length_time[key]
+            value_t = WordStatistics().__get_tuple_split(value_t, cycles)
+            word_length_time[key] = value_t
         return word_length_time
 
     def measure_time_all_rhymes(self, seed = True, lengths = range(1, 17), cycles = 1) -> pd.DataFrame:
@@ -217,8 +227,8 @@ class WordStatistics:
 
             count += 1
 
-        word_length_time = WordStatistics().__list2tuple(word_length_time, cycles)
-        time_table = WordStatistics().__get_time_table(word_length_time)
+        word_length_time = WordStatistics().list2tuple(word_length_time, cycles)
+        time_table = WordStatistics().get_time_table(word_length_time)
 
         return time_table
 
@@ -229,4 +239,8 @@ if __name__ == "__main__":
     # print(WordStatistics().select_length_word(seed = True))
     # print(WordStatistics().get_accent_intipa_by_length(11))
     # print(WordStatistics().seed_length_word)
-    print(WordStatistics().measure_time_all_rhymes(seed = False, cycles = 1))
+    table = WordStatistics().measure_time_all_rhymes(seed = True, cycles = 1)
+    print(table)
+    columns = list(table.columns.values)
+    print(columns)
+    print("time_mult" in columns)

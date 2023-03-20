@@ -103,24 +103,8 @@ class Procedure:
             ).get_reduced_table()
 
     def build(self):
-        self.__get_all_stresses()
-        self.__get_stressed_word()
-        self.__get_intipa()
-        self.__get_stressed_vowel()
-        self.__get_index_stressed_v()
-        self.__get_near_stressed_v()
-        self.__get_all_intipa_words()
-
-        self.__get_all_pad_intipa()
-        self.__get_all_pattern_pads()
-        self.__get_all_score_patterns()
-        self.__get_sum_scores()
-        self.__get_reverse()
-        self.__get_score_pattern_rhyme()
-
-        self.__get_assonance()
-        self.__get_table_long()
-        self.__get_table_reduced()
+        self.build_till_intipa_words()
+        self.build_till_table_reduced()
         return self.word
 
     def build_till_intipa_words(self):
@@ -133,7 +117,7 @@ class Procedure:
         self.__get_all_intipa_words()
         return self.word
 
-    def build_till_end(
+    def build_split_intipa_words(
             self,
             all_stresses,
             stressed_word,
@@ -151,12 +135,14 @@ class Procedure:
         self.word.near_stressed_v = near_stressed_v
         self.word.index_stressed_v = index_stressed_v
         self.word.all_intipa_words = all_intipa_words
+        self.build_till_table_reduced()
+        return self.word
 
+    def build_till_table_reduced(self):
         self.__get_all_pad_intipa()
         self.__get_all_pattern_pads()
         self.__get_all_score_patterns()
         self.__get_sum_scores()
-
         self.__get_reverse()
         self.__get_score_pattern_rhyme()
         self.__get_assonance()

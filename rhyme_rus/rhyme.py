@@ -1,10 +1,7 @@
 from multiprocessing import Pool
 from time import perf_counter
-import pandas as pd
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.procedure import Procedure
-from rhyme_rus.utils.word_statistics import WordStatistics
-from rhyme_rus.utils.exceptions import MultipleStresses
 from rhyme_rus.utils.split_all_intipa_words import SplitIntipaWords
 from rhyme_rus.utils.concat_tables import concat_tables
 
@@ -12,8 +9,6 @@ target_word = "облако"
 word = Word(target_word)
 
 if __name__ == "__main__":
-    target_word = "облако"
-    word = Word(target_word)
     word = Procedure(word).build_till_intipa_words()
 
     split_intipa_words: list[dict[tuple[int]:list[str, ...]], ...]
@@ -28,7 +23,7 @@ if __name__ == "__main__":
         ).split_intipa_words()
 
     with Pool() as p:
-        word_instances = p.starmap(Procedure(word).build_till_end, split_intipa_words)
+        word_instances = p.starmap(Procedure(word).build_split_intipa_words, split_intipa_words)
         united_table = concat_tables(word_instances)
         united_table.to_csv(f"{target_word}_mult.csv")
 
