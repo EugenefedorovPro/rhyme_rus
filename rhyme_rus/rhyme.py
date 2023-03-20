@@ -8,14 +8,20 @@ from rhyme_rus.utils.exceptions import MultipleStresses
 from rhyme_rus.utils.split_all_intipa_words import SplitIntipaWords
 from rhyme_rus.utils.concat_tables import concat_tables
 
-target_word = "облако"
-word = Word(target_word)
-word = Procedure(word).build_till_near_stressed_v()
-
 if __name__ == "__main__":
-    word = Procedure(word).build_intipa_words()
+    target_word = "облако"
+    word = Word(target_word)
+    word = Procedure(word).build_till_intipa_words()
+
     split_intipa_words: list[dict[tuple[int]:list[str, ...]], ...]
-    split_intipa_words = SplitIntipaWords(word.all_intipa_words).split_intipa_words()
+    split_intipa_words = SplitIntipaWords(
+        word.intipa,
+        word.sum_scores,
+        word.all_pattern_pads,
+        word.all_pad_intipa,
+        word.all_intipa_words,
+        word.all_intipa_words
+        ).split_intipa_words()
 
     with Pool() as p:
         word_instances = p.map(Procedure(word).build_till_end, split_intipa_words)

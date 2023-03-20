@@ -5,10 +5,10 @@ from typing import Iterable
 # legend - {-1: "add_sound", -2: "no_sound", -3: "no_init_cons", -4: "add_init_cons"}
 class Pad:
     def __init__(
-            self, intipa: list[int], all_intipa_word: dict[tuple[int, ...], list[str]], stressed_vowel: int,
+            self, intipa: list[int], all_intipa_words: dict[tuple[int, ...], list[str]], stressed_vowel: int,
             near_stressed_v: int, index_stressed_v: int
             ):
-        self.all_intipa = list(all_intipa_word.keys())
+        self.all_intipa = list(all_intipa_words.keys())
         self.word = intipa
         self.stressed_vowel = stressed_vowel
         self.near_stressed_v: int = near_stressed_v

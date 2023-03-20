@@ -53,7 +53,7 @@ class Procedure:
 
         self.word.all_pad_intipa = Pad(
             intipa = self.word.intipa,
-            all_intipa_word = self.word.all_intipa_words,
+            all_intipa_words = self.word.all_intipa_words,
             stressed_vowel = self.word.stressed_vowel,
             near_stressed_v = self.word.near_stressed_v,
             index_stressed_v = self.word.index_stressed_v
@@ -123,17 +123,13 @@ class Procedure:
         self.__get_table_reduced()
         return self.word
 
-    def build_till_near_stressed_v(self):
+    def build_till_intipa_words(self):
         self.__get_all_stresses()
         self.__get_stressed_word()
         self.__get_intipa()
         self.__get_stressed_vowel()
         self.__get_index_stressed_v()
         self.__get_near_stressed_v()
-        return self.word
-
-    def build_intipa_words(self):
-        self.__get_all_intipa_words()
         return self.word
 
     def build_till_end(self, split_intipa_words):
