@@ -122,6 +122,7 @@ class WordStatistics:
         start_time = perf_counter()
         word = Word(selected_word)
         Procedure(word).build()
+        print("len(word.all_intipa_words)", len(word.all_intipa_words))
         end_time = perf_counter()
         time_execution = end_time - start_time
         print(f"time for {selected_word} measured")
@@ -228,4 +229,4 @@ if __name__ == "__main__":
     # print(WordStatistics().select_length_word(seed = True))
     # print(WordStatistics().get_accent_intipa_by_length(11))
     # print(WordStatistics().seed_length_word)
-    print(WordStatistics().measure_time_all_rhymes(seed = False, cycles = 5))
+    print(WordStatistics().measure_time_all_rhymes(seed = False, cycles = 1))

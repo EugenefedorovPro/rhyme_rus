@@ -6,7 +6,7 @@ from rhyme_rus.utils.procedure import Procedure
 profiler = cProfile.Profile()
 profiler.enable()
 
-target_word = "облако"
+target_word = "запаздываете"
 word = Word(target_word)
 word = Procedure(word).build()
 

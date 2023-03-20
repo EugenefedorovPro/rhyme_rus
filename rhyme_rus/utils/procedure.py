@@ -1,3 +1,4 @@
+import os
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.all_stresses import FactoryStress
 from rhyme_rus.utils.stressed_word import get_stressed_word
@@ -48,6 +49,8 @@ class Procedure:
             ).get_all_intipa_words()
 
     def __get_all_pad_intipa(self) -> None:
+        all_intipa_words: dict[tuple[int], list[str]]
+
         self.word.all_pad_intipa = Pad(
             intipa = self.word.intipa,
             all_intipa_word = self.word.all_intipa_words,
@@ -107,10 +110,40 @@ class Procedure:
         self.__get_index_stressed_v()
         self.__get_near_stressed_v()
         self.__get_all_intipa_words()
+
         self.__get_all_pad_intipa()
         self.__get_all_pattern_pads()
         self.__get_all_score_patterns()
         self.__get_sum_scores()
+        self.__get_reverse()
+        self.__get_score_pattern_rhyme()
+
+        self.__get_assonance()
+        self.__get_table_long()
+        self.__get_table_reduced()
+        return self.word
+
+    def build_till_near_stressed_v(self):
+        self.__get_all_stresses()
+        self.__get_stressed_word()
+        self.__get_intipa()
+        self.__get_stressed_vowel()
+        self.__get_index_stressed_v()
+        self.__get_near_stressed_v()
+        return self.word
+
+    def build_intipa_words(self):
+        self.__get_all_intipa_words()
+        return self.word
+
+    def build_till_end(self, split_intipa_words):
+        print("number of process is ", os.getpid(), flush = True)
+        self.word.all_intipa_words = split_intipa_words
+        self.__get_all_pad_intipa()
+        self.__get_all_pattern_pads()
+        self.__get_all_score_patterns()
+        self.__get_sum_scores()
+
         self.__get_reverse()
         self.__get_score_pattern_rhyme()
         self.__get_assonance()

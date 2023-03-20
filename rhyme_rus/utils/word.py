@@ -11,7 +11,7 @@ class Word:
         self.all_stresses: list[str] = []
         self.stressed_word: str = ''
         self.intipa: list[int] = []
-        self.all_intipa_words: dict[tuple[int], set[str]] = {}
+        self.all_intipa_words: dict[tuple[int], list[str]] = {}
         self.all_pad_intipa: dict[tuple[int], list[tuple[int]]] = {}
         self.all_pattern_pads: dict[tuple[str], list[tuple[int]]] = {}
         self.all_score_patterns: dict[tuple[int], list[tuple[str]]] = {}
