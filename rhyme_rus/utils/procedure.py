@@ -130,11 +130,28 @@ class Procedure:
         self.__get_stressed_vowel()
         self.__get_index_stressed_v()
         self.__get_near_stressed_v()
+        self.__get_all_intipa_words()
         return self.word
 
-    def build_till_end(self, split_intipa_words):
+    def build_till_end(
+            self,
+            all_stresses,
+            stressed_word,
+            intipa,
+            stressed_vowel,
+            near_stressed_v,
+            index_stressed_v,
+            all_intipa_words
+            ):
         print("number of process is ", os.getpid(), flush = True)
-        self.word.all_intipa_words = split_intipa_words
+        self.word.all_stresses = all_stresses
+        self.word.stressed_word = stressed_word
+        self.word.intipa = intipa
+        self.word.stressed_vowel = stressed_vowel
+        self.word.near_stressed_v = near_stressed_v
+        self.word.index_stressed_v = index_stressed_v
+        self.word.all_intipa_words = all_intipa_words
+
         self.__get_all_pad_intipa()
         self.__get_all_pattern_pads()
         self.__get_all_score_patterns()

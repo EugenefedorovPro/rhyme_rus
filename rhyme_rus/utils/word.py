@@ -5,12 +5,12 @@ class Word:
     def __init__(self, unstressed_word):
         self.unstressed_word: str = unstressed_word
         self.range_sql = 3
-        self.stressed_vowel: int = 0
-        self.index_stressed_v: int = 0
-        self.near_stressed_v: int = 0
         self.all_stresses: list[str] = []
         self.stressed_word: str = ''
         self.intipa: list[int] = []
+        self.stressed_vowel: int = 0
+        self.near_stressed_v: int = 0
+        self.index_stressed_v: int = 0
         self.all_intipa_words: dict[tuple[int], list[str]] = {}
         self.all_pad_intipa: dict[tuple[int], list[tuple[int]]] = {}
         self.all_pattern_pads: dict[tuple[str], list[tuple[int]]] = {}
