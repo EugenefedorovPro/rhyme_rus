@@ -12,7 +12,8 @@ pd.set_option("display.max_columns", None)
 pd.set_option("display.width", None)
 pd.set_option("display.max_colwidth", None)
 
-multiprocessing.set_start_method('spawn')
+
+# multiprocessing.set_start_method('spawn')
 
 
 def rhyme(target_word, stressed_word = ''):
