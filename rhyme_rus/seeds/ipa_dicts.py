@@ -97,7 +97,7 @@ class IpaDicts:
         self.all_stressed_vowels = tuple(all_stressed_vowels)
 
     def __get_unique_unicodes(self) -> None:
-        path: Union[pathlib.Path, str] = Path(__file__).parent.parent / "data//list_unique_unicodes.pkl"
+        path: Union[pathlib.Path, str] = Path(__file__).parent / "list_unique_unicodes.pkl"
         with open(path, "rb") as f:
             self.unique_unicodes: list[str] = dill.load(f)
             self.unique_unicodes.sort()
@@ -146,3 +146,9 @@ class IpaDicts:
     # TODO: make test for __IpaDict().all_ipa_consonants
     def __get_all_ipa_consonants(self) -> None:
         self.all_ipa_consonants = [sign for sign in self.sign2number if sign.is_consonant]
+
+
+if __name__ == "__main__":
+    near_ipa = IpaDicts().near_stressed_v_ipa
+    for ipa in near_ipa:
+        print(ipa, near_ipa[ipa])

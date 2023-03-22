@@ -1,4 +1,4 @@
-include rhyme_rus/data/dict_of_int_from_ipa_short.pkl
-include rhyme_rus/data/list_unique_unicodes.pkl
-include rhyme_rus/data/unique_of_all_int_from_dict.pkl
-include rhyme_rus/data/dict_word_accent.pkl
+include rhyme_rus/seeds/list_unique_unicodes.pkl
+include rhyme_rus/seeds/similarities_pat.pkl
+include rhyme_rus/seeds/list_unique_unicodes.pkl
+include rhyme.sqlite3

@@ -5,7 +5,7 @@ rhyme_rus
 ``rhyme_rus`` is the python package, which finds rhymes to a Russian word
 
 * Version 0.0.2
-* Date: 2023, Marh, 15
+* Date: 2023, March, 15
 * Developer: Eugene Proskulikov
 * License: MIT
 * Contact: `LinkedIn <https://www.linkedin.com/in/eugene-proskulikov-168050a4/>`_
@@ -33,8 +33,8 @@ _________________________
 ``rhyme_rus`` critically depends on:  
 
 * `a special branch <https://github.com/EugenefedorovPro/ipapy_eugene/tree/forpython310>`_ of my fork of `ipapy <https://github.com/pettarin/ipapy>`_ module. On installation the branch is uploaded from GitHub to your virtual environment. ``ipapy`` is a Python module to work with International Phonetic Alphabet (IPA) strings
-* `put_stress_rus <https://github.com/EugenefedorovPro/put_stress_rus>`_ - Python package to put stress on a russian word powered by the trained neural network
-* `word2ipa_rus <https://github.com/EugenefedorovPro/word2ipa_rus>`_ - Python package to convert a russian word to IPA transcription powered by the trained neural network 
+* `put_stress_rus <https://github.com/EugenefedorovPro/put_stress_rus>`_ - Python package to put stress on a Russian word powered by the trained neural network
+* `word2ipa_rus <https://github.com/EugenefedorovPro/word2ipa_rus>`_ - Python package to convert a Russian word to IPA transcription powered by the trained neural network 
 
 
 
@@ -42,64 +42,56 @@ Quick start
 _________________________________________
 
 ------------------------------------------
-Input word available in `wiktionary_rus` 
+Input word available in `database` 
 ------------------------------------------
 
 ::
 
-    from rhyme_rus.rhyme import rhyme, rhyme_only_words
-
-`rhyme_rus` processes the whole inbuilt `wiktionary_rus` with every fresh input word. It does not pick up preselected rhymes from the database. As a consequence `rhyme_rus` works faster or slower, depending on the number of syllables after the stressed vowel an input word has. The algorythm provides a set of arguments for you to trade-off between speed and number of rhymes in the output::
+    from rhyme_rus.rhyme import rhyme
 
     rhyme(word)
 
-*word* accepts a russian word under some conditions:
+*word* accepts a Russian word under some conditions:
 
 - low case
 - 'ё' sensitive
 - no blank spaces, no dashes
 
 
-to get a string of rhymed words to your input word
 
-::
+Let's see how it works ::
 
-    rhyme_only_words("палка")
-  
-    
-Output:: 
-    
-    'палка, перепалка, шлангбалка, балка, рыбалка, валка...'
-
-to get a table of rhymed words::
-
-    rhyme("дом")
+    rhyme("кость")
 
 
 Output:
 
 
-+----+--------+-------------------------------------------------+-----------+-----+
-|    |rhyme   |pattern                                          |part_speech|score|
-+====+========+=================================================+===========+=====+
-|0   | дроздом|(same_cons, same_stressed_v, same_cons)          |noun       |0    |
-+----+--------+-------------------------------------------------+-----------+-----+
-|... |...     |...                                              | ...       |...  |
-+----+--------+-------------------------------------------------+-----------+-----+
-|114 |пешком  |('any_cons', 'same_stressed_v', 'same_cons')     |     adv   |15   |
-+----+--------+-------------------------------------------------+-----------+-----+
-| ...|...     |...                                              |...        |...  |
-+----+--------+-------------------------------------------------+-----------+-----+
-|3062|ромб    |(any_cons, same_stressed_v, same_cons, add_sound)|    noun   |40   |
-+----+--------+-------------------------------------------------+-----------+-----+
++----+-------+-----------+---------------------------------------------------------------------------------+--------+
+| id | score | assonance | pattern                                                                         | rhyme  | 
++====+=======+===========+=================================================================================+========+
+| 0  |   1   |    0      | ('any_cons', 'same_stressed', 'same_cons', 'same_cons')                         | гость  |
++----+-------+-----------+---------------------------------------------------------------------------------+--------+
+| 5  |   1   |    0      | ('no_init_cons', 'same_stressed', 'same_cons', 'same_cons')                     | ость   |
++----+-------+-----------+---------------------------------------------------------------------------------+--------+
+| 14 |   4   |    1      | ('same_cons', 'same_stressed', 'same_cons', 'any_v')                            | покосе |
++----+-------+-----------+---------------------------------------------------------------------------------+--------+
+| 359|   8   |    1      | ('same_cons', 'same_stressed', 'same_cons', 'add_sound', 'palat')               | косят  |
++----+-------+-----------+---------------------------------------------------------------------------------+--------+
+
+
+
 
 Columns explained:
 
-* **0**, **114**, **3062** - numbers of rhymes up to 3126 for the current input
+* **0**, **5**, **14**, **359** - numbers of rhymes up to 1074 for the current input
+* **score** - from 0 to 55, indicating how far from the input word a rhyme is: the loser score, the closer rhyme. 
+  Rhyme reveals audial likeness of words, when sequence of sounds matter
+* **assonance** - from 0 to 2. Assonance/consonance shows to what extend 
+  words have similar sounds irrespective of their position 
+  The lower number, the more likely words will be percieved as close to each other
+* **patterns** - patterns, the algorithm uses to select rhymed words
 * **rhyme** - rhymes to an input word
-* **patterns** - patterns, the algorythm uses to select rhymed words
-* **part_speech** - part of speech of a rhyme: "noun", "verb", "adj", "name", "adv", "num", "pron"
-* **score** - from 0 to 100, indicating how far from the input word a rhyme is: the higher score, the worse rhyme
 
 
 The default output for one- or two-syllable words may be rather extended. 
@@ -117,74 +109,89 @@ However, you can reduce the output by configuring it with::
 
 You can download resulting dataframe to an external file::
  
-    rhyme("дом").to_excel("dom.xlsx")
-
-You will enjoy more comfort with  Jupyter, JupyterLab or Colab
-
+    rhyme("кость").to_csv("dom.csv")
 
 
 ------------------------------------------
-Input word unavailable in `wiktionary_rus` 
+Input word unavailable in `database` 
 ------------------------------------------
-If a word you provide as an input to `rhyme` or `rhyme_only_words` is unavailable in `wiktionary_rus`, or if there are omographs, the program will try and stress the word by itself deploying `put_stress_rus`. The accuracy of the neural network, standing behind the package, is 0.7945. To check if the word is properly accentuated, you will be asked to print "Y" or press Enter, if correct, or print the stressed word, if not
+If a word you provide as an input to `rhyme` is unavailable in the package's `database`, 
+or if there are omographs, the program will try and stress the word by itself deploying `put_stress_rus`. 
+The accuracy of the neural network, standing behind the package, is 0.7945. 
+The code will raise exception, e.g.::
 
-Omographs:: 
-    
-    rhyme("замок")
-    print(rhyme_only_words("замок"))
+        rhyme_rus.utils.exceptions.MultipleStresses: 
+        мандельштам has  stress variants for a user to choose from 
+        ["манде'льштам", "ма'ндельштам", "мандельшта'м"]
 
-:: 
+To make code resume, you should restart the same function with the properly stressed word as an argument::
 
-    > Wiktionary has 2 omographs: замо'к, за'мок. Print the stressed word you choose -
-
-Word unavailable in `wiktionary_rus`::
-
-    rhyme("коцюбинский")
-    print(rhyme_only_words("коцюбинский"))
-
-:: 
-
-    > Neural Netword stressed коцюбинский as коцюби'нский. Print 'Y' if the stress is put correctly, or print word with a proper accent -
+        rhyme(мандельштам, "мандельшта'м")
 
 
-
-Algorythm
+How does rhyme constructed?
 __________
-I founded `rhyme_rus` on my understanding, why we hear some
-pairs of words as harmonious, other as not, and why contemporary poetry does not use precise rhymes:
+I founded `rhyme` on my understanding, why we hear some
+pairs of words as harmonious, others as not, and why contemporary poetry does not use precise rhymes:
 
-* I do not rhyme characters, I do rhyme sounds. That's why I use specifically parsed wiktionary as the only available source enjoying Russian words with IPA transcription
+* I do not rhyme characters, I do rhyme sounds. That's why I use IPA transcription of Russian words
 
-* stressed vowel is a key. No matter how far from the input word the rhymes is, the stressed vowel should remain suffering the slightest modifications
+* stressed vowel is a key. No matter how far from the input word the rhymes is, 
+  the stressed vowel should remain, suffering the slightest modifications, if any
 
-* the sound before the stressed vowel has to be takes into account. The rest of the previous sounds has to be neglected.
+* the sound before the stressed vowel should to be takes into account. 
+  The rest of the previous sounds has to be neglected.
 
-* one gets close rhymes changing consonants to their palatalized, voiced or voiceless counterparts, altering vowels to their close peers 
+* one gets rhymes changing consonants to their palatalized, voiced or voiceless counterparts, 
+  altering vowels to their close peers 
 
 * substituting vowels and consonants of an input word for any other sounds proves fruitful
 
 * one gets remoter rhymes by adding or removing sounds from the input word's pattern
 
-* The whole algorythm is based on generating reasonable number of sounds' changes, mutations, removals or additions
+* assonants/ consonants matter, and should be added to rhymes
+
+* The whole algorithm is based on selecting a pool of words with the same stressed vowel, 
+  and same (+-3) number of sounds after stressed vowel
 
 
-Say, we have a pair "дом - судом". It is a precise rhyme, which 
-I encode with the next pattern: 
-*("same_cons", "same_stressed_v", "same_cons)*. Actually,
-the pattern is a command for a script to find all words 
-from wiki Dictionary, which complies with this pattern. 
-Surely, the *("same_cons", "same_stressed_v", "same_cons)* 
-suits "дроз **дом**", кон **дом**, тру **дом**, etc.
+Algorithm
+_________
 
-- **same_cons** = find a word from wiki dictionary with the same consonant on the same position  
-- **same_stressed_v** = same stressed vowel
-- **near_stressed_v** = find a word with a vowel close to the original one: e.g. "о" is a near stressed vowel to "ё", "ю" - "у", etc.  
-- **same_v** = same vowel
-- **voice_cons** = either voiced or voiceless consonant 
-- **any_cons** = any consonant 
-- **any_v** = any vowel
-- **no_sound** = remove sound from the current position 
-- **add_sound** = add sound (any consonant + any vowel) to the current position  
+I want to find rhymes to word "дом". Let's have a look under the hood.
+
+
+**1.** The code requests sqlite3 database and selects a pile of words, which satisfy the two conditions. They have:
+
+* the same stressed vowel or `near stressed vowel`: 'a'-'æ' (а-я), 'o'-'ɵ'(о-ё) 
+* +-3 sounds after stress: 'агроном' - same 1 sound after stress, 'удодом' - 3 sounds
+
+**2.** The code yields `rhyme pattern` for every selected word:
+
+
+*  **same_cons** = marks the same consonant on the same position in both words, e.g. "дом" - "ком": "м" with index 2
+
+*  **same_stressed_v** = same stressed vowel on the same position as the vowel "о" with index 1
+
+*  **near_stressed_v** = `inverted` stressed_vowel on the same position as о-ё in "дом" - "ёд"
+
+*  **same_v** = same vowel in corresponding position as 'а' in words "кобра" - "вобла"
+
+*  **voice** = either voiced or voiceless consonant in the same position
+
+*  **any_cons** = any consonant in the same position
+
+*  **any_v** = any vowel in the same position
+
+*  **no_sound** = removed sound from the current position: "дом" - "дзюдо", 'м' - sound removed from the end: ('same_cons', 'same_stressed', 'no_sound')
+
+*  **add_sound** = added sound to the current position: "дому" - "гнедому", 'у' is added: ('same_cons', 'same_stressed', 'same_cons', 'add_sound')
+
+
+
+
+
+
 
 If we change the pattern to 
 **("any_cons", "near_stressed_v", "same_cons)**, 

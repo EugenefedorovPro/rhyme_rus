@@ -234,13 +234,6 @@ class WordStatistics:
 
 
 if __name__ == "__main__":
-    # print(WordStatistics().get_word_statistics())
-    # print(WordStatistics().get_word(6, False))
-    # print(WordStatistics().select_length_word(seed = True))
-    # print(WordStatistics().get_accent_intipa_by_length(11))
-    # print(WordStatistics().seed_length_word)
-    table = WordStatistics().measure_time_all_rhymes(seed = True, cycles = 1)
-    print(table)
-    columns = list(table.columns.values)
-    print(columns)
-    print("time_mult" in columns)
+    length_word = WordStatistics().select_length_word(seed = True)
+    print(length_word)
+    table = WordStatistics().write_rhyme(length_word[9], True)
