@@ -1,4 +1,4 @@
 include rhyme_rus/seeds/list_unique_unicodes.pkl
 include rhyme_rus/seeds/similarities_pat.pkl
 include rhyme_rus/seeds/list_unique_unicodes.pkl
-include rhyme.sqlite3
+include rhyme_rus/rhyme.sqlite3

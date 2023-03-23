@@ -11,7 +11,7 @@ class MySql:
         return cls._self
 
     def __init__(self):
-        path = Path(__file__).parent.parent.parent / "rhyme.sqlite3"
+        path = Path(__file__).parent.parent.parent / "rhyme_rus/rhyme.sqlite3"
         self.con = sqlite3.connect(path)
         self.cur = self.con.cursor()
 
