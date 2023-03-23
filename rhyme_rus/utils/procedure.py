@@ -1,4 +1,3 @@
-import os
 from rhyme_rus.utils.word import Word
 from rhyme_rus.utils.all_stresses import FactoryStress
 from rhyme_rus.utils.stressed_word import get_stressed_word
@@ -127,7 +126,6 @@ class Procedure:
             index_stressed_v,
             all_intipa_words
             ):
-        print("number of process is ", os.getpid(), flush = True)
         self.word.all_stresses = all_stresses
         self.word.stressed_word = stressed_word
         self.word.intipa = intipa
