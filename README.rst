@@ -129,8 +129,9 @@ To make code resume, you should restart the same function with the properly stre
         rhyme(мандельштам, "мандельшта'м")
 
 
-How does rhyme constructed?
-__________
+How is rhyme constructed?
+_________________________
+
 I founded `rhyme` on my understanding, why we hear some
 pairs of words as harmonious, others as not, and why contemporary poetry does not use precise rhymes:
 
@@ -166,7 +167,13 @@ I want to find rhymes to word "дом". Let's have a look under the hood.
 * the same stressed vowel or `near stressed vowel`: 'a'-'æ' (а-я), 'o'-'ɵ'(о-ё) 
 * +-3 sounds after stress: 'агроном' - same 1 sound after stress, 'удодом' - 3 sounds
 
-**2.** The code yields `rhyme pattern` for every selected word:
+ | Actually it picks up words as list of integers including the stressed vowel, the sound before it, if available, and all sounds after the stressed one: "дом" is represented as [6, 34, 26], while "стол" [47, 34, 24] (the first sound is not encoded as irrelevant for rhyming). 
+
+**2.** The code compares the input word with its rhymes one by one, producing a series of possible rhyme patterns. For instance, in the rhyme 'кора' (stress on the first vowel) to the input word 'кобра', one sound is obviously removed. But the algorithm does not know exactly what sound to get rid of, and yields all possible variants, in this case just two ones: "кобр" ('a' removed) and "кора" ('б' removed). It should be noted that all operations are made on integer representations of words, and here we deal with string for the sake of simplicity.
+
+**3.** The code has to select a proper pattern from a range of variants. To sort it out, the algorithm scores every sound presentation of the pattern against the corresponding sounds of the input word. The lower score is, the more properly pattern reflects rhyme relations. Say, "кора" scores less points than "кобр" as it fits perfectly with the compared rhyme "кора". 
+
+**4.** The code converts selected integer presentations of rhyme patterns to strings according to following rules:
 
 
 *  **same_cons** = marks the same consonant on the same position in both words, e.g. "дом" - "ком": "м" with index 2
@@ -187,229 +194,17 @@ I want to find rhymes to word "дом". Let's have a look under the hood.
 
 *  **add_sound** = added sound to the current position: "дому" - "гнедому", 'у' is added: ('same_cons', 'same_stressed', 'same_cons', 'add_sound')
 
+**5.** The code also calculates assonants/ consonants. For instance, I do not consider 'кобра'-'оброк' rhymes, as having the same sounds, they have these sounds on different positions. Here the algorithm is simplified and compares words by characters not sounds, taking into account number of the same vowels/ consonants and length of words.
+
+**6.** The code molds dataframe sorting all rhymes by rhyme pattern scores and assonance scores. Rhymes, which recieved high score are not included into the final chart.
 
 
-
-
-
-
-If we change the pattern to 
-**("any_cons", "near_stressed_v", "same_cons)**, 
-what rhymes will the algorythm find? Among others -
-"битьём", "путём", "почём". Sounds standing behind
-characters 'ть', 'т', 'ч' are encoded by "any_cons", meanwhile, 
-'ё' is a "near_stressed_v" in relation to 'о',
-
-Do you guess if `rhyme` will find the word 
-'рог' with input 'рок' and pattern
-**("same_cons", "same_stressed_v", "same_cons)**? Yes, it will, 
-despite two different characters at the end 'г' vs 'к'. 
-In Russian these letters represent the same sounds, so that you 
-cannot differentiate them by ear. That's one of the 
-most significant features of `rhyme_rus` algorythm. 
-It finds correspondences not by comparing characters, 
-but by comparing sounds using International Phonetic Alphabet (IPA).
-The words 'рог' and 'рок' have the same 
-pronunciation 'rok'.
-
-What does `rhyme` briefly do to produce the result? The algorythm: 
-
-
-*1.*
-**chops a part of the word**, which plays role in rhyming. 
-That is a\) stressed vowel, b) every sound after the stressed vowel, 
-c) the consonant before the stressed vowel
+Code
+____
+* OOP based: builder, factory method design patterns 
+* multiprocessing
+* 61 tests: unit, functional, integration
+* coverage - 97%
+* sqlite3 as portable database
+* PyCharm with Vim as IDE on Kubuntu
  
-* 'судьба' will be cut to 'ba'
-* 'аорта' - 'ortə' \('a' is omitted) 
-* 'дом' - 'dom'
-
-In fact, all these chops of IPA sounds were preprocessed,
-converted into integers, and stored in 'wiki_parsed.pkl'. So, the program just
-fetches necessary data from permanent storage, uploaded in cache as a Class.
-
-*2.*
-**makes a sound schema of a chopped word** 
-
-* 'dom' will correspond to *\['cons', 'stress_v', 'cons']*
-* 'ortə' - *\['stress_v', 'cons', 'cons', 'vowel']*
-
-*3.*
-**produces all possible combinations** of different types of consonants and
-vowels out of the scheme 
-
-* Every element of the scheme can be decoded into different sound types:: 
-
-    combinations = {  
-                    "cons": ["same_cons", "voice_cons", "palatal_cons", "any_cons", "no_sound"],  
-                    "stress_v": ["same_stressed_v", "near_stressed_v"],  
-                    "vowel": ["same_v", "any_v", "no_sound"],  
-                    }
-
-* 'dom' scheme yields the following patterns among others: 
-* * ('same_cons', 'same_stressed_v, 'same_stressed_v')
-* * ('any_cons,'same_stressed_v', 'voice_cons')
-
-*4.*
-**adds 'no_sound' to all positions in all generated patterns**
-
-* Fore example: ('cons', 'add_sound',' 'stress_v', 'cons'), ('cons', 'stress_v', 'cons', 'add_sound')
-
-* As a result we have a lot of pattern combinations, the more sounds in a word, the greater number of variants
-* 'dom' - **3** sounds, which yield **250** patterns
-* 'ortə' - **4** sounds - **900** patterns
-* 'общество' \('opɕːɪstvə') - **9** sounds and **562 500** patterns
-* 'заведующая' \('vʲedʊjʉɕːɪjə') - **10** sounds and **6 075 000** patterns 
-* 'выравнивание' \('vɨˈravnʲɪvənʲɪje') - **11** sounds and **32 906 250** patterns
-
-Number of combinations grow dramatically with number of sounds in a word.
-In ideal world I would prefer to deal with all possible patterns,
-but in reality CPU and memory resources limited. That's why the rest of the
-algorythm is focused on setting restrictions to this pleroma of variants.  
-
-*5.*
-**filters patterns, removing less productive ones**
-
-* I will partially clarify this piece of the algorythm in the section "Arguments to `rhyme()`" 
- 
-
-**iterates customized wiki Dictionary to find all words, which fit
-selected patterns**
-
-* all words in wiki are stored as instances of Dictionary class
-* to fasten the code, and reduce memory consumption I preprocessed all words (chopped and converted them to integers), used generators, hashed means of data storage (classes, dicts, sets), C-based solutions (itertools), lru_cache, and different algorithms to cope with long vs short words.
-
-
-Arguments to `rhyme()`, `rhyme_only_words()`
-__________________________________________________________
-
-Both commands in the title to the section accepts the same args::
-
-    rhyme_only_words(word,
-                     max_length_pat_of_ipa = 6,
-                     list_score_numbers=range(45, 55, 5),
-                     max_number_hard_sounds_in_one_pat=1
-                     )
-    
-
-* **word** accepts a russian words under some conditions:
-  * available in inside parsed wiki dict with more than 400k items
-  * low case
-  * 'ё' sensitive
-  * no blank spaces, no dashes
-
-* **list_score_numbers** accepts list of integers from 0 to 100 with step 5.
-  * 0 score corresponds to precise rhymes ('дом' - 'ведом')
-  * 100 score corresponds to rhymes, which can hardly be associated with an input ('дом' - 'бредём')
-
-
-* **max_length_pat_of_ipa** sets a number of sounds, which will be taken to generate all possible patterns
-
-* * if max_length_pat_of_ipa is set to 6 \(default) the algorithm will generate patterns only for first 6 sounds, while remaining all other sounds in the tail of the word unchanged. It means, that, e.g. word 'беженец' \(bʲeʐɨnʲɪt͡s') will find rhymes, which will end on unchanged 7th sound \('ц'): 'соперни**ц**', 'столешни**ц**', etc.
-* **max_number_hard_sounds_in_one_pat** defines number of 'hard_sounds' to be picked up in a pattern. "Hard_sounds" stands for CPU-consuming sounds, especially 'any_v', 'any_cons', 'add_sounds', but also 'palatal_cons', 'voice_cons'
-
-* * if you set *max_number_hard_sounds_in_one_pat* to 1 \(default) no pattern has more than 1 sound of this type: ('any_cons', 'same_vowel', 'palatal_cons')
-* * if you set arg to 2 the algorythm produces also patterns of this sort ('any_cons', 'same_vowel', 'palatal_cons', 'any_cons') - two 'any_cons' in a pattern
-
-
-To make a trade-off between fast execution and extended output, 
-three arguments to `rhyme()` are available. The following code reveals
-the **default values**::
-
-    word = "беженец"
-    table_word_pat_score = rhyme(word,
-                                 max_length_pat_of_ipa=6,
-                                 list_score_numbers=range(0, 45, 5),
-                                 max_number_hard_sounds_in_one_pat=1
-                                 )
-    print(table_word_pat_score)
-
-It takes 18 seconds to find rhymes to the word *беженец* 
-with 9 rows of the output in a table: 'беженец', 'приверженец',
-'соперниц', 'грешниц', 'столешниц', 'бедренец', 'первенец', 'перельниц', 
-'перечниц'.
-
-You guess 18 secs too long to wait. Let's try and make it a bit faster, by
-**setting list_score_numbers** from `range(0, 45, 5)` to `range(0, 35, 5)`:: 
-
-
-    word = "беженец"
-    table_word_pat_score = rhyme(word,
-                                 max_length_pat_of_ipa=6,
-                                 list_score_numbers=range(0, 35, 5),
-                                 max_number_hard_sounds_in_one_pat=1
-                                 )
-    print(table_word_pat_score)
-    
-
-* Time of execution: 7.9 sec. Much faster, but with some cost.
-* Number of rhymed words: 5. It means -3 words, with only 'беженец', 'приверженец', 'соперниц', 'грешниц', 'столешниц'.
-
-
-It seems the output is too scarce. Let's shift our trade-off to results' side, 
-by returning default to `list_score_numbers=range(0, 45, 5)` and
-increasing **max_length_pat_of_ipa*`** from 6 to 7::
-
-    word = "беженец"
-    table_word_pat_score = rhyme(word,
-                                 max_length_pat_of_ipa=7,
-                                 list_score_numbers=range(0, 45, 5),
-                                 max_number_hard_sounds_in_one_pat=1
-                                 )
-    print(table_word_pat_score)
-   
-
-* Time of execution: 45 sec.
-* Number of rhymed words: 15. It means +6 rhymes to default output, with additional 'беженки', 'беженце', 'беженцы', 'беженца', 'убежище'.
-
-The most unexpected rhymes you can achieve by changing the last parameter.
-Let's check the output produced by **max_number_hard_sounds_in_one_pat** value
-changed from 1 to 2 with other arguments set to default::
-
-
-    word = "беженец"
-    table_word_pat_score = rhyme(word,
-                                 max_length_pat_of_ipa=7,
-                                 list_score_numbers=range(0, 45, 5),
-                                 max_number_hard_sounds_in_one_pat=2
-                                 )
-    print(table_word_pat_score)
-    
-
-* Time of execution: 49 sec.
-* Number of rhymed words: 64. Much more than all default, but with many rhymes moving far from traditional patterns: 'ежели', 'нежити', 'тибетец', 'сеянец', 'подснежник', etc.
-
-
-Utils to explore `rhyme()` output
-__________________________________
-
-You can explore the output table generated by `rhyme(word)`::
-
-    from rhyme_rus.rhyme import rhyme
-    from rhyme_rus.utils.explore_rhymes import ExploreRhymes
-    word = "кот"
-    table_word_pat_score = rhyme(word)
-    
-    # subtract output table by number of score, arg accepts int
-    score_number = 5
-    rhymes_by_score = ExploreRhymes.find_rhymes_by_score(score_number, table_word_pat_score)
-    print(rhymes_by_score)
-    
-    # subtract output table by rhyme pattern, arg accepts tuple
-    pattern = ('palatal_cons', 'near_stressed_v', 'same_cons')
-    rhymes_by_pattern = ExploreRhymes.find_rhymes_by_pattern(pattern, table_word_pat_score)
-    print(rhymes_by_pattern)
-    
-    # subtract output table by part of speech, arg accepts string
-    # "noun","verb","adj","name","adv","num","pron"
-    part_speech = "adv"
-    rhymes_by_pos = ExploreRhymes.find_rhymes_by_pos(part_speech, table_word_pat_score)
-    print(rhymes_by_pos)
-    
-    # subtract output table by word, arg accepts string
-    word = "бот"
-    rhymes_by_word = ExploreRhymes.find_rhymes_by_word(word, table_word_pat_score)
-    print(rhymes_by_word)
-  
-    
-    
