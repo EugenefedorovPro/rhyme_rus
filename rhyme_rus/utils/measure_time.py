@@ -77,4 +77,4 @@ length_word_time_mult = WordStatistics().list2tuple(length_word_time_mult, cycle
 time_table = WordStatistics().get_time_table(length_word_time_mult)
 print(length_word_time_mult)
 print(time_table)
-time_table.to_csv("mult_one_processor_32.csv")
+time_table.to_csv("mult_one_processor_0.csv")
