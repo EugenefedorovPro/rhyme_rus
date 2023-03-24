@@ -8,7 +8,7 @@ words_names = ['om', 'dom', 'koma', 'palama', 'syl']
 def get_integrated_mult():
     for word, name in zip(target_words, words_names):
         if word == 'палама':
-            table = rhyme(word, "пала'ма")
+            table = rhyme("пала'ма")
         else:
             table = rhyme(word)
         with open(f"{name}.pkl", "wb") as f:

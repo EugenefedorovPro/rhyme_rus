@@ -21,7 +21,7 @@ def get_actual_tables(words, names):
     for w, name in zip(words, names):
         word = Word(w)
         if w == 'палама':
-            word.stressed_word = "пала'ма"
+            word = Word("пала'ма")
         word = Procedure(word).build()
         actual.append(word.table)
     return actual

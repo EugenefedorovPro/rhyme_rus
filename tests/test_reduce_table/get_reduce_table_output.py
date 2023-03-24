@@ -8,9 +8,11 @@ if __name__ == "__main__":
         table_long = dill.load(f)
     print(table_long)
     intipa = [0, 0, 0]
-    table_reduced = ReduceTable(word_intipa = intipa,
-                                table_long = table_long).get_reduced_table()
-    # with open("test_reduce_table.pkl", "wb") as f:
-    #     dill.dump(table_reduced, f)
+    table_reduced = ReduceTable(
+        word_intipa = intipa,
+        table_long = table_long
+        ).get_reduced_table()
+    with open("test_reduce_table.pkl", "wb") as f:
+        dill.dump(table_reduced, f)
 
     print(table_reduced)
