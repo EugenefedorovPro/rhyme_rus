@@ -209,7 +209,7 @@ Code
 ____
 * OOP based: builder, factory method design patterns 
 * multiprocessing
-* 61 tests: unit, functional, integration
+* 62 tests: unit, functional, integration
 * coverage - 97%
 * sqlite3 as portable database
 * PyCharm with Vim as IDE on Kubuntu
