@@ -24,7 +24,6 @@ First install `git-lfs`
 
 *rhyme_rus*  is available for installing only from GitHub
 
-Package is available only from GitHub:
 
 ::
 
