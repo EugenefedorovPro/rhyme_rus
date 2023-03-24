@@ -1,5 +1,3 @@
-import multiprocessing
-
 import pandas as pd
 from multiprocessing import Pool
 from rhyme_rus.utils.word import Word
