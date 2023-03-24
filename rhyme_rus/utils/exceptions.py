@@ -1,3 +1,8 @@
+import sys
+
+sys.tracebacklimit = 0
+
+
 class MultipleStresses(Exception):
 
     def __init__(self, unstressed_word, all_stresses):
@@ -5,7 +10,12 @@ class MultipleStresses(Exception):
         self.all_stresses = all_stresses
 
     def __str__(self):
-        return f"{self.unstressed_word} has  stress variants for a user to choose from {self.all_stresses}"
+        return f'''
+        {self.unstressed_word} has  stress variants for a user to choose from\r
+        {self.all_stresses}\r
+        write input word with proper stressed_vowel like\r
+        rhyme("за'мок")
+        '''
 
 
 class WithNoInitialConsonant(Exception):
