@@ -16,10 +16,9 @@ pd.set_option("display.max_colwidth", None)
 # multiprocessing.set_start_method('spawn')
 
 
-def rhyme(target_word, stressed_word = ''):
+def rhyme(target_word):
     if __name__ == "rhyme_rus.rhyme" or __name__ == "__main__":
         word = Word(target_word)
-        word.stressed_word = stressed_word
         word = Procedure(word).build_till_intipa_words()
         split_intipa_words: list[dict[tuple[int]:list[str, ...]], ...]
         split_intipa_words = SplitIntipaWords(

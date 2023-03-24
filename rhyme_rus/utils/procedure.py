@@ -20,6 +20,12 @@ from rhyme_rus.utils.reduce_table import ReduceTable
 class Procedure:
     def __init__(self, word: Word):
         self.word: Word = word
+        self.__check_if_word_stressed()
+
+    def __check_if_word_stressed(self):
+        if "'" in self.word.unstressed_word:
+            self.word.stressed_word = self.word.unstressed_word
+            self.word.unstressed_word = self.word.unstressed_word.replace("'", "")
 
     def __get_all_stresses(self) -> None:
         self.word.all_stresses = FactoryStress().fetch_stress(self.word.unstressed_word)

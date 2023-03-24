@@ -23,7 +23,7 @@ def get_actual_tables():
     tables = []
     for word in target_words:
         if word == 'палама':
-            table = rhyme(word, "пала'ма")
+            table = rhyme("пала'ма")
         else:
             table = rhyme(word)
         tables.append(table)
