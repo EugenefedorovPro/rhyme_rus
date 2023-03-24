@@ -7,9 +7,9 @@ from rhyme_rus.utils.procedure import Procedure
 from rhyme_rus.utils.split_all_intipa_words import SplitIntipaWords
 from rhyme_rus.utils.concat_tables import concat_tables
 
-pd.set_option("display.max_rows", None)
-pd.set_option("display.max_columns", None)
-pd.set_option("display.width", None)
+pd.set_option("display.max_rows", 10000)
+pd.set_option("display.max_columns", 10000)
+pd.set_option("display.width", 10000)
 pd.set_option("display.max_colwidth", None)
 
 
@@ -17,7 +17,7 @@ pd.set_option("display.max_colwidth", None)
 
 
 def rhyme(target_word, stressed_word = ''):
-    if __name__ == "rhyme_rus.rhyme":
+    if __name__ == "rhyme_rus.rhyme" or __name__ == "__main__":
         word = Word(target_word)
         word.stressed_word = stressed_word
         word = Procedure(word).build_till_intipa_words()

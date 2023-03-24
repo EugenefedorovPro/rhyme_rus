@@ -14,13 +14,17 @@ rhyme_rus
 Installation
 _________________
 
+First install `git-lfs`
 
-Linux (checked on Ubuntu 20.04.4)::
+**Linux** (checked on Ubuntu 20.04.4)::
 
     $sudo apt install git-lfs
 
+**Windows**: see `How to install Large File Storage <https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage?platform=windows>`_
 
 *rhyme_rus*  is available for installing only from GitHub
+
+Package is available only from GitHub:
 
 ::
 
