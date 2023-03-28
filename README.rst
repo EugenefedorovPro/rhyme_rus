@@ -206,9 +206,9 @@ I want to find rhymes to word "дом". Let's have a look under the hood.
 
 Code
 ____
-* OOP based: builder, factory method design patterns 
+* OOP based: singleton, builder, factory method design patterns
 * multiprocessing
-* 62 tests: unit, functional, integration
+* 63 tests: unit, functional, integration
 * coverage - 97%
 * sqlite3 as portable database
 * PyCharm with Vim as IDE on Kubuntu

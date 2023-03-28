@@ -34,7 +34,7 @@ class FetchStressFromNn(AFetchStress):
                 _stressed_word = f"{unstressed_word[:i + 1]}'{unstressed_word[i + 1:]}"
                 all_stresses.append(_stressed_word)
         all_stresses.remove(stressed_word)
-        all_stresses.insert(0, stressed_word)
+        all_stresses.insert(0, stressed_word)  # insert the variant produced by nn on the first place
         return all_stresses
 
     def fetch_stress(self) -> list[str]:

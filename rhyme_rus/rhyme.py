@@ -14,7 +14,8 @@ pd.set_option("display.max_colwidth", None)
 # multiprocessing.set_start_method('spawn')
 
 
-def rhyme(target_word):
+# for web development it returns both table, all possible stresses, and the stressed word
+def rhyme_with_stresses(target_word):
     if __name__ == "rhyme_rus.rhyme" or __name__ == "__main__":
         word = Word(target_word)
         word = Procedure(word).build_till_intipa_words()
@@ -31,4 +32,10 @@ def rhyme(target_word):
         with Pool() as p:
             word_instances = p.starmap(Procedure(word).build_split_intipa_words, split_intipa_words)
             united_table = concat_tables(word_instances)
-        return united_table
+        return united_table, word.all_stresses, word.stressed_word
+
+
+# for terminal usage, for the majority of end-users, it returns only table
+def rhyme(target_word):
+    united_table, _, _ = rhyme_with_stresses(target_word)
+    return united_table
