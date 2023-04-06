@@ -12,7 +12,7 @@ class MySql:
 
     def __init__(self):
         path = Path(__file__).parent.parent.parent / "rhyme_rus/rhyme.sqlite3"
-        self.con = sqlite3.connect(path)
+        self.con = sqlite3.connect(path, check_same_thread = False)
         self.cur = self.con.cursor()
 
     def cur_execute(self, query: str) -> list[tuple]:
