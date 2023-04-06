@@ -48,6 +48,5 @@ class ReduceTable:
         reduced_table = reduced_table.sort_values(by = ["score", "assonance", "rhyme"])
         reduced_table = reduced_table.reindex(columns = ["rhyme", "score", "assonance", "pattern"])
         reduced_table = reduced_table.reset_index(drop = True)
-        reduced_table.index.name = 'id'
 
         return reduced_table

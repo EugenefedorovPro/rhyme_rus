@@ -9,5 +9,4 @@ def concat_tables(word_instances):
     united_table = pd.concat(tables)
     united_table = united_table.sort_values(by = ["score", "assonance", "rhyme"])
     united_table = united_table.reset_index(drop = True)
-    united_table.index.name = "id"
     return united_table
