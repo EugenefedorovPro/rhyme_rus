@@ -71,7 +71,7 @@ Output:
 
 
 +----+--------+-------+-----------+-------------------------------------------------------------------+
-| id | rhyme  | score | assonance | pattern                                                           | 
+|    | rhyme  | score | assonance | pattern                                                           |
 +====+========+=======+===========+===================================================================+
 | 0  | гость  |   1   |    0      | ('any_cons', 'same_stressed', 'same_cons', 'same_cons')           |
 +----+--------+-------+-----------+-------------------------------------------------------------------+
@@ -92,7 +92,7 @@ Columns explained:
   Rhyme reveals audial likeness of words, when sequence of sounds matter
 * **assonance** - from 0 to 2. Assonance/consonance shows to what extend 
   words have similar sounds irrespective of their position 
-  The lower number, the more likely words will be percieved as close to each other
+  The lower number, the more likely words will be perceived as close to each other
 * **patterns** - patterns, the algorithm uses to select rhymed words
 * **rhyme** - rhymes to an input word
 
@@ -201,15 +201,15 @@ I want to find rhymes to word "дом". Let's have a look under the hood.
 
 **5.** The code also calculates assonants/ consonants. For instance, I do not consider 'кобра'-'оброк' rhymes, as having the same sounds, they have these sounds on different positions. Here the algorithm is simplified and compares words by characters not sounds, taking into account number of the same vowels/ consonants and length of words.
 
-**6.** The code molds dataframe sorting all rhymes by rhyme pattern scores and assonance scores. Rhymes, which recieved high score are not included into the final chart.
+**6.** The code molds dataframe sorting all rhymes by rhyme pattern scores and assonance scores. Rhymes, which received high score are not included into the final chart.
 
 
 Code
 ____
 * OOP based: singleton, builder, factory method design patterns
 * multiprocessing
-* 63 tests: unit, functional, integration
+* 65 tests: unit, functional, integration
 * coverage - 97%
-* sqlite3 as portable database
+* sqlite3 as a portable database
 * PyCharm with Vim as IDE on Kubuntu
  
