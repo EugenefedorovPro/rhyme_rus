@@ -112,6 +112,10 @@ class Procedure:
         self.build_till_table_reduced()
         return self.word
 
+    def build_only_all_stresses(self):
+        self.__get_all_stresses()
+        return self.word
+
     def build_till_intipa_words(self):
         self.__get_all_stresses()
         self.__get_stressed_word()

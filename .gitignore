@@ -16,7 +16,7 @@ __pycache__
 draft.ipynb
 rhyme_rus/utils/__pycache__/
 sqlite3.exe
-draft.py
+draft*.py
 env_rhyme_rus_lx/
 
 .ropeproject/
